@@ -4,25 +4,22 @@
     {{header}}
     <title>Tin Tức - Invest X</title>
     <style>
-        * {
+        .news-page * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+        .news-page {
             padding: 20px;
         }
 
-        .container {
+        .news-page .container {
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .header {
+        .news-page .header {
             background: white;
             padding: 30px;
             border-radius: 12px;
@@ -30,25 +27,25 @@
             margin-bottom: 30px;
         }
 
-        .header h1 {
+        .news-page .header h1 {
             font-size: 32px;
             color: #1a1a1a;
             margin-bottom: 10px;
         }
 
-        .header p {
+        .news-page .header p {
             color: #666;
             font-size: 14px;
         }
 
-        .filters {
+        .news-page .filters {
             display: flex;
             gap: 15px;
             margin-bottom: 30px;
             flex-wrap: wrap;
         }
 
-        .filter-btn {
+        .news-page .filter-btn {
             padding: 10px 20px;
             border: 2px solid #ddd;
             background: white;
@@ -58,24 +55,24 @@
             transition: all 0.3s;
         }
 
-        .filter-btn.active {
+        .news-page .filter-btn.active {
             background: #2e7d32;
             color: white;
             border-color: #2e7d32;
         }
 
-        .filter-btn:hover {
+        .news-page .filter-btn:hover {
             border-color: #2e7d32;
         }
 
-        .news-grid {
+        .news-page .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
         }
 
-        .news-card {
+        .news-page .news-card {
             background: white;
             border-radius: 12px;
             overflow: hidden;
@@ -84,20 +81,20 @@
             cursor: pointer;
         }
 
-        .news-card:hover {
+        .news-page .news-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 4px 16px rgba(0,0,0,0.15);
         }
 
-        .news-card.featured {
+        .news-page .news-card.featured {
             grid-column: span 2;
         }
 
-        .news-card.featured .news-image {
+        .news-page .news-card.featured .news-image {
             height: 250px;
         }
 
-        .news-image {
+        .news-page .news-image {
             height: 180px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
@@ -106,11 +103,11 @@
             font-size: 60px;
         }
 
-        .news-card.featured .news-image {
+        .news-page .news-card.featured .news-image {
             font-size: 80px;
         }
 
-        .news-badge {
+        .news-page .news-badge {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -122,11 +119,11 @@
             font-weight: 600;
         }
 
-        .news-content {
+        .news-page .news-content {
             padding: 20px;
         }
 
-        .news-category {
+        .news-page .news-category {
             display: inline-block;
             background: #e8f5e9;
             color: #2e7d32;
@@ -137,7 +134,7 @@
             margin-bottom: 10px;
         }
 
-        .news-title {
+        .news-page .news-title {
             font-size: 18px;
             font-weight: 700;
             color: #1a1a1a;
@@ -145,11 +142,11 @@
             line-height: 1.4;
         }
 
-        .news-card.featured .news-title {
+        .news-page .news-card.featured .news-title {
             font-size: 22px;
         }
 
-        .news-excerpt {
+        .news-page .news-excerpt {
             color: #666;
             font-size: 14px;
             line-height: 1.5;
@@ -160,7 +157,7 @@
             overflow: hidden;
         }
 
-        .news-footer {
+        .news-page .news-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -170,18 +167,18 @@
             border-top: 1px solid #eee;
         }
 
-        .news-meta {
+        .news-page .news-meta {
             display: flex;
             gap: 15px;
         }
 
-        .loading {
+        .news-page .loading {
             text-align: center;
             padding: 40px;
             color: #666;
         }
 
-        .error {
+        .news-page .error {
             background: #ffebee;
             color: #c62828;
             padding: 15px;
@@ -189,14 +186,14 @@
             margin-bottom: 20px;
         }
 
-        .pagination {
+        .news-page .pagination {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-bottom: 40px;
         }
 
-        .pagination button {
+        .news-page .pagination button {
             padding: 10px 15px;
             border: 1px solid #ddd;
             background: white;
@@ -205,18 +202,18 @@
             transition: all 0.3s;
         }
 
-        .pagination button.active {
+        .news-page .pagination button.active {
             background: #2e7d32;
             color: white;
             border-color: #2e7d32;
         }
 
-        .pagination button:disabled {
+        .news-page .pagination button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .modal {
+        .news-page .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -229,11 +226,11 @@
             justify-content: center;
         }
 
-        .modal.open {
+        .news-page .modal.open {
             display: flex;
         }
 
-        .modal-content {
+        .news-page .modal-content {
             background: white;
             border-radius: 12px;
             width: 90%;
@@ -243,25 +240,25 @@
             padding: 30px;
         }
 
-        .modal-close {
+        .news-page .modal-close {
             float: right;
             font-size: 28px;
             cursor: pointer;
             color: #999;
         }
 
-        .modal-close:hover {
+        .news-page .modal-close:hover {
             color: #1a1a1a;
         }
 
-        .article-title {
+        .news-page .article-title {
             font-size: 28px;
             font-weight: 700;
             margin: 20px 0;
             color: #1a1a1a;
         }
 
-        .article-meta {
+        .news-page .article-meta {
             display: flex;
             gap: 20px;
             color: #666;
@@ -271,7 +268,7 @@
             border-bottom: 1px solid #eee;
         }
 
-        .article-content {
+        .news-page .article-content {
             font-size: 16px;
             line-height: 1.7;
             color: #333;
@@ -279,31 +276,32 @@
         }
 
         @media (max-width: 768px) {
-            .news-grid {
+            .news-page .news-grid {
                 grid-template-columns: 1fr;
             }
 
-            .news-card.featured {
+            .news-page .news-card.featured {
                 grid-column: span 1;
             }
 
-            .header h1 {
+            .news-page .header h1 {
                 font-size: 24px;
             }
 
-            .modal-content {
+            .news-page .modal-content {
                 width: 95%;
                 padding: 20px;
             }
 
-            .article-title {
+            .news-page .article-title {
                 font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="news-page">
+        <div class="container">
         <div class="header">
             <h1>📰 Tin Tức Thị Trường</h1>
             <p>Cập nhật thông tin mới nhất về giao dịch hàng hóa và chiến lược đầu tư</p>
@@ -322,6 +320,7 @@
                 <span class="modal-close" onclick="closeModal()">&times;</span>
                 <div id="modalBody"></div>
             </div>
+        </div>
         </div>
     </div>
 

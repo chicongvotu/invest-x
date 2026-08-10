@@ -4,24 +4,22 @@
     {{header}}
     <title>Quản Lý Tin Tức - Invest X</title>
     <style>
-        * {
+        .admin-news-page * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fa;
+        .admin-news-page {
             padding: 20px;
         }
 
-        .container {
+        .admin-news-page .container {
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .header {
+        .admin-news-page .header {
             background: white;
             padding: 30px;
             border-radius: 12px;
@@ -32,12 +30,12 @@
             align-items: center;
         }
 
-        .header h1 {
+        .admin-news-page .header h1 {
             font-size: 28px;
             color: #1a1a1a;
         }
 
-        .btn {
+        .admin-news-page .btn {
             padding: 12px 24px;
             border: none;
             border-radius: 8px;
@@ -47,47 +45,47 @@
             transition: all 0.3s;
         }
 
-        .btn-primary {
+        .admin-news-page .btn-primary {
             background: #2e7d32;
             color: white;
         }
 
-        .btn-primary:hover {
+        .admin-news-page .btn-primary:hover {
             background: #1b5e20;
         }
 
-        .btn-secondary {
+        .admin-news-page .btn-secondary {
             background: #f5f5f5;
             color: #333;
             border: 1px solid #ddd;
         }
 
-        .btn-secondary:hover {
+        .admin-news-page .btn-secondary:hover {
             background: #eeeeee;
         }
 
-        .btn-danger {
+        .admin-news-page .btn-danger {
             background: #d32f2f;
             color: white;
         }
 
-        .btn-danger:hover {
+        .admin-news-page .btn-danger:hover {
             background: #b71c1c;
         }
 
-        .btn-small {
+        .admin-news-page .btn-small {
             padding: 8px 16px;
             font-size: 12px;
         }
 
-        .tabs {
+        .admin-news-page .tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 30px;
             border-bottom: 2px solid #eee;
         }
 
-        .tab-btn {
+        .admin-news-page .tab-btn {
             padding: 12px 24px;
             border: none;
             background: none;
@@ -100,33 +98,33 @@
             margin-bottom: -2px;
         }
 
-        .tab-btn.active {
+        .admin-news-page .tab-btn.active {
             color: #2e7d32;
             border-color: #2e7d32;
         }
 
-        .tab-content {
+        .admin-news-page .tab-content {
             display: none;
         }
 
-        .tab-content.active {
+        .admin-news-page .tab-content.active {
             display: block;
         }
 
-        .form-group {
+        .admin-news-page .form-group {
             margin-bottom: 20px;
         }
 
-        .form-group label {
+        .admin-news-page .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: #333;
         }
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .admin-news-page .form-group input,
+        .admin-news-page .form-group textarea,
+        .admin-news-page .form-group select {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -135,32 +133,32 @@
             font-size: 14px;
         }
 
-        .form-group textarea {
+        .admin-news-page .form-group textarea {
             resize: vertical;
             min-height: 120px;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        .admin-news-page .form-group input:focus,
+        .admin-news-page .form-group textarea:focus,
+        .admin-news-page .form-group select:focus {
             outline: none;
             border-color: #2e7d32;
             box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
         }
 
-        .form-row {
+        .admin-news-page .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
-        .form-actions {
+        .admin-news-page .form-actions {
             display: flex;
             gap: 10px;
             margin-top: 30px;
         }
 
-        .table {
+        .admin-news-page .table {
             width: 100%;
             background: white;
             border-collapse: collapse;
@@ -169,7 +167,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .table th {
+        .admin-news-page .table th {
             background: #f5f5f5;
             padding: 15px;
             text-align: left;
@@ -178,20 +176,20 @@
             border-bottom: 1px solid #ddd;
         }
 
-        .table td {
+        .admin-news-page .table td {
             padding: 15px;
             border-bottom: 1px solid #eee;
         }
 
-        .table tr:last-child td {
+        .admin-news-page .table tr:last-child td {
             border-bottom: none;
         }
 
-        .table tr:hover {
+        .admin-news-page .table tr:hover {
             background: #fafafa;
         }
 
-        .article-title {
+        .admin-news-page .article-title {
             font-weight: 600;
             color: #1a1a1a;
             max-width: 400px;
@@ -200,12 +198,12 @@
             text-overflow: ellipsis;
         }
 
-        .article-actions {
+        .admin-news-page .article-actions {
             display: flex;
             gap: 10px;
         }
 
-        .modal {
+        .admin-news-page .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -218,11 +216,11 @@
             justify-content: center;
         }
 
-        .modal.open {
+        .admin-news-page .modal.open {
             display: flex;
         }
 
-        .modal-content {
+        .admin-news-page .modal-content {
             background: white;
             border-radius: 12px;
             width: 90%;
@@ -232,14 +230,14 @@
             padding: 30px;
         }
 
-        .modal-header {
+        .admin-news-page .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .modal-close {
+        .admin-news-page .modal-close {
             font-size: 28px;
             cursor: pointer;
             color: #999;
@@ -247,28 +245,28 @@
             border: none;
         }
 
-        .modal-close:hover {
+        .admin-news-page .modal-close:hover {
             color: #1a1a1a;
         }
 
-        .empty-state {
+        .admin-news-page .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: #999;
         }
 
-        .empty-state-icon {
+        .admin-news-page .empty-state-icon {
             font-size: 48px;
             margin-bottom: 20px;
         }
 
-        .loading {
+        .admin-news-page .loading {
             text-align: center;
             padding: 40px;
             color: #666;
         }
 
-        .error {
+        .admin-news-page .error {
             background: #ffebee;
             color: #c62828;
             padding: 15px;
@@ -276,7 +274,7 @@
             margin-bottom: 20px;
         }
 
-        .success {
+        .admin-news-page .success {
             background: #e8f5e9;
             color: #2e7d32;
             padding: 15px;
@@ -284,28 +282,28 @@
             margin-bottom: 20px;
         }
 
-        .checkbox {
+        .admin-news-page .checkbox {
             width: auto;
             margin-right: 10px;
         }
 
         @media (max-width: 768px) {
-            .header {
+            .admin-news-page .header {
                 flex-direction: column;
                 gap: 20px;
                 text-align: center;
             }
 
-            .form-row {
+            .admin-news-page .form-row {
                 grid-template-columns: 1fr;
             }
 
-            .table {
+            .admin-news-page .table {
                 font-size: 12px;
             }
 
-            .table th,
-            .table td {
+            .admin-news-page .table th,
+            .admin-news-page .table td {
                 padding: 10px;
             }
 
@@ -321,7 +319,8 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="admin-news-page">
+        <div class="container">
         <div class="header">
             <h1>⚙️ Quản Lý Tin Tức</h1>
             <button class="btn btn-primary" onclick="switchTab('create')">+ Thêm Bài Mới</button>
@@ -454,6 +453,7 @@
                     <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Hủy</button>
                 </div>
             </form>
+        </div>
         </div>
     </div>
 
