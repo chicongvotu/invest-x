@@ -31,6 +31,7 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
+            background: var(--bg-body, #0B0E11) !important;
         }
 
         .news-page > div {
@@ -49,22 +50,23 @@
         }
 
         .news-page .header {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            background: var(--bg-surface, #181A20) !important;
+            padding: 30px !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+            margin-bottom: 30px !important;
+            border: 1px solid var(--border, #2B3139) !important;
         }
 
         .news-page .header h1 {
-            font-size: 32px;
-            color: #1a1a1a;
-            margin-bottom: 10px;
+            font-size: 32px !important;
+            color: var(--brand, #FCD535) !important;
+            margin-bottom: 10px !important;
         }
 
         .news-page .header p {
-            color: #666;
-            font-size: 14px;
+            color: var(--text-secondary, #848E9C) !important;
+            font-size: 14px !important;
         }
 
         .news-page .filters {
@@ -76,23 +78,23 @@
 
         .news-page .filter-btn {
             padding: 10px 20px !important;
-            border: 2px solid var(--color-border, #ddd) !important;
-            background: var(--color-surface, white) !important;
+            border: 2px solid var(--border, #2B3139) !important;
+            background: var(--bg-surface, #181A20) !important;
             border-radius: 8px !important;
             cursor: pointer !important;
             font-size: 14px !important;
             transition: all 0.3s !important;
-            color: var(--color-text-secondary, #666) !important;
+            color: var(--text-secondary, #848E9C) !important;
         }
 
         .news-page .filter-btn.active {
-            background: var(--color-primary, #2e7d32) !important;
-            color: white !important;
-            border-color: var(--color-primary, #2e7d32) !important;
+            background: var(--brand, #FCD535) !important;
+            color: var(--brand-text, #0B0E11) !important;
+            border-color: var(--brand, #FCD535) !important;
         }
 
         .news-page .filter-btn:hover {
-            border-color: var(--color-primary, #2e7d32) !important;
+            border-color: var(--brand, #FCD535) !important;
         }
 
         .news-page .news-grid {
@@ -103,15 +105,16 @@
         }
 
         .news-page .news-card {
-            background: white !important;
+            background: var(--bg-surface, #181A20) !important;
             border-radius: 12px !important;
             overflow: hidden !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
             transition: transform 0.3s, box-shadow 0.3s !important;
             cursor: pointer !important;
             display: flex !important;
             flex-direction: column !important;
             height: 100% !important;
+            border: 1px solid var(--border, #2B3139) !important;
         }
 
         .news-page .news-card:hover {
@@ -146,15 +149,15 @@
         }
 
         .news-page .news-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #ff9800;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            position: absolute !important;
+            top: 15px !important;
+            right: 15px !important;
+            background: var(--brand, #FCD535) !important;
+            color: var(--brand-text, #0B0E11) !important;
+            padding: 6px 12px !important;
+            border-radius: 20px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
         }
 
         .news-page .news-content {
@@ -182,7 +185,7 @@
         .news-page .news-title {
             font-size: 18px !important;
             font-weight: 700 !important;
-            color: #1a1a1a !important;
+            color: var(--text-primary, #EAECEF) !important;
             margin-bottom: 10px !important;
             line-height: 1.4 !important;
         }
@@ -192,7 +195,7 @@
         }
 
         .news-page .news-excerpt {
-            color: #666 !important;
+            color: var(--text-secondary, #848E9C) !important;
             font-size: 14px !important;
             line-height: 1.5 !important;
             margin-bottom: 15px !important;
@@ -207,15 +210,15 @@
             justify-content: space-between !important;
             align-items: center !important;
             font-size: 12px !important;
-            color: #999 !important;
+            color: var(--text-secondary, #848E9C) !important;
             padding-top: 15px !important;
-            border-top: 1px solid #eee !important;
+            border-top: 1px solid var(--border, #2B3139) !important;
             margin-top: auto !important;
         }
 
         .news-page .news-meta {
-            display: flex;
-            gap: 15px;
+            display: flex !important;
+            gap: 15px !important;
         }
 
         .news-page .loading {
