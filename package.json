@@ -1,15 +1,19 @@
 {
-  "name": "tradingview",
+  "name": "invest-x",
   "version": "1.0.0",
+  "type": "commonjs",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "keywords": [],
-  "author": "",
+  "author": "congnguyen29102002",
   "license": "ISC",
-  "description": "Giao dien SignalFlow chay bang du lieu gia lap - khong backend",
+  "description": "Invest X - Trading platform with market news and signals",
   "dependencies": {
     "express": "^5.2.1"
   }
