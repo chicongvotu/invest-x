@@ -6,12 +6,14 @@
     <title>Quản Lý Tin Tức - Invest X</title>
     {{header}}
     <style>
-        /* DO NOT scope site header/footer */
-        .site-header, .site-footer, .drawer, .drawer-backdrop {
-            all: revert !important;
+        /* Only scope admin-news-specific elements, not header/footer */
+        .admin-news-page {
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        .admin-news-page * {
+        .admin-news-page > div {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
