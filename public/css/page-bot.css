@@ -1,0 +1,249 @@
+/* ============================================================================
+   Trang Bot chien luoc
+   ========================================================================= */
+
+.bot-page { padding: 28px 0 48px; }
+
+.bot-head { margin-bottom: 20px; }
+.bot-head h1 { font-size: 26px; }
+.bot-head p { margin-top: 6px; font-size: 14px; color: var(--text-secondary); max-width: 68ch; }
+
+.bot-tabs {
+    display: flex; gap: 4px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+}
+.bot-tabs::-webkit-scrollbar { display: none; }
+
+.panel { display: none; }
+.panel[data-active="true"] { display: block; }
+
+/* --- Tab Truc tiep --- */
+.bot-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+}
+
+.bot-card { padding: 18px 20px; }
+.bot-card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+.bot-card-top .who { flex: 1; min-width: 0; }
+.bot-card-top .who b { display: block; font-size: 15px; }
+.bot-card-top .who span { font-size: 12px; color: var(--text-secondary); }
+.bot-card-top .sig { text-align: right; }
+.bot-card-top .sig b { display: block; font-size: 14px; font-weight: 700; }
+.bot-card-top .sig span { font-size: 11px; color: var(--text-secondary); }
+.sig-BUY b, .sig-WATCH_BUY b { color: var(--up); }
+.sig-SELL b, .sig-WATCH_SELL b { color: var(--down); }
+.sig-WAIT b { color: var(--text-secondary); }
+
+.bot-trends { display: flex; gap: 6px; margin-bottom: 12px; }
+.bot-trends .tf {
+    flex: 1;
+    padding: 7px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface-2);
+    text-align: center;
+}
+.bot-trends .tf span { display: block; font-size: 10px; color: var(--text-secondary); margin-bottom: 2px; }
+.bot-trends .tf b { font-size: 12px; }
+
+.veto-line {
+    display: flex; align-items: flex-start; gap: 7px;
+    padding: 9px 11px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface-2);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.45;
+}
+.veto-line svg { flex-shrink: 0; margin-top: 1px; color: var(--brand-hover); }
+
+/* --- Bieu do cot ngang (charts.js) --- */
+.bar-row { display: grid; grid-template-columns: 92px 1fr 48px; align-items: center; gap: 12px; }
+.bar-label { font-size: 12px; color: var(--text-secondary); }
+.bar-track { height: 8px; border-radius: var(--radius-pill); background: var(--bg-elevated); overflow: hidden; }
+.bar-track i { display: block; height: 100%; border-radius: inherit; transition: width 0.4s var(--ease); }
+.bar-value { font-size: 12px; font-weight: 600; text-align: right; }
+
+.chart-empty {
+    display: grid; place-items: center;
+    min-height: 140px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+/* --- Tab Hieu suat --- */
+.perf-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.kpi {
+    padding: 16px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+}
+.kpi span { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+.kpi b { font-family: var(--font-mono); font-size: 22px; font-weight: 700; }
+
+.perf-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; align-items: start; }
+
+/* --- Tab Bang luat --- */
+.rules-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 28px; align-items: start; }
+
+.md-toc {
+    position: sticky;
+    top: calc(var(--nav-h) + 20px);
+    max-height: calc(100vh - var(--nav-h) - 48px);
+    overflow-y: auto;
+}
+.md-toc ul { list-style: none; }
+.md-toc li a {
+    display: block;
+    padding: 5px 10px;
+    border-left: 2px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+.md-toc li a:hover { color: var(--text-primary); border-left-color: var(--border-strong); }
+.md-toc li a[data-active="true"] { color: var(--brand); border-left-color: var(--brand); }
+.md-toc li.lv1 a { font-weight: 600; color: var(--text-primary); margin-top: 6px; }
+
+.rules-body { max-width: 76ch; font-size: 14px; line-height: 1.7; }
+.rules-body .md-h1 { font-size: 24px; margin: 28px 0 12px; }
+.rules-body .md-h2 { font-size: 19px; margin: 30px 0 10px; padding-top: 6px; }
+.rules-body .md-h3 { font-size: 15px; margin: 20px 0 8px; color: var(--brand); }
+.rules-body .md-h4 { font-size: 14px; margin: 16px 0 6px; }
+.rules-body .md-p { margin: 10px 0; color: var(--text-secondary); }
+.rules-body .md-list { margin: 10px 0 10px 20px; }
+.rules-body .md-list li { margin: 5px 0; color: var(--text-secondary); }
+.rules-body strong { color: var(--text-primary); }
+.rules-body code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    padding: 1px 5px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface-2);
+    color: var(--brand-hover);
+}
+.rules-body .md-code {
+    margin: 12px 0;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    overflow-x: auto;
+}
+.rules-body .md-code code {
+    background: none; padding: 0; color: var(--text-primary);
+    font-size: 12.5px; line-height: 1.6; white-space: pre;
+}
+.rules-body .md-quote {
+    margin: 14px 0;
+    padding: 10px 16px;
+    border-left: 3px solid var(--brand);
+    background: var(--brand-soft);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+.rules-body .md-hr { margin: 26px 0; border: none; border-top: 1px solid var(--border); }
+.md-table-wrap { overflow-x: auto; margin: 14px 0; }
+.md-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.md-table th, .md-table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.md-table th { color: var(--text-secondary); font-weight: 500; font-size: 12px; }
+
+/* Bang trong so dat truoc bang luat */
+.weights-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.weight-chip {
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    text-align: center;
+}
+.weight-chip span { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+.weight-chip b { font-family: var(--font-mono); font-size: 19px; color: var(--brand); }
+
+.pipeline {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+}
+.pipeline .step {
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--bg-surface-2);
+    font-size: 12.5px;
+    font-weight: 500;
+}
+.pipeline .arrow { color: var(--text-disabled); }
+
+/* --- Tab Backtest --- */
+.bt-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.bt-field { display: flex; flex-direction: column; gap: 6px; }
+.bt-field label { font-size: 12px; color: var(--text-secondary); }
+.bt-field input, .bt-field select {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+    font-size: 14px;
+}
+.bt-field input[type="text"] { text-transform: uppercase; width: 150px; }
+.bt-field input[type="date"] { width: 158px; }
+.bt-field select { width: 130px; }
+.bt-field input:focus, .bt-field select:focus { outline: none; border-color: var(--brand); }
+.bt-form .btn { height: 40px; }
+
+.bt-limits { list-style: none; }
+.bt-limits li {
+    position: relative;
+    padding-left: 20px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+.bt-limits li::before {
+    content: '';
+    position: absolute;
+    left: 4px; top: 9px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--brand);
+}
+
+@media (max-width: 1080px) {
+    .perf-grid { grid-template-columns: 1fr; }
+    .rules-layout { grid-template-columns: 1fr; gap: 16px; }
+    .md-toc { position: static; max-height: none; display: flex; overflow-x: auto; padding-bottom: 8px; }
+    .md-toc ul { display: flex; gap: 4px; }
+    .md-toc li a { white-space: nowrap; border-left: none; border-bottom: 2px solid var(--border); }
+    .md-toc li a[data-active="true"] { border-bottom-color: var(--brand); }
+}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>Bot chiến lược SMC: luật vào lệnh, chấm điểm và quản trị vốn</title>
+<meta name="description" content="Toàn bộ luật vào lệnh của bot SMC LuxAlgo: thứ tự xử lý vùng, xác nhận BOS và CHoCH, thang điểm 100/80/60 cùng cách đặt Stop Loss và Take Profit 1:1, 1:2.">
+<meta name="keywords" content="bot chiến lược SMC, luật vào lệnh, Smart Money Concept, chấm điểm tín hiệu, BOS, CHoCH, Supply Demand, Premium Discount, quản trị rủi ro, Stop Loss, Take Profit, hiệu suất bot, win rate, backtest">
+<link rel="canonical" href="https://tradingview.ntlwork.com/bot">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SignalFlow">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:url" content="https://tradingview.ntlwork.com/bot">
+<meta property="og:title" content="Bot chiến lược SMC: luật vào lệnh, chấm điểm và quản trị vốn">
+<meta property="og:description" content="Toàn bộ luật vào lệnh của bot SMC LuxAlgo: thứ tự xử lý vùng, xác nhận BOS và CHoCH, thang điểm 100/80/60 cùng cách đặt Stop Loss và Take Profit 1:1, 1:2.">
+<meta property="og:image" content="https://tradingview.ntlwork.com/assets/og-home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bảng tín hiệu SMC tự động">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/page-chart.css">
+<link rel="stylesheet" href="/css/page-bot.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Bot chấm điểm tín hiệu như thế nào?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Mỗi tín hiệu được cộng điểm theo 4 tiêu chí: nằm trong vùng cung/cầu 40 điểm, đúng Premium/Discount 20 điểm, thuận xu hướng H4 20 điểm, có BOS hoặc CHoCH xác nhận 20 điểm. Từ 100 điểm là rất mạnh, 80 là mạnh, 60 là trung bình, dưới 60 thì chỉ quan sát." }
+    },
+    {
+      "@type": "Question",
+      "name": "Bot đặt Stop Loss ở đâu?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Stop Loss đặt tại vị trí cấu trúc giao dịch bị vô hiệu, không theo số điểm cố định. Lệnh mua đặt dưới đáy vùng cầu hoặc dưới râu nến xác nhận, lấy giá trị thấp hơn. Lệnh bán làm ngược lại." }
+    },
+    {
+      "@type": "Question",
+      "name": "Khi nào bot chốt lời?",
+      "acceptedAnswer": { "@type": "Answer", "text": "TP1 ở tỷ lệ 1:1 sẽ chốt 50% khối lượng và dời Stop Loss về hoà vốn. TP2 ở tỷ lệ 1:2 đóng toàn bộ phần còn lại." }
+    }
+  ]
+}
+</script>
+</head>
+
+<body data-auth-state="guest">
+
+{{header}}
+
+<main id="main">
+<div class="container bot-page">
+
+    <div class="bot-head">
+        <h1>Bot chiến lược SMC</h1>
+        <p>Bot tự đọc nến từ sàn rồi dựng lại cấu trúc Smart Money Concept và chấm điểm theo thang 100/80/60.
+           Toàn bộ luật được công khai ở tab Bảng luật — bạn xem được vì sao mỗi tín hiệu có điểm như vậy.</p>
+    </div>
+
+    <div class="tabs bot-tabs" id="botTabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true"  data-tab="live">Trực tiếp</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="rules">Bảng luật</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="performance">Hiệu suất</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="backtest">Backtest</button>
+    </div>
+
+    <!-- ----------------------------------------------------- Truc tiep -->
+    <section class="panel" data-panel="live" data-active="true">
+        <div class="bot-cards" id="liveCards">
+            <div class="card bot-card">
+                <div class="skeleton" style="width:55%;margin-bottom:14px"></div>
+                <div class="skeleton" style="width:80%;margin-bottom:10px"></div>
+                <div class="skeleton" style="width:65%"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------------------------------------------- Bang luat -->
+    <section class="panel" data-panel="rules">
+        <div class="weights-strip" id="weightsStrip"></div>
+        <div class="pipeline" id="pipeline"></div>
+
+        <div class="rules-layout">
+            <aside id="rulesToc"></aside>
+            <article class="rules-body" id="rulesBody">
+                <div class="skeleton" style="width:50%;margin-bottom:14px"></div>
+                <div class="skeleton" style="width:90%;margin-bottom:10px"></div>
+                <div class="skeleton" style="width:75%"></div>
+            </article>
+        </div>
+    </section>
+
+    <!-- ----------------------------------------------------- Hieu suat -->
+    <section class="panel" data-panel="performance">
+        <div class="perf-kpis">
+            <div class="kpi"><span>Tỷ lệ thắng</span><b id="kpiWin">—</b></div>
+            <div class="kpi"><span>Tổng R</span><b id="kpiR">—</b></div>
+            <div class="kpi"><span>R trung bình / lệnh</span><b id="kpiAvgR">—</b></div>
+            <div class="kpi"><span>Lệnh đã chốt</span><b id="kpiDecided">—</b></div>
+            <div class="kpi"><span>Điểm trung bình</span><b id="kpiScore">—</b></div>
+        </div>
+
+        <div class="perf-grid">
+            <div class="card">
+                <div class="card-head">
+                    <h3>Đường cong vốn</h3>
+                    <span class="muted" style="font-size:12px">Tích luỹ theo R, tính theo thời điểm đóng lệnh</span>
+                </div>
+                <div class="card-body"><div id="equityChart"></div></div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px">
+                <div class="card">
+                    <div class="card-head"><h3>Phân bố theo độ mạnh</h3></div>
+                    <div class="card-body"><div id="strengthChart"></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3>Kết quả lệnh đã đóng</h3></div>
+                    <div class="card-body"><div id="outcomeChart"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <p class="muted" style="margin-top:14px;font-size:12px">
+            Lệnh ở trạng thái quan sát và symbol không có trên Binance được loại khỏi thống kê,
+            vì không thể chấm kết quả bằng dữ liệu nến thật.
+        </p>
+    </section>
+
+    <!-- ------------------------------------------------------ Backtest -->
+    <section class="panel" data-panel="backtest">
+        <div class="card" style="margin-bottom:16px">
+            <div class="card-head"><h3>Chạy lại bộ luật trên dữ liệu lịch sử</h3></div>
+            <div class="card-body">
+                <form class="bt-form" id="btForm">
+                    <div class="bt-field">
+                        <label for="btSymbol">Symbol</label>
+                        <input id="btSymbol" name="symbol" type="text" value="ZC1!" maxlength="20" autocomplete="off">
+                    </div>
+                    <div class="bt-field">
+                        <label for="btTf">Khung</label>
+                        <select id="btTf" name="timeframe">
+                            <option value="5m">5 phút</option>
+                            <option value="15m" selected>15 phút</option>
+                            <option value="30m">30 phút</option>
+                            <option value="1h">1 giờ</option>
+                            <option value="4h">4 giờ</option>
+                        </select>
+                    </div>
+                    <div class="bt-field">
+                        <label for="btFrom">Từ ngày</label>
+                        <input id="btFrom" name="from" type="date">
+                    </div>
+                    <div class="bt-field">
+                        <label for="btTo">Đến ngày</label>
+                        <input id="btTo" name="to" type="date">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="btRun">
+                        <span class="spinner"></span><span class="btn-text">Chạy backtest</span>
+                    </button>
+                </form>
+                <div class="form-error" role="alert" data-show="false" id="btError" style="margin-top:14px;margin-bottom:0"></div>
+            </div>
+        </div>
+
+        <div id="btResult" hidden>
+            <div class="perf-kpis">
+                <div class="kpi"><span>Tỷ lệ thắng</span><b id="btWin">—</b></div>
+                <div class="kpi"><span>Tổng R</span><b id="btR">—</b></div>
+                <div class="kpi"><span>R trung bình</span><b id="btAvgR">—</b></div>
+                <div class="kpi"><span>Sụt vốn tối đa</span><b id="btDd">—</b></div>
+                <div class="kpi"><span>Số lệnh</span><b id="btCount">—</b></div>
+            </div>
+
+            <div class="perf-grid">
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Đường cong vốn</h3>
+                        <span class="muted" style="font-size:12px" id="btRange"></span>
+                    </div>
+                    <div class="card-body"><div id="btEquity"></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3>Kết quả theo độ mạnh</h3></div>
+                    <div class="card-body"><div id="btStrength"></div></div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:16px">
+                <div class="card-head">
+                    <h3>Danh sách lệnh</h3>
+                    <span class="muted" style="font-size:12px" id="btTradeNote"></span>
+                </div>
+                <div class="table-wrap">
+                    <table class="data">
+                        <thead>
+                            <tr>
+                                <th>Mở lệnh</th><th>Hướng</th><th>Độ mạnh</th><th>Điểm</th>
+                                <th class="ta-right">Entry</th><th class="ta-right">SL</th><th class="ta-right">TP2</th>
+                                <th>Kết quả</th><th class="ta-right">R</th>
+                            </tr>
+                        </thead>
+                        <tbody id="btTrades"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:16px">
+                <div class="card-head"><h3>Giới hạn của kết quả này</h3></div>
+                <div class="card-body"><ul class="bt-limits" id="btLimits"></ul></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+</main>
+
+{{footer}}
+
+<script type="module" src="/js/layout.js"></script>
+<script type="module" src="/js/page-bot.js"></script>
+</body>
+</html>

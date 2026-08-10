@@ -1,0 +1,92 @@
+/* ============================================================================
+   Trang dang nhap / dang ky - bo cuc che doi kieu Binance
+   ========================================================================= */
+
+.auth-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - var(--nav-h));
+}
+
+/* --- Mang thuong hieu ben trai --- */
+.auth-brand {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 56px 64px;
+    overflow: hidden;
+    background:
+        radial-gradient(900px 620px at 12% 8%, rgba(252, 213, 53, 0.10) 0%, transparent 62%),
+        var(--bg-surface);
+    border-right: 1px solid var(--border);
+}
+.auth-brand::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 52px 52px;
+    pointer-events: none;
+}
+.auth-brand > * { position: relative; }
+
+.auth-brand h2 {
+    margin-top: 28px;
+    font-size: 38px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+}
+.auth-brand h2 em { font-style: normal; color: var(--brand); }
+.auth-brand p { margin-top: 16px; max-width: 40ch; color: var(--text-secondary); font-size: 15px; }
+
+.auth-points { margin-top: 36px; display: flex; flex-direction: column; gap: 16px; }
+.auth-point { display: flex; align-items: flex-start; gap: 12px; }
+.auth-point .ico {
+    display: grid; place-items: center;
+    width: 34px; height: 34px;
+    border-radius: var(--radius);
+    background: var(--brand-soft);
+    color: var(--brand);
+    flex-shrink: 0;
+}
+.auth-point b { display: block; font-size: 14px; font-weight: 600; }
+.auth-point span { font-size: 13px; color: var(--text-secondary); }
+
+/* --- Bieu mau ben phai --- */
+.auth-form-side {
+    display: grid;
+    place-items: center;
+    padding: 48px 24px;
+}
+.auth-card { width: 100%; max-width: 400px; }
+.auth-card h1 { font-size: 28px; margin-bottom: 6px; }
+.auth-card .lead { margin-bottom: 26px; font-size: 14px; color: var(--text-secondary); }
+
+.auth-alt {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+.auth-alt a { color: var(--brand); font-weight: 600; }
+.auth-alt a:hover { text-decoration: underline; }
+
+.auth-hint {
+    margin-top: 14px;
+    padding: 11px 14px;
+    border-radius: var(--radius);
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+    .auth-page { grid-template-columns: 1fr; min-height: auto; }
+    .auth-brand { display: none; }
+    .auth-form-side { padding: 36px 16px 56px; }
+}

@@ -1,0 +1,151 @@
+/* ============================================================================
+   Trang tai khoan
+   ========================================================================= */
+
+.account-page { padding: 32px 0 48px; }
+
+.account-head { margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
+.account-head .avatar { width: 56px; height: 56px; font-size: 22px; }
+.account-head h1 { font-size: 24px; }
+.account-head p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+.account-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.account-tabs::-webkit-scrollbar { display: none; }
+
+.panel { display: none; }
+.panel[data-active="true"] { display: block; }
+
+.panel-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+/* --- Danh sach thong tin --- */
+.kv-list { display: flex; flex-direction: column; }
+.kv-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 13px 0;
+    font-size: 13px;
+}
+.kv-row + .kv-row { border-top: 1px solid var(--border); }
+.kv-row .k { color: var(--text-secondary); }
+.kv-row .v { font-weight: 500; text-align: right; word-break: break-all; }
+
+/* --- Phien dang dang nhap --- */
+.session-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 0;
+}
+.session-row + .session-row { border-top: 1px solid var(--border); }
+.session-info b { display: block; font-size: 13px; font-weight: 500; }
+.session-info span { font-size: 12px; color: var(--text-secondary); }
+.session-row .btn { height: 30px; padding: 0 12px; font-size: 12px; }
+.badge-current { background: var(--up-bg); color: var(--up); }
+
+/* --- Danh sach theo doi --- */
+.watch-add { display: flex; gap: 8px; margin-bottom: 14px; }
+.watch-add input {
+    flex: 1; height: 40px; padding: 0 12px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+    font-size: 14px;
+    text-transform: uppercase;
+}
+.watch-add input:focus { outline: none; border-color: var(--brand); }
+.watch-add input::placeholder { text-transform: none; color: var(--text-disabled); }
+
+.watch-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.watch-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 8px 0 12px;
+    border-radius: var(--radius-pill);
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+}
+.watch-chip button {
+    display: grid; place-items: center;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    color: var(--text-secondary);
+}
+.watch-chip button:hover { background: var(--down-bg); color: var(--down); }
+
+/* --- Canh bao --- */
+.switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+}
+.switch-row + .switch-row { border-top: 1px solid var(--border); }
+.switch-row .t b { display: block; font-size: 13px; }
+.switch-row .t span { font-size: 12px; color: var(--text-secondary); }
+
+.switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+.switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.switch i {
+    position: absolute; inset: 0;
+    border-radius: var(--radius-pill);
+    background: var(--bg-elevated);
+    transition: background 0.2s var(--ease);
+    pointer-events: none;
+}
+.switch i::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+}
+.switch input:checked + i { background: var(--brand); }
+.switch input:checked + i::after { transform: translateX(18px); background: var(--brand-text); }
+
+select.field-select {
+    height: 36px;
+    padding: 0 10px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.event-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 12px;
+}
+.event-row + .event-row { border-top: 1px solid var(--border); }
+.event-row .muted { font-family: var(--font-mono); }
+
+@media (max-width: 900px) {
+    .panel-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>Tài khoản của bạn — SignalFlow</title>
+<meta name="description" content="Quản lý tài khoản SignalFlow: đổi mật khẩu, xem phiên đăng nhập, danh sách theo dõi và cấu hình cảnh báo.">
+<!-- Trang rieng tu: khong index, khong dua vao sitemap -->
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/page-account.css">
+</head>
+
+<body data-auth-state="user">
+
+{{header}}
+
+<main id="main">
+<div class="container account-page">
+
+    <div class="account-head">
+        <span class="avatar" data-user-initial>T</span>
+        <div>
+            <h1 data-user-name>Tài khoản</h1>
+            <p id="accountEmail">…</p>
+        </div>
+    </div>
+
+    <div class="tabs account-tabs" id="accountTabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true"  data-panel="overview">Tổng quan</button>
+        <button class="tab" role="tab" aria-selected="false" data-panel="security">Bảo mật</button>
+        <button class="tab" role="tab" aria-selected="false" data-panel="watchlist">Danh sách theo dõi</button>
+        <button class="tab" role="tab" aria-selected="false" data-panel="alerts">Cảnh báo</button>
+    </div>
+
+    <!-- ---------------------------------------------------- Tong quan -->
+    <section class="panel" data-panel="overview" data-active="true">
+        <div class="panel-grid">
+            <div class="card">
+                <div class="card-head"><h3>Thông tin tài khoản</h3></div>
+                <div class="card-body">
+                    <div class="kv-list">
+                        <div class="kv-row"><span class="k">Email</span><span class="v" id="ovEmail">—</span></div>
+                        <div class="kv-row"><span class="k">Tên hiển thị</span><span class="v" id="ovName">—</span></div>
+                        <div class="kv-row"><span class="k">Gói</span><span class="v" id="ovRole">—</span></div>
+                        <div class="kv-row"><span class="k">Ngày tham gia</span><span class="v" id="ovCreated">—</span></div>
+                        <div class="kv-row"><span class="k">Đăng nhập gần nhất</span><span class="v" id="ovLastLogin">—</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-head"><h3>Đổi tên hiển thị</h3></div>
+                <div class="card-body">
+                    <form id="profileForm" novalidate>
+                        <div class="form-error" role="alert" data-show="false"></div>
+                        <div class="form-ok" role="status" data-show="false"></div>
+                        <div class="field">
+                            <label for="pfName">Tên hiển thị</label>
+                            <div class="input-wrap">
+                                <input id="pfName" name="displayName" type="text" maxlength="60" placeholder="Tên của bạn">
+                            </div>
+                            <div class="field-error"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="spinner"></span><span class="btn-text">Lưu</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----------------------------------------------------- Bao mat -->
+    <section class="panel" data-panel="security">
+        <div class="panel-grid">
+            <div class="card">
+                <div class="card-head"><h3>Đổi mật khẩu</h3></div>
+                <div class="card-body">
+                    <form id="passwordForm" novalidate>
+                        <div class="form-error" role="alert" data-show="false"></div>
+                        <div class="form-ok" role="status" data-show="false"></div>
+
+                        <div class="field">
+                            <label for="curPw">Mật khẩu hiện tại</label>
+                            <div class="input-wrap">
+                                <input id="curPw" name="currentPassword" type="password" autocomplete="current-password">
+                                <button type="button" class="toggle-pw" aria-label="Hiện mật khẩu"></button>
+                            </div>
+                            <div class="field-error"></div>
+                        </div>
+
+                        <div class="field pw-block">
+                            <label for="newPw">Mật khẩu mới</label>
+                            <div class="input-wrap">
+                                <input id="newPw" name="newPassword" type="password" autocomplete="new-password">
+                                <button type="button" class="toggle-pw" aria-label="Hiện mật khẩu"></button>
+                            </div>
+                            <div class="pw-meter" data-score="0"><i></i><i></i><i></i><i></i></div>
+                            <div class="pw-label"></div>
+                            <ul class="pw-rules">
+                                <li data-rule="length" data-ok="false">8–128 ký tự</li>
+                                <li data-rule="upper"  data-ok="false">Có chữ hoa</li>
+                                <li data-rule="digit"  data-ok="false">Có chữ số</li>
+                            </ul>
+                            <div class="field-error"></div>
+                        </div>
+
+                        <p class="auth-hint" style="margin:0 0 16px">
+                            Đổi mật khẩu sẽ đăng xuất tất cả thiết bị khác, chỉ giữ lại thiết bị này.
+                        </p>
+
+                        <button type="submit" class="btn btn-primary">
+                            <span class="spinner"></span><span class="btn-text">Đổi mật khẩu</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px">
+                <div class="card">
+                    <div class="card-head"><h3>Phiên đang đăng nhập</h3></div>
+                    <div class="card-body"><div id="sessionList"><div class="skeleton" style="width:70%"></div></div></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-head"><h3>Hoạt động gần đây</h3></div>
+                    <div class="card-body"><div id="eventList"><div class="skeleton" style="width:60%"></div></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ------------------------------------------- Danh sach theo doi -->
+    <section class="panel" data-panel="watchlist">
+        <div class="card" style="max-width:620px">
+            <div class="card-head">
+                <h3>Danh sách theo dõi</h3>
+                <span class="muted" style="font-size:12px">Đồng bộ trên mọi thiết bị</span>
+            </div>
+            <div class="card-body">
+                <div class="form-error" role="alert" data-show="false" id="watchError"></div>
+                <div class="form-ok" role="status" data-show="false" id="watchOk"></div>
+
+                <form class="watch-add" id="watchForm">
+                    <input id="watchInput" type="text" placeholder="Thêm symbol, ví dụ ZC1!" maxlength="20">
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </form>
+
+                <div class="watch-chips" id="watchChips"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ---------------------------------------------------- Canh bao -->
+    <section class="panel" data-panel="alerts">
+        <div class="card" style="max-width:620px">
+            <div class="card-head"><h3>Cảnh báo tín hiệu</h3></div>
+            <div class="card-body">
+                <div class="form-error" role="alert" data-show="false" id="alertError"></div>
+                <div class="form-ok" role="status" data-show="false" id="alertOk"></div>
+
+                <div class="switch-row">
+                    <span class="t"><b>Bật cảnh báo</b><span>Nhận thông báo khi bot phát tín hiệu mới</span></span>
+                    <label class="switch"><input type="checkbox" id="alertEnabled"><i></i></label>
+                </div>
+
+                <div class="switch-row">
+                    <span class="t"><b>Độ mạnh tối thiểu</b><span>Chỉ báo khi tín hiệu đạt mức này trở lên</span></span>
+                    <select class="field-select" id="alertStrength">
+                        <option value="MEDIUM">Trung bình trở lên</option>
+                        <option value="STRONG">Mạnh trở lên</option>
+                        <option value="VERY_STRONG">Chỉ rất mạnh</option>
+                    </select>
+                </div>
+
+                <div style="margin-top:18px">
+                    <button type="button" class="btn btn-primary" id="alertSave">
+                        <span class="spinner"></span><span class="btn-text">Lưu cấu hình</span>
+                    </button>
+                </div>
+
+                <p class="auth-hint" style="margin-top:16px">
+                    Cấu hình đã được lưu. Kênh gửi thông báo sẽ bật ở bản cập nhật tới.
+                </p>
+            </div>
+        </div>
+    </section>
+
+</div>
+</main>
+
+{{footer}}
+
+<script type="module" src="/js/layout.js"></script>
+<script type="module" src="/js/page-account.js"></script>
+</body>
+</html>

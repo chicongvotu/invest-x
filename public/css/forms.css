@@ -1,0 +1,156 @@
+/* ============================================================================
+   Bieu mau: o nhap, thong bao loi, thanh do do manh mat khau
+   ========================================================================= */
+
+.field { margin-bottom: 16px; }
+
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.input-wrap { position: relative; }
+
+.field input {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+.field input::placeholder { color: var(--text-disabled); }
+.field input:focus {
+    outline: none;
+    border-color: var(--brand);
+    background: var(--bg-surface);
+}
+.field input[type="password"] { padding-right: 46px; }
+
+/* Nut hien/an mat khau */
+.toggle-pw {
+    position: absolute;
+    right: 6px; top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+}
+.toggle-pw:hover { color: var(--text-primary); background: var(--bg-elevated); }
+
+/* Loi gan dung o nhap, khong don het vao mot dong do tren cung */
+.field[data-invalid="true"] input { border-color: var(--down); }
+.field-error {
+    display: none;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--down);
+}
+.field[data-invalid="true"] .field-error { display: block; }
+
+.form-error {
+    display: none;
+    margin-bottom: 16px;
+    padding: 11px 14px;
+    border-radius: var(--radius);
+    background: var(--down-bg);
+    border: 1px solid rgba(246, 70, 93, 0.28);
+    color: var(--down);
+    font-size: 13px;
+}
+.form-error[data-show="true"] { display: block; }
+
+.form-ok {
+    display: none;
+    margin-bottom: 16px;
+    padding: 11px 14px;
+    border-radius: var(--radius);
+    background: var(--up-bg);
+    border: 1px solid rgba(14, 203, 129, 0.28);
+    color: var(--up);
+    font-size: 13px;
+}
+.form-ok[data-show="true"] { display: block; }
+
+/* --- Do manh mat khau --- */
+.pw-meter { display: flex; gap: 4px; margin-top: 10px; }
+.pw-meter i {
+    flex: 1;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: var(--bg-elevated);
+    transition: background 0.2s var(--ease);
+}
+.pw-meter[data-score="1"] i:nth-child(-n+1),
+.pw-meter[data-score="2"] i:nth-child(-n+2) { background: var(--down); }
+.pw-meter[data-score="3"] i:nth-child(-n+3) { background: var(--brand); }
+.pw-meter[data-score="4"] i { background: var(--up); }
+
+.pw-label { margin-top: 6px; font-size: 12px; color: var(--text-secondary); }
+
+.pw-rules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-top: 8px;
+    list-style: none;
+}
+.pw-rules li {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.pw-rules li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-disabled);
+    flex-shrink: 0;
+}
+.pw-rules li[data-ok="true"] { color: var(--up); }
+.pw-rules li[data-ok="true"]::before { background: var(--up); }
+
+/* --- Checkbox --- */
+.check {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+.check input {
+    width: 16px; height: 16px;
+    margin-top: 2px;
+    accent-color: var(--brand);
+    flex-shrink: 0;
+    cursor: pointer;
+}
+.check a { color: var(--brand); }
+.check a:hover { text-decoration: underline; }
+
+/* --- Nut submit --- */
+.btn-block { width: 100%; height: 46px; font-size: 15px; }
+
+.spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn[data-loading="true"] .spinner { display: block; }
+.btn[data-loading="true"] .btn-text { opacity: 0.75; }

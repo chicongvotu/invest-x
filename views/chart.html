@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>Biểu đồ TradingView trực tiếp kèm vùng SMC — SignalFlow</title>
+<meta name="description" content="Xem biểu đồ nến trực tiếp kèm vùng Premium, Discount, Supply, Demand cùng tín hiệu Entry, Stop Loss, Take Profit được bot SMC tính tự động theo khung H4.">
+<meta name="keywords" content="biểu đồ TradingView, vùng SMC, Premium Discount, Supply Demand, tín hiệu BUY SELL, Entry Stop Loss, Take Profit, biểu đồ nến, phân tích kỹ thuật, khung H4, danh sách theo dõi, crypto, BOS CHoCH">
+<link rel="canonical" href="https://tradingview.ntlwork.com/chart">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SignalFlow">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:url" content="https://tradingview.ntlwork.com/chart">
+<meta property="og:title" content="Biểu đồ TradingView trực tiếp kèm vùng SMC — SignalFlow">
+<meta property="og:description" content="Xem biểu đồ nến trực tiếp kèm vùng Premium, Discount, Supply, Demand cùng tín hiệu Entry, Stop Loss, Take Profit được bot SMC tính tự động theo khung H4.">
+<meta property="og:image" content="https://tradingview.ntlwork.com/assets/og-home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bảng tín hiệu SMC tự động">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/page-chart.css">
+
+<script src="https://s3.tradingview.com/tv.js" defer></script>
+</head>
+
+<body data-auth-state="guest">
+
+{{header}}
+
+<main id="main">
+<div class="container chart-page">
+    <div class="chart-grid">
+
+        <!-- Danh sach theo doi -->
+        <aside class="card wl-card" aria-label="Danh sách theo dõi">
+            <form class="wl-add" id="wlForm">
+                <label class="sr-only" for="wlInput">Thêm symbol</label>
+                <input id="wlInput" type="text" placeholder="Thêm symbol" maxlength="20" autocomplete="off">
+                <button type="submit" aria-label="Thêm vào danh sách theo dõi"><i data-icon="chevronRight" data-size="16"></i></button>
+            </form>
+            <div class="wl-list" id="wlList">
+                <div style="padding:14px;display:flex;flex-direction:column;gap:12px">
+                    <div class="skeleton" style="width:70%"></div>
+                    <div class="skeleton" style="width:60%"></div>
+                    <div class="skeleton" style="width:80%"></div>
+                </div>
+            </div>
+            <div class="wl-sync" id="wlSync">Đang tải…</div>
+        </aside>
+
+        <!-- Bieu do -->
+        <section class="card">
+            <div class="tv-head">
+                <div class="tv-symbol">
+                    <h1 id="tvName">ZC1!</h1>
+                    <span class="tv-price" id="tvPrice">—</span>
+                    <span class="tv-chg" id="tvChg"></span>
+                </div>
+                <button class="btn btn-ghost" id="wlStar" title="Thêm hoặc bỏ khỏi danh sách theo dõi">
+                    <i data-icon="star" data-size="16"></i> Theo dõi
+                </button>
+            </div>
+            <div class="tv-box" id="tvContainer">
+                <div class="tv-fallback">Đang tải biểu đồ…</div>
+            </div>
+        </section>
+
+        <!-- Panel SMC -->
+        <aside class="smc-panel" id="smcPanel" aria-label="Trạng thái bot SMC">
+            <div class="card"><div class="card-body">
+                <div class="skeleton" style="width:60%;margin-bottom:12px"></div>
+                <div class="skeleton" style="width:85%;margin-bottom:12px"></div>
+                <div class="skeleton" style="width:70%"></div>
+            </div></div>
+        </aside>
+
+    </div>
+
+    <!-- Tin hieu cua symbol -->
+    <section class="card" style="margin-top:16px">
+        <div class="card-head">
+            <h2>Tín hiệu của symbol này</h2>
+            <a href="/bot" class="link-more">Xem tất cả <i data-icon="chevronRight" data-size="14"></i></a>
+        </div>
+        <div class="table-wrap">
+            <table class="data">
+                <thead>
+                    <tr>
+                        <th>Hướng</th><th>Độ mạnh</th><th>Điểm</th><th>Vùng</th>
+                        <th class="ta-right">Entry</th><th class="ta-right">SL</th><th class="ta-right">TP2</th>
+                        <th>Trạng thái</th><th class="ta-right">Thời gian</th>
+                    </tr>
+                </thead>
+                <tbody id="sigRows">
+                    <tr><td colspan="9" style="height:100px"><div class="empty">Đang tải…</div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+</main>
+
+{{footer}}
+
+<script type="module" src="/js/layout.js"></script>
+<script type="module" src="/js/page-chart.js"></script>
+</body>
+</html>

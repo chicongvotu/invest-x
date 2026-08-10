@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>Đăng ký tài khoản SignalFlow — nhận tín hiệu SMC miễn phí</title>
+<meta name="description" content="Tạo tài khoản SignalFlow miễn phí để theo dõi tín hiệu Smart Money Concept, lưu symbol yêu thích và nhận cảnh báo khi có setup mạnh.">
+<meta name="keywords" content="đăng ký SignalFlow, tài khoản miễn phí, tín hiệu SMC, Smart Money Concept, cảnh báo giao dịch, danh sách theo dõi, bot chiến lược, crypto, tạo tài khoản">
+<link rel="canonical" href="https://tradingview.ntlwork.com/register">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SignalFlow">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:url" content="https://tradingview.ntlwork.com/register">
+<meta property="og:title" content="Đăng ký tài khoản SignalFlow — nhận tín hiệu SMC miễn phí">
+<meta property="og:description" content="Tạo tài khoản SignalFlow miễn phí để theo dõi tín hiệu Smart Money Concept, lưu symbol yêu thích và nhận cảnh báo khi có setup mạnh.">
+<meta property="og:image" content="https://tradingview.ntlwork.com/assets/og-home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bảng tín hiệu SMC tự động">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/page-auth.css">
+</head>
+
+<body data-auth-state="guest">
+
+{{header}}
+
+<main id="main">
+<div class="auth-page">
+
+    <section class="auth-brand">
+        <span class="brand"><i data-icon="zap" data-size="26"></i><span class="brand-name">Signal<span class="accent">Flow</span></span></span>
+        <h2>Bắt đầu theo dõi <em>miễn phí</em></h2>
+        <p>Bot đọc cấu trúc Smart Money Concept và đưa ra kế hoạch vào lệnh đầy đủ. Bạn là người quyết định.</p>
+
+        <div class="auth-points">
+            <div class="auth-point">
+                <span class="ico"><i data-icon="layers" data-size="18"></i></span>
+                <span><b>Đọc cấu trúc SMC</b><span>Premium/Discount, Supply/Demand, BOS, CHoCH</span></span>
+            </div>
+            <div class="auth-point">
+                <span class="ico"><i data-icon="shield" data-size="18"></i></span>
+                <span><b>Quản trị rủi ro 1:2</b><span>TP1 chốt 50% và dời SL về hoà vốn</span></span>
+            </div>
+            <div class="auth-point">
+                <span class="ico"><i data-icon="bell" data-size="18"></i></span>
+                <span><b>Cảnh báo theo ý bạn</b><span>Chọn symbol và mức độ mạnh tối thiểu</span></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="auth-form-side">
+        <div class="auth-card">
+            <h1>Đăng ký</h1>
+            <p class="lead">Miễn phí, chỉ cần email và mật khẩu.</p>
+
+            <form id="registerForm" novalidate>
+                <div class="form-error" role="alert" data-show="false"></div>
+
+                <div class="field">
+                    <label for="regEmail">Email</label>
+                    <div class="input-wrap">
+                        <input id="regEmail" name="email" type="email" autocomplete="username"
+                               placeholder="ban@email.com" aria-describedby="regEmailErr" autofocus>
+                    </div>
+                    <div class="field-error" id="regEmailErr"></div>
+                </div>
+
+                <div class="field">
+                    <label for="regName">Tên hiển thị <span class="muted">(không bắt buộc)</span></label>
+                    <div class="input-wrap">
+                        <input id="regName" name="displayName" type="text" autocomplete="nickname"
+                               placeholder="Tên bạn muốn hiển thị" maxlength="60">
+                    </div>
+                </div>
+
+                <div class="field pw-block">
+                    <label for="regPw">Mật khẩu</label>
+                    <div class="input-wrap">
+                        <input id="regPw" name="password" type="password" autocomplete="new-password"
+                               placeholder="Tạo mật khẩu" aria-describedby="regPwErr">
+                        <button type="button" class="toggle-pw" aria-label="Hiện mật khẩu">
+                            
+                        </button>
+                    </div>
+                    <div class="pw-meter" data-score="0"><i></i><i></i><i></i><i></i></div>
+                    <div class="pw-label"></div>
+                    <ul class="pw-rules">
+                        <li data-rule="length" data-ok="false">8–128 ký tự</li>
+                        <li data-rule="upper"  data-ok="false">Có chữ hoa</li>
+                        <li data-rule="digit"  data-ok="false">Có chữ số</li>
+                    </ul>
+                    <div class="field-error" id="regPwErr"></div>
+                </div>
+
+                <div class="field" style="margin-bottom:0">
+                    <label class="check">
+                        <input type="checkbox" name="agreeTerms">
+                        <span>Tôi đồng ý với <a href="/">Điều khoản dịch vụ</a> và hiểu rằng đây không phải lời khuyên đầu tư.</span>
+                    </label>
+                    <div class="field-error"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span class="spinner"></span><span class="btn-text">Đăng ký</span>
+                </button>
+            </form>
+
+            <p class="auth-alt">Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
+        </div>
+    </section>
+
+</div>
+</main>
+
+{{footer}}
+
+<script type="module" src="/js/layout.js"></script>
+<script type="module" src="/js/auth.js"></script>
+</body>
+</html>

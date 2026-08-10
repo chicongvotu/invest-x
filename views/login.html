@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>Đăng nhập SignalFlow — bảng tín hiệu SMC và biểu đồ trực tiếp</title>
+<meta name="description" content="Đăng nhập để xem đầy đủ Entry, Stop Loss, Take Profit của từng tín hiệu SMC, quản lý danh sách theo dõi và cảnh báo riêng của bạn.">
+<meta name="keywords" content="đăng nhập SignalFlow, tài khoản tín hiệu SMC, bảng tín hiệu, danh sách theo dõi, cảnh báo giao dịch, Entry SL TP, bot SMC, quản lý tài khoản, crypto, đăng nhập">
+<!-- Trang dang nhap khong co noi dung rieng de Google index -->
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://tradingview.ntlwork.com/login">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/page-auth.css">
+</head>
+
+<body data-auth-state="guest">
+
+{{header}}
+
+<main id="main">
+<div class="auth-page">
+
+    <section class="auth-brand">
+        <span class="brand"><i data-icon="zap" data-size="26"></i><span class="brand-name">Signal<span class="accent">Flow</span></span></span>
+        <h2>Tín hiệu <em>SMC</em> thuận xu hướng</h2>
+        <p>Đăng nhập để xem đầy đủ kế hoạch vào lệnh và theo dõi kết quả thực tế của từng tín hiệu.</p>
+
+        <div class="auth-points">
+            <div class="auth-point">
+                <span class="ico"><i data-icon="target" data-size="18"></i></span>
+                <span><b>Chấm điểm 100 / 80 / 60</b><span>Xem rõ tín hiệu mạnh nhờ tiêu chí nào</span></span>
+            </div>
+            <div class="auth-point">
+                <span class="ico"><i data-icon="shield" data-size="18"></i></span>
+                <span><b>SL theo cấu trúc</b><span>Không đặt theo số điểm cố định</span></span>
+            </div>
+            <div class="auth-point">
+                <span class="ico"><i data-icon="star" data-size="18"></i></span>
+                <span><b>Danh sách theo dõi riêng</b><span>Đồng bộ trên mọi thiết bị</span></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="auth-form-side">
+        <div class="auth-card">
+            <h1>Đăng nhập</h1>
+            <p class="lead">Chào mừng bạn quay lại.</p>
+
+            <form id="loginForm" novalidate>
+                <div class="form-error" role="alert" data-show="false"></div>
+
+                <div class="field">
+                    <label for="loginEmail">Email</label>
+                    <div class="input-wrap">
+                        <input id="loginEmail" name="email" type="email" autocomplete="username"
+                               placeholder="ban@email.com" aria-describedby="loginEmailErr" autofocus>
+                    </div>
+                    <div class="field-error" id="loginEmailErr"></div>
+                </div>
+
+                <div class="field">
+                    <label for="loginPw">Mật khẩu</label>
+                    <div class="input-wrap">
+                        <input id="loginPw" name="password" type="password" autocomplete="current-password"
+                               placeholder="Nhập mật khẩu" aria-describedby="loginPwErr">
+                        <button type="button" class="toggle-pw" aria-label="Hiện mật khẩu">
+                            
+                        </button>
+                    </div>
+                    <div class="field-error" id="loginPwErr"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span class="spinner"></span><span class="btn-text">Đăng nhập</span>
+                </button>
+            </form>
+
+            <p class="auth-alt">Chưa có tài khoản? <a href="/register">Đăng ký ngay</a></p>
+
+            <p class="auth-hint">
+                Quên mật khẩu? Hệ thống hiện không gửi email, vui lòng liên hệ quản trị viên để được đặt lại.
+            </p>
+        </div>
+    </section>
+
+</div>
+</main>
+
+{{footer}}
+
+<script type="module" src="/js/layout.js"></script>
+<script type="module" src="/js/auth.js"></script>
+</body>
+</html>

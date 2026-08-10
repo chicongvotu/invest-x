@@ -1,0 +1,298 @@
+/* ============================================================================
+   Header, dropdown, drawer, footer
+   ========================================================================= */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--nav-h);
+    background: var(--bg-body);
+    border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- Logo --- */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+.brand svg { color: var(--brand); }
+.brand-name .accent { color: var(--brand); }
+
+/* --- Dieu huong --- */
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: var(--nav-h);
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+.nav-item:hover { color: var(--brand); }
+
+/* Trang hien tai: chu vang + gach chan 2px, giong Binance */
+.nav-item[aria-current="page"] { color: var(--brand); }
+.nav-item[aria-current="page"]::after {
+    content: '';
+    position: absolute;
+    left: 14px; right: 14px; bottom: 0;
+    height: 2px;
+    background: var(--brand);
+    border-radius: 2px 2px 0 0;
+}
+
+.nav-item .chev { transition: transform 0.2s var(--ease); }
+.nav-group[data-open="true"] .chev { transform: rotate(180deg); }
+
+/* --- Menu xo xuong --- */
+/* Moc neo cua .dropdown. Thieu dong nay thi dropdown di tim to tien co position
+   gan nhat, gap ngay .site-header (sticky cung tao containing block) va bi day
+   ve sat mep trai trang thay vi nam duoi nut. */
+.nav-group { position: relative; }
+
+.dropdown {
+    position: absolute;
+    top: calc(var(--nav-h) - 6px);
+    left: 8px;
+    min-width: 220px;
+    padding: 8px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.16s var(--ease), transform 0.16s var(--ease), visibility 0.16s;
+}
+.nav-group[data-open="true"] .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+.dropdown a:hover { background: var(--bg-surface-2); color: var(--brand); }
+.dropdown a svg { color: var(--text-secondary); flex-shrink: 0; }
+.dropdown a:hover svg { color: var(--brand); }
+.dropdown .dd-sub {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+}
+
+/* --- Ben phai header --- */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.icon-btn {
+    display: grid;
+    place-items: center;
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.icon-btn:hover { background: var(--bg-surface-2); color: var(--text-primary); }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 0.15s var(--ease), color 0.15s var(--ease), opacity 0.15s var(--ease);
+}
+.btn-primary { background: var(--brand); color: var(--brand-text); }
+.btn-primary:hover { background: var(--brand-hover); }
+.btn-ghost { color: var(--text-primary); }
+.btn-ghost:hover { background: var(--bg-surface-2); }
+.btn-lg { height: 44px; padding: 0 24px; font-size: 15px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Trang thai dang nhap: chi mot trong hai khoi duoc hien.
+   Dat display o day chu KHONG dat inline tren the - inline se de len rule an
+   ben duoi va lam ca hai khoi cung hien. */
+.auth-guest { display: flex; align-items: center; gap: 8px; }
+.auth-user  { display: flex; }
+
+[data-auth-state="guest"] .auth-user,
+[data-auth-state="user"]  .auth-guest { display: none !important; }
+
+.drawer .auth-guest,
+.drawer .auth-user { flex-direction: column; align-items: stretch; }
+
+.avatar {
+    display: grid;
+    place-items: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: var(--brand-text);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* --- Hamburger + drawer --- */
+.hamburger { display: none; }
+
+.drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: var(--bg-overlay);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s var(--ease), visibility 0.2s;
+}
+.drawer-backdrop[data-open="true"] { opacity: 1; visibility: visible; }
+
+.drawer {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 200;
+    width: min(300px, 82vw);
+    padding: 20px 16px;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border);
+    transform: translateX(-100%);
+    transition: transform 0.24s var(--ease);
+    overflow-y: auto;
+}
+.drawer[data-open="true"] { transform: translateX(0); }
+
+.drawer .drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.drawer nav { display: flex; flex-direction: column; gap: 2px; }
+.drawer nav a {
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+}
+.drawer nav a:hover { background: var(--bg-surface-2); }
+.drawer nav a[aria-current="page"] { color: var(--brand); background: var(--brand-soft); }
+.drawer .drawer-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+/* --- Footer --- */
+.site-footer {
+    margin-top: 64px;
+    padding: 40px 0 32px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-surface);
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(3, 1fr);
+    gap: 32px;
+}
+.footer-col h4 {
+    font-size: 13px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+.footer-col a, .footer-col p {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+.footer-col a:hover { color: var(--brand); }
+.footer-note {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* --- Responsive: 3 moc theo plan --- */
+@media (max-width: 1280px) {
+    .nav-item { padding: 0 10px; }
+    .nav-item[aria-current="page"]::after { left: 10px; right: 10px; }
+}
+
+@media (max-width: 900px) {
+    .nav { display: none; }
+    .hamburger { display: grid; }
+    .brand { margin-right: auto; }
+    .header-actions .btn-ghost { display: none; }
+}
+
+@media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
+
+/* Header o may hep: bo bot chu de nut Dang ky khong bi day ra ngoai.
+   Tong be ngang can thiet o 360px la ~382px, vua du tran nen phai cat bot. */
+@media (max-width: 520px) {
+    .conn span { display: none; }
+}
+
+@media (max-width: 400px) {
+    .conn { display: none; }
+    .brand { font-size: 17px; gap: 6px; }
+    .header-actions { gap: 4px; }
+}
+
+@media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-note { flex-direction: column; gap: 8px; }
+}

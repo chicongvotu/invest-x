@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>Không tìm thấy trang — SignalFlow</title>
+<meta name="description" content="Đường dẫn bạn truy cập không tồn tại trên SignalFlow.">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+</head>
+
+<body data-auth-state="guest">
+
+{{header}}
+
+<main id="main">
+<div class="container">
+    <section style="display:grid;place-items:center;min-height:56vh;text-align:center;padding:56px 0">
+        <div style="max-width:520px">
+            <div class="num" style="font-size:88px;font-weight:800;line-height:1;color:var(--brand)">404</div>
+            <h1 style="font-size:26px;margin:12px 0">Không tìm thấy trang</h1>
+            <p class="muted" style="font-size:15px;margin-bottom:28px">
+                Đường dẫn này không tồn tại hoặc đã được đổi.
+            </p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                <a href="/" class="btn btn-primary btn-lg">Về trang chủ</a>
+                <a href="/bot" class="btn btn-ghost btn-lg">Xem tín hiệu bot</a>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+
+{{footer}}
+
+<script type="module" src="/js/layout.js"></script>
+</body>
+</html>

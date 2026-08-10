@@ -1,0 +1,16 @@
+{
+  "name": "tradingview",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Giao dien SignalFlow chay bang du lieu gia lap - khong backend",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

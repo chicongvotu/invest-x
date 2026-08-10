@@ -1,0 +1,77 @@
+/* ============================================================================
+   Design token - he mau va hinh khoi kieu Binance.
+   Doi mau o day la doi toan bo site; khong hard-code mau trong file khac.
+   ========================================================================= */
+
+:root {
+    /* Nen */
+    --bg-body:      #0B0E11;
+    --bg-surface:   #181A20;
+    --bg-surface-2: #1E2329;
+    --bg-elevated:  #2B3139;
+    --bg-overlay:   rgba(11, 14, 17, 0.72);
+
+    /* Chu */
+    --text-primary:   #EAECEF;
+    --text-secondary: #848E9C;
+    --text-disabled:  #5E6673;
+
+    /* Thuong hieu */
+    --brand:       #FCD535;
+    --brand-hover: #F0B90B;
+    --brand-text:  #0B0E11;
+    --brand-soft:  rgba(252, 213, 53, 0.12);
+
+    /* Thi truong */
+    --up:      #0ECB81;
+    --up-bg:   rgba(14, 203, 129, 0.10);
+    --down:    #F6465D;
+    --down-bg: rgba(246, 70, 93, 0.10);
+
+    /* Vung SMC */
+    --zone-premium:  rgba(246, 70, 93, 0.16);
+    --zone-discount: rgba(14, 203, 129, 0.16);
+    --zone-eq:       rgba(132, 142, 156, 0.16);
+
+    /* Duong vien */
+    --border:        #2B3139;
+    --border-strong: #3A424E;
+
+    /* Hinh khoi */
+    --radius-sm: 4px;
+    --radius:    8px;
+    --radius-lg: 16px;
+    --radius-pill: 999px;
+
+    --nav-h: 64px;
+    --maxw:  1400px;
+
+    --font:      'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+    --shadow:    0 8px 24px rgba(0, 0, 0, 0.45);
+
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Binance co nut chuyen sang/toi. Giu nguyen bo token, chi doi gia tri. */
+:root[data-theme="light"] {
+    --bg-body:      #FFFFFF;
+    --bg-surface:   #FAFAFA;
+    --bg-surface-2: #F5F5F5;
+    --bg-elevated:  #EAECEF;
+    --bg-overlay:   rgba(255, 255, 255, 0.82);
+
+    --text-primary:   #1E2329;
+    --text-secondary: #707A8A;
+    --text-disabled:  #AEB4BC;
+
+    --brand-soft: rgba(252, 213, 53, 0.20);
+
+    --border:        #EAECEF;
+    --border-strong: #D5DAE0;
+
+    --shadow-sm: 0 2px 8px rgba(24, 26, 32, 0.08);
+    --shadow:    0 8px 24px rgba(24, 26, 32, 0.12);
+}

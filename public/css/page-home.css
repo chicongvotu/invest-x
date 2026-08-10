@@ -1,0 +1,222 @@
+/* ============================================================================
+   Trang chu
+   ========================================================================= */
+
+.home-hero {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 40px;
+    padding: 56px 0 48px;
+    align-items: start;
+}
+
+/* --- Cot trai --- */
+.hero-figure {
+    font-family: var(--font-mono);
+    font-size: clamp(48px, 7vw, 84px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--brand);
+    font-variant-numeric: tabular-nums;
+}
+
+.hero-title {
+    margin-top: 8px;
+    font-size: clamp(22px, 3vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+}
+
+.hero-sub {
+    margin-top: 16px;
+    max-width: 46ch;
+    font-size: 15px;
+    color: var(--text-secondary);
+}
+
+.hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-top: 28px;
+}
+.hero-stat .k {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+.hero-stat .v {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.hero-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 32px;
+    max-width: 460px;
+}
+.hero-form input {
+    flex: 1;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: 14px;
+    text-transform: uppercase;
+}
+.hero-form input::placeholder { color: var(--text-disabled); text-transform: none; }
+.hero-form input:focus { outline: none; border-color: var(--brand); }
+
+/* --- Cot phai --- */
+.hero-side { display: flex; flex-direction: column; gap: 16px; }
+
+.market-list { display: flex; flex-direction: column; }
+.market-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 20px;
+    border-radius: var(--radius-sm);
+}
+.market-row + .market-row { border-top: 1px solid var(--border); }
+
+.market-sym {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 0;
+}
+.market-sym b { font-size: 14px; font-weight: 600; }
+.market-sym span {
+    font-size: 12px;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.market-price {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+}
+.market-chg {
+    min-width: 72px;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Panel tin tuc - Phase 8 moi lam that */
+.news-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 28px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+.news-soon svg { color: var(--text-disabled); }
+
+/* --- Bang tin hieu --- */
+.signals-section { margin-top: 8px; }
+.signals-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.sym-cell { display: flex; flex-direction: column; gap: 2px; }
+.sym-cell b { font-size: 13px; font-weight: 600; }
+.sym-cell span { font-size: 11px; color: var(--text-secondary); }
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+}
+.status-RUNNING, .status-TP1_HIT { background: var(--brand-soft); color: var(--brand-hover); }
+.status-TP2       { background: var(--up-bg);   color: var(--up); }
+.status-SL        { background: var(--down-bg); color: var(--down); }
+.status-BREAKEVEN { background: var(--bg-elevated); color: var(--text-primary); }
+
+.warn-dot {
+    display: inline-grid;
+    place-items: center;
+    margin-left: 6px;
+    color: var(--brand-hover);
+    vertical-align: -2px;
+}
+
+/* --- Ba cot gioi thieu --- */
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+}
+.feature {
+    padding: 24px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+}
+.feature-icon {
+    display: grid;
+    place-items: center;
+    width: 40px; height: 40px;
+    margin-bottom: 14px;
+    border-radius: var(--radius);
+    background: var(--brand-soft);
+    color: var(--brand);
+}
+.feature h3 { font-size: 15px; margin-bottom: 8px; }
+.feature p { font-size: 13px; color: var(--text-secondary); }
+
+/* --- Responsive --- */
+@media (max-width: 1280px) {
+    .home-hero { grid-template-columns: 1fr 360px; gap: 28px; }
+}
+
+@media (max-width: 900px) {
+    .home-hero { grid-template-columns: 1fr; padding: 36px 0 32px; }
+    .hero-side { max-width: 560px; }
+    .features { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .hero-form { flex-direction: column; max-width: none; }
+    .hero-form .btn { width: 100%; }
+    .hero-stats { gap: 20px; }
+}
+
+/* Moc thoi gian bang gia - hien khi thi truong nghi phien */
+.market-asof {
+    padding: 8px 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+}

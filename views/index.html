@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>SignalFlow — Tín hiệu SMC LuxAlgo tự động cho crypto &amp; futures</title>
+<meta name="description" content="Nền tảng tín hiệu Smart Money Concept tự động: đọc Premium/Discount, Supply/Demand, BOS và CHoCH để sinh lệnh BUY/SELL kèm SL và TP theo tỷ lệ 1:2.">
+<meta name="keywords" content="tín hiệu SMC, Smart Money Concept, LuxAlgo, BOS, CHoCH, Supply Demand, Premium Discount, tín hiệu crypto, bot giao dịch, stop loss, take profit, phân tích kỹ thuật">
+<link rel="canonical" href="https://tradingview.ntlwork.com/">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SignalFlow">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:url" content="https://tradingview.ntlwork.com/">
+<meta property="og:title" content="SignalFlow — Tín hiệu SMC LuxAlgo tự động cho crypto &amp; futures">
+<meta property="og:description" content="Nền tảng tín hiệu Smart Money Concept tự động: đọc Premium/Discount, Supply/Demand, BOS và CHoCH để sinh lệnh BUY/SELL kèm SL và TP theo tỷ lệ 1:2.">
+<meta property="og:image" content="https://tradingview.ntlwork.com/assets/og-home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bảng tín hiệu SMC tự động">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/page-home.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "SignalFlow",
+  "url": "https://tradingview.ntlwork.com/",
+  "logo": "https://tradingview.ntlwork.com/assets/logo.svg",
+  "description": "Nền tảng tín hiệu Smart Money Concept tự động cho thị trường crypto và futures."
+}
+</script>
+</head>
+
+<body data-auth-state="guest">
+
+{{header}}
+
+<main id="main">
+<div class="container">
+
+    <section class="home-hero">
+        <div>
+            <div class="hero-figure" id="heroCount" aria-live="polite">0</div>
+            <h1 class="hero-title">Tín hiệu SMC đã phát</h1>
+            <p class="hero-sub">
+                Server tự đọc nến hợp đồng tương lai nông sản CBOT và dựng lại cấu trúc
+                Smart Money Concept — Premium/Discount, Supply/Demand, BOS và CHoCH —
+                rồi chấm điểm theo thang 100/80/60 và đưa ra Entry, Stop Loss,
+                Take Profit 1:1 và 1:2.
+            </p>
+
+            <div class="hero-stats">
+                <div class="hero-stat"><span class="k">Tỷ lệ thắng</span><span class="v" id="statWin">—</span></div>
+                <div class="hero-stat"><span class="k">Tổng R</span><span class="v" id="statR">—</span></div>
+                <div class="hero-stat"><span class="k">Đang chạy</span><span class="v" id="statRunning">—</span></div>
+                <div class="hero-stat"><span class="k">Đang quan sát</span><span class="v" id="statWatching">—</span></div>
+            </div>
+
+            <form class="hero-form" id="symbolForm">
+                <label class="sr-only" for="symbolInput">Nhập mã symbol</label>
+                <input id="symbolInput" type="text" placeholder="Nhập symbol, ví dụ ZC1!" autocomplete="off">
+                <button type="submit" class="btn btn-primary btn-lg">Xem biểu đồ</button>
+            </form>
+        </div>
+
+        <aside class="hero-side">
+            <div class="card">
+                <div class="card-head" style="padding-bottom:0;border:none">
+                    <div class="tabs" id="marketTabs" role="tablist">
+                        <button class="tab" role="tab" aria-selected="true" data-market-tab="popular">Phổ biến</button>
+                        <button class="tab" role="tab" aria-selected="false" data-market-tab="gainers">Tăng mạnh</button>
+                        <button class="tab" role="tab" aria-selected="false" data-market-tab="losers">Giảm mạnh</button>
+                        <button class="tab" role="tab" aria-selected="false" data-market-tab="bot">Bot</button>
+                    </div>
+                </div>
+                <div class="market-list" id="marketList">
+                    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+                        <div class="skeleton" style="width:70%"></div>
+                        <div class="skeleton" style="width:85%"></div>
+                        <div class="skeleton" style="width:60%"></div>
+                        <div class="skeleton" style="width:78%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <h3>Tin tức</h3>
+                    <span class="link-more muted">Sắp ra mắt</span>
+                </div>
+                <div class="news-soon">
+                    <i data-icon="news" data-size="26"></i>
+                    <span>Chuyên mục tin tức đang được xây dựng.</span>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+    <section class="card signals-section">
+        <div class="signals-head">
+            <h2>Tín hiệu mới nhất</h2>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                <div class="tabs" id="signalTabs" role="tablist">
+                    <button class="tab" role="tab" aria-selected="true" data-signal-tab="">Tất cả</button>
+                    <button class="tab" role="tab" aria-selected="false" data-signal-tab="running">Đang chạy</button>
+                    <button class="tab" role="tab" aria-selected="false" data-signal-tab="pending">Chờ khớp</button>
+                    <button class="tab" role="tab" aria-selected="false" data-signal-tab="watching">Quan sát</button>
+                    <button class="tab" role="tab" aria-selected="false" data-signal-tab="closed">Đã đóng</button>
+                </div>
+                <a href="/bot" class="link-more">Xem tất cả <i data-icon="chevronRight" data-size="14"></i></a>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table class="data">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Hướng</th>
+                        <th>Độ mạnh</th>
+                        <th>Điểm</th>
+                        <th>Vùng</th>
+                        <th class="ta-right">Entry</th>
+                        <th class="ta-right">SL</th>
+                        <th class="ta-right">TP1</th>
+                        <th class="ta-right">TP2</th>
+                        <th>Trạng thái</th>
+                        <th class="ta-right">Thời gian</th>
+                    </tr>
+                </thead>
+                <tbody id="signalRows">
+                    <tr><td colspan="11" style="height:120px"><div class="empty">Đang tải tín hiệu…</div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="features">
+        <article class="feature">
+            <div class="feature-icon"><i data-icon="layers" data-size="20"></i></div>
+            <h3>Đọc cấu trúc SMC</h3>
+            <p>Xác định Premium/Discount theo mốc 50% range, vùng Supply/Demand còn hiệu lực,
+               cùng BOS và CHoCH ở ba cấp độ để biết cấu trúc đã thực sự bị phá hay chưa.</p>
+        </article>
+        <article class="feature">
+            <div class="feature-icon"><i data-icon="target" data-size="20"></i></div>
+            <h3>Chấm điểm tự động</h3>
+            <p>Mỗi tín hiệu được chấm theo thang 100/80/60. Xu hướng H4 là ưu tiên cao nhất —
+               lệnh ngược xu hướng bị chặn thẳng, không chỉ trừ điểm.</p>
+        </article>
+        <article class="feature">
+            <div class="feature-icon"><i data-icon="shield" data-size="20"></i></div>
+            <h3>Quản trị rủi ro 1:2</h3>
+            <p>Stop Loss đặt ở chỗ cấu trúc bị vô hiệu, không theo số điểm cố định.
+               Chạm TP1 chốt 50% và dời SL về hoà vốn, chạm TP2 đóng toàn bộ.</p>
+        </article>
+    </section>
+
+</div>
+</main>
+
+{{footer}}
+
+<script type="module" src="/js/layout.js"></script>
+<script type="module" src="/js/page-home.js"></script>
+</body>
+</html>

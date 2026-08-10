@@ -1,0 +1,90 @@
+<a href="#main" class="sr-only">Bỏ qua điều hướng</a>
+
+<header class="site-header">
+    <div class="container header-inner">
+        <button class="icon-btn hamburger" data-drawer-open aria-label="Mở menu">
+            <i data-icon="menu" data-size="20"></i>
+        </button>
+
+        <a href="/" class="brand" aria-label="SignalFlow — trang chủ">
+            <i data-icon="zap" data-size="24"></i>
+            <span class="brand-name">Signal<span class="accent">Flow</span></span>
+        </a>
+
+        <nav class="nav" aria-label="Điều hướng chính">
+            <a href="/news" class="nav-item" data-nav-path="/news">Tin tức</a>
+            <a href="/chart" class="nav-item" data-nav-path="/chart">Biểu đồ</a>
+
+            <div class="nav-group" data-open="false">
+                <button class="nav-item" aria-expanded="false" aria-haspopup="true">
+                    Bot chiến lược <i data-icon="chevronDown" data-size="14" class="chev"></i>
+                </button>
+                <div class="dropdown" role="menu">
+                    <a href="/bot" data-nav-path="/bot" role="menuitem">
+                        <i data-icon="bot" data-size="18"></i>
+                        <span>Tín hiệu trực tiếp<span class="dd-sub">Trạng thái bot theo từng symbol</span></span>
+                    </a>
+                    <a href="/bot?tab=rules" role="menuitem">
+                        <i data-icon="layers" data-size="18"></i>
+                        <span>Bảng luật SMC<span class="dd-sub">Toàn bộ luật vào lệnh mục 1–16</span></span>
+                    </a>
+                    <a href="/bot?tab=performance" role="menuitem">
+                        <i data-icon="chart" data-size="18"></i>
+                        <span>Hiệu suất<span class="dd-sub">Win-rate, tổng R, đường cong vốn</span></span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="header-actions">
+            <span class="conn" data-conn data-state="off" title="Kết nối thời gian thực">
+                <i></i><span>Đang kết nối…</span>
+            </span>
+
+            <div class="auth-guest">
+                <a href="/login" class="btn btn-ghost">Đăng nhập</a>
+                <a href="/register" class="btn btn-primary">Đăng ký</a>
+            </div>
+
+            <div class="auth-user nav-group" data-open="false">
+                <button class="nav-item" aria-expanded="false" aria-haspopup="true" style="padding:0 8px;gap:8px">
+                    <span class="avatar" data-user-initial>T</span>
+                    <i data-icon="chevronDown" data-size="14" class="chev"></i>
+                </button>
+                <div class="dropdown" role="menu" style="right:0;left:auto">
+                    <a href="/account" role="menuitem"><i data-icon="user" data-size="18"></i><span data-user-name>Tài khoản</span></a>
+                    <a href="/account?tab=watchlist" role="menuitem"><i data-icon="star" data-size="18"></i><span>Danh sách theo dõi</span></a>
+                    <a href="/account?tab=alerts" role="menuitem"><i data-icon="bell" data-size="18"></i><span>Cảnh báo</span></a>
+                    <a href="/logout" role="menuitem"><i data-icon="logout" data-size="18"></i><span>Đăng xuất</span></a>
+                </div>
+            </div>
+
+            <button class="icon-btn" data-theme-toggle aria-label="Chuyển giao diện">
+                <span data-theme-icon="moon"><i data-icon="moon" data-size="18"></i></span>
+                <span data-theme-icon="sun" style="display:none"><i data-icon="sun" data-size="18"></i></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="drawer-backdrop" data-drawer-backdrop></div>
+<aside class="drawer" data-drawer aria-hidden="true" aria-label="Menu">
+    <div class="drawer-head">
+        <span class="brand"><i data-icon="zap" data-size="22"></i><span class="brand-name">Signal<span class="accent">Flow</span></span></span>
+        <button class="icon-btn" data-drawer-close aria-label="Đóng menu"><i data-icon="close" data-size="20"></i></button>
+    </div>
+    <nav aria-label="Điều hướng di động">
+        <a href="/" data-nav-path="/">Trang chủ</a>
+        <a href="/news" data-nav-path="/news">Tin tức</a>
+        <a href="/chart" data-nav-path="/chart">Biểu đồ</a>
+        <a href="/bot" data-nav-path="/bot">Bot chiến lược</a>
+    </nav>
+    <div class="drawer-actions auth-guest">
+        <a href="/login" class="btn btn-ghost">Đăng nhập</a>
+        <a href="/register" class="btn btn-primary">Đăng ký</a>
+    </div>
+    <div class="drawer-actions auth-user">
+        <a href="/account" class="btn btn-ghost">Tài khoản</a>
+        <a href="/logout" class="btn btn-primary">Đăng xuất</a>
+    </div>
+</aside>

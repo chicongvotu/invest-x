@@ -1,0 +1,199 @@
+/* ============================================================================
+   Thanh phan dung lai o nhieu trang: card, bang, tab, badge, skeleton
+   ========================================================================= */
+
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+}
+.card-head h2, .card-head h3 { font-size: 16px; }
+.card-body { padding: 16px 20px; }
+
+.link-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+.link-more:hover { color: var(--brand); }
+
+/* --- Tab --- */
+.tabs {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+    position: relative;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s var(--ease);
+}
+.tab:hover { color: var(--text-primary); }
+.tab[aria-selected="true"] { color: var(--text-primary); font-weight: 600; }
+.tab[aria-selected="true"]::after {
+    content: '';
+    position: absolute;
+    left: 12px; right: 12px; bottom: -1px;
+    height: 3px;
+    background: var(--brand);
+    border-radius: 3px;
+}
+.tab .count {
+    margin-left: 5px;
+    padding: 1px 6px;
+    font-size: 11px;
+    border-radius: var(--radius-pill);
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+}
+
+/* --- Bang --- */
+.table-wrap {
+    /* Bang rong phai tu cuon trong khung cua no, than trang khong cuon ngang */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+table.data {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+table.data th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+}
+table.data td {
+    height: 48px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+table.data tbody tr { transition: background 0.12s var(--ease); }
+table.data tbody tr:hover { background: var(--bg-surface-2); }
+table.data tbody tr:last-child td { border-bottom: none; }
+.ta-right { text-align: right; }
+
+/* --- Badge --- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.badge-buy    { background: var(--up-bg);   color: var(--up); }
+.badge-sell   { background: var(--down-bg); color: var(--down); }
+.badge-wait   { background: var(--bg-elevated); color: var(--text-secondary); }
+.badge-watch  { background: var(--brand-soft); color: var(--brand-hover); }
+.badge-neutral{ background: var(--bg-elevated); color: var(--text-secondary); }
+
+/* Do manh tin hieu - dam dan theo muc do */
+.strength { font-weight: 600; font-size: 12px; }
+.strength-VERY_STRONG { color: var(--brand); }
+.strength-STRONG      { color: var(--up); }
+.strength-MEDIUM      { color: var(--text-primary); }
+.strength-NONE        { color: var(--text-secondary); }
+
+/* --- Thanh diem --- */
+.score-bar {
+    position: relative;
+    width: 64px; height: 6px;
+    border-radius: var(--radius-pill);
+    background: var(--bg-elevated);
+    overflow: hidden;
+}
+.score-bar i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--brand);
+    transition: width 0.4s var(--ease);
+}
+.score-cell { display: flex; align-items: center; gap: 8px; }
+
+/* --- Nhay gia khi doi --- */
+@keyframes flash-up   { from { background: var(--up-bg); }   to { background: transparent; } }
+@keyframes flash-down { from { background: var(--down-bg); } to { background: transparent; } }
+.flash-up   { animation: flash-up 0.6s var(--ease); }
+.flash-down { animation: flash-down 0.6s var(--ease); }
+
+/* --- Skeleton --- */
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-surface-2);
+    border-radius: var(--radius-sm);
+    height: 14px;
+}
+.skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+    animation: shimmer 1.4s infinite;
+}
+
+/* --- Trang thai rong --- */
+.empty {
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+.empty svg { margin: 0 auto 12px; color: var(--text-disabled); }
+.empty code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface-2);
+    color: var(--text-primary);
+}
+
+/* --- Cham trang thai ket noi --- */
+.conn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.conn i {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-disabled);
+}
+.conn[data-state="live"] i { background: var(--up); box-shadow: 0 0 0 3px var(--up-bg); }
+.conn[data-state="off"]  i { background: var(--down); }
