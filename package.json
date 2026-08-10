@@ -2,7 +2,7 @@
   "name": "invest-x",
   "version": "1.0.0",
   "type": "commonjs",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
