@@ -26,11 +26,17 @@
 
 <main id="main">
     <style>
+        /* Dark theme background */
+        body {
+            background: var(--bg-body, #0B0E11) !important;
+        }
+
         /* Only scope admin-news-specific elements, not header/footer */
         .admin-news-page {
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
+            background: var(--bg-body, #0B0E11) !important;
         }
 
         .admin-news-page > div {
