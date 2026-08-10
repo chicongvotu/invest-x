@@ -59,7 +59,10 @@ function handleGet(pathname, query) {
         case '/api/bot/rules':    return mock.botRules();
 
         case '/api/prices':
-            return { items: mock.prices(String(query.symbols || '').split(',').filter(Boolean)) };
+            // Fetch from backend instead of client-side mock (Vercel ESM compatibility)
+            const res = await fetch(`/api/prices?symbols=${encodeURIComponent(query.symbols || '')}`);
+            if (!res.ok) throw new ApiError(res.status, 'FETCH_ERROR', 'Failed to fetch prices');
+            return res.json();
 
         case '/api/health':
             return { ok: true, mode: 'mock', uptimeMs: performance.now() };

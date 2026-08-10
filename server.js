@@ -2,16 +2,24 @@ const express = require('express');
 const path = require('path');
 
 const pageRoutes = require('./routes/page.routes');
+const { prices } = require('./backend/mock-data');
 
 // -----------------------------------------------------------------------------
 //  Ban giao dien thuan: khong backend, khong CSDL, khong tinh toan.
 //  Server chi lam mot viec: ghep partial roi tra HTML tinh + tai nguyen public/.
-//  Moi so lieu tren man hinh do public/js/mock.js sinh ra o phia trinh duyet.
+//  Mock data duoc serve tu backend (/api/prices) cho Vercel compatibility.
 // -----------------------------------------------------------------------------
 
 const PORT = Number(process.env.PORT) || 3019;
 
 const app = express();
+app.use(express.json());
+
+// API routes (before static files + page routes)
+app.get('/api/prices', (req, res) => {
+    const symbols = String(req.query.symbols || '').split(',').filter(Boolean);
+    res.json({ items: prices(symbols) });
+});
 
 // Trang HTML truoc, vi chung duoc ghep partial o server (routes/page.routes.js).
 // De express.static chay truoc thi no se tra file tho con nguyen {{header}}.
