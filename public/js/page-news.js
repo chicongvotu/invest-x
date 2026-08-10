@@ -11,9 +11,23 @@ async function loadNews() {
         const result = await api.get('/api/news/articles', { category: currentCategory, limit: 1000 });
         allArticles = result.items || [];
         filterAndPaginate();
+        renderFeaturedList();
     } catch (err) {
         showError('Lỗi tải tin tức: ' + err.message);
     }
+}
+
+function renderFeaturedList() {
+    const featured = allArticles.filter(a => a.featured).slice(0, 5);
+    const list = document.getElementById('featuredList');
+    if (!list) return;
+
+    list.innerHTML = featured.map(a => `
+        <div class="featured-item" onclick="openArticle({id:'${a.id}', title:'${escapeHtml(a.title)}', category:'${a.category}', excerpt:'${escapeHtml(a.excerpt)}', content:'${escapeHtml(a.content)}', image:'${a.image}', author:'${a.author}', publishedAt:${a.publishedAt}})">
+            <div class="featured-item-title">${escapeHtml(a.title)}</div>
+            <div class="featured-item-cat">${a.category}</div>
+        </div>
+    `).join('');
 }
 
 async function loadCategories() {
