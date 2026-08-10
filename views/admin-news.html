@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{header}}
     <title>Quản Lý Tin Tức - Invest X</title>
+    {{header}}
     <style>
+        /* DO NOT scope site header/footer */
+        .site-header, .site-footer, .drawer, .drawer-backdrop {
+            all: revert !important;
+        }
+
         .admin-news-page * {
             margin: 0;
             padding: 0;
