@@ -49,4 +49,7 @@ function start() {
 
 if (require.main === module) start();
 
-module.exports = { app, start };
+// Export app as default for Vercel serverless + named exports for Node.js usage
+module.exports = app;
+module.exports.app = app;
+module.exports.start = start;
