@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Tin Tức - Invest X</title>
-    {{header}}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>Quản Lý Tin Tức — SignalFlow</title>
+<meta name="description" content="Admin panel quản lý tin tức: tạo, chỉnh sửa, xóa bài viết và quản lý lịch công bố.">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+</head>
+
+<body data-auth-state="guest">
+
+{{header}}
+
+<main id="main">
     <style>
         /* Only scope admin-news-specific elements, not header/footer */
         .admin-news-page {
@@ -466,8 +486,11 @@
         </div>
     </div>
 
-    {{footer}}
+</main>
 
-    <script type="module" src="/js/page-admin-news.js"></script>
+{{footer}}
+
+<script type="module" src="/js/layout.js"></script>
+<script type="module" src="/js/page-admin-news.js"></script>
 </body>
 </html>
