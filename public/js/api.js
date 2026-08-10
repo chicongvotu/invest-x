@@ -1,4 +1,5 @@
 import * as mock from './mock.js';
+import newsApi from './mock-news.js';
 
 // ============================================================================
 //  Lop du lieu gia lap.
@@ -77,6 +78,26 @@ async function handleGet(pathname, query) {
             return mock.events(Number(query.limit) || 12);
         case '/api/me/watchlist':
             return { symbols: requireAuth().watchlist || [] };
+
+        case '/api/news/categories':
+            return { categories: newsApi.categories() };
+
+        case '/api/news/articles': {
+            const filter = {
+                category: query.category || undefined,
+                limit: Number(query.limit) || 20,
+                offset: Number(query.offset) || 0
+            };
+            return newsApi.list(filter);
+        }
+    }
+
+    // Chi tiet mot tin tuc
+    const newsDetail = pathname.match(/^\/api\/news\/articles\/(.+)$/);
+    if (newsDetail) {
+        const article = newsApi.getById(decodeURIComponent(newsDetail[1]));
+        if (!article) throw new ApiError(404, 'NOT_FOUND', 'Không tìm thấy bài viết');
+        return { article };
     }
 
     // Chi tiet mot tin hieu
@@ -113,6 +134,12 @@ function handlePost(pathname, body) {
         case '/api/bot/scan':
         case '/api/bot/evaluate':
             return { ok: true, scanned: mock.SYMBOLS.length };
+
+        case '/api/news/articles': {
+            requireAuth();
+            const article = newsApi.create(body || {});
+            return { article };
+        }
     }
 
     throw new ApiError(404, 'NOT_FOUND', `Không có dữ liệu giả lập cho ${pathname}`);
@@ -141,6 +168,15 @@ function handlePut(pathname, body) {
         }
     }
 
+    // Cap nhat tin tuc
+    const newsUpdate = pathname.match(/^\/api\/news\/articles\/(.+)$/);
+    if (newsUpdate) {
+        requireAuth();
+        const article = newsApi.update(decodeURIComponent(newsUpdate[1]), body || {});
+        if (!article) throw new ApiError(404, 'NOT_FOUND', 'Không tìm thấy bài viết');
+        return { article };
+    }
+
     throw new ApiError(404, 'NOT_FOUND', `Không có dữ liệu giả lập cho ${pathname}`);
 }
 
@@ -151,6 +187,15 @@ function handleDelete(pathname) {
         requireAuth();
         return mock.revokeSession(decodeURIComponent(revoke[1]));
     }
+
+    const newsDelete = pathname.match(/^\/api\/news\/articles\/(.+)$/);
+    if (newsDelete) {
+        requireAuth();
+        const article = newsApi.delete(decodeURIComponent(newsDelete[1]));
+        if (!article) throw new ApiError(404, 'NOT_FOUND', 'Không tìm thấy bài viết');
+        return { article };
+    }
+
     throw new ApiError(404, 'NOT_FOUND', `Không có dữ liệu giả lập cho ${pathname}`);
 }
 

@@ -43,12 +43,9 @@ const router = express.Router();
 
 router.get('/', page('index.html'));
 
-// Tin tuc: hoan sang Phase 8, van giu tren menu theo yeu cau tai lieu
-router.get('/news', page('coming-soon.html', {
-    pageTitle: 'Tin tức thị trường — SignalFlow',
-    heading: 'Tin tức',
-    message: 'Chuyên mục tin tức đang được xây dựng và sẽ ra mắt trong bản cập nhật tới.'
-}));
+// Tin tuc
+router.get('/news', page('news.html'));
+router.get('/admin/news', page('admin-news.html'));
 
 router.get('/chart', page('chart.html'));
 router.get('/bot',   page('bot.html'));
@@ -76,6 +73,7 @@ const PUBLIC_PAGES = [
     { path: '/',         changefreq: 'hourly', priority: '1.0' },
     { path: '/chart',    changefreq: 'hourly', priority: '0.9' },
     { path: '/bot',      changefreq: 'daily',  priority: '0.9' },
+    { path: '/news',     changefreq: 'daily',  priority: '0.8' },
     { path: '/register', changefreq: 'monthly', priority: '0.6' }
 ];
 
