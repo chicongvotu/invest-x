@@ -47,7 +47,7 @@ function requireAuth() {
 }
 
 /* --------------------------------------------------------------- GET ----- */
-function handleGet(pathname, query) {
+async function handleGet(pathname, query) {
     switch (pathname) {
         case '/api/signals':      return mock.signals(query);
         case '/api/stats':        return mock.stats();
@@ -160,7 +160,7 @@ async function request(path, options = {}) {
 
     await delay();
 
-    if (method === 'GET')    return handleGet(pathname, query);
+    if (method === 'GET')    return await handleGet(pathname, query);
     if (method === 'POST')   return handlePost(pathname, body);
     if (method === 'PUT')    return handlePut(pathname, body);
     if (method === 'DELETE') return handleDelete(pathname);
