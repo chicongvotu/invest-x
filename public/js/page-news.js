@@ -1,6 +1,6 @@
 import { api } from './api.js';
 
-const LIMIT = 12;
+const LIMIT = 4;
 let currentPage = 1;
 let currentCategory = null;
 let currentTimeFilter = 'all';
