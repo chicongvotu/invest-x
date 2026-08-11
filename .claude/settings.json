@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(node -c /Users/admin/Downloads/invest-x/public/js/page-news.js)",
+      "Bash(lsof -nP -iTCP:3019 -sTCP:LISTEN)",
+      "Bash(awk '{print $2}')",
+      "Bash(xargs kill -9)",
+      "Bash(npm start *)",
+      "Bash(curl -s http://localhost:3019/api/news/articles)",
+      "Bash(curl -s http://localhost:3019/news)"
+    ]
+  }
+}

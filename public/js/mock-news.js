@@ -1,9 +1,9 @@
 // Mock news data for Invest X trading platform
 
 const CATEGORIES = [
-    { id: 'market', name: 'Tin thị trường', emoji: '📊' },
-    { id: 'tips', name: 'Mẹo giao dịch', emoji: '💡' },
-    { id: 'analysis', name: 'Phân tích', emoji: '📈' }
+    { id: 'market', name: 'Tin thị trường', emoji: '💰' },
+    { id: 'tips', name: 'Mẹo giao dịch', emoji: '⚡' },
+    { id: 'analysis', name: 'Phân tích', emoji: '🔬' }
 ];
 
 const ARTICLES = [
@@ -14,7 +14,7 @@ const ARTICLES = [
         category: 'market',
         excerpt: 'Thị trường ngô ghi nhận sự tăng mạnh hôm nay khi các nhà đầu tư lo lắng về tác động tiềm tàng của điều kiện thời tiết.',
         content: 'Giá ngô kỳ hạn tăng 2.5% do lo ngại về mưa mùa hè.',
-        image: '📊',
+        image: '🌾',
         author: 'Nguyễn Công',
         publishedAt: Date.now() - 1 * 3600000,
         featured: true
@@ -25,7 +25,7 @@ const ARTICLES = [
         category: 'tips',
         excerpt: 'Quản lý rủi ro là chìa khóa để thành công trong giao dịch. Hôm nay chúng tôi chia sẻ 5 kỹ thuật được chứng minh.',
         content: 'Quản lý rủi ro là chìa khóa để thành công trong giao dịch.',
-        image: '💡',
+        image: '🎯',
         author: 'Trần Minh',
         publishedAt: Date.now() - 8 * 3600000,
         featured: false
@@ -36,7 +36,7 @@ const ARTICLES = [
         category: 'analysis',
         excerpt: 'Phân tích chi tiết mô hình SMC trên biểu đồ hàng tuần của lúa mì kỳ hạn gần.',
         content: 'Phân tích chu kỳ thị trường lúa mì tuần này: Biểu đồ hàng tuần cho thấy FVG ở vùng 560-562.',
-        image: '📈',
+        image: '🔬',
         author: 'Phạm Anh',
         publishedAt: Date.now() - 15 * 3600000,
         featured: false
@@ -48,7 +48,7 @@ const ARTICLES = [
         category: 'market',
         excerpt: 'Quyết định lãi suất của Fed vừa rồi đã tạo ra làn sóng đảo chiều trên toàn bộ thị trường hàng hóa.',
         content: 'Thúc đẩy từ Fed: Tác động đến thị trường hàng hóa.',
-        image: '📊',
+        image: '💱',
         author: 'Lê Hoàng',
         publishedAt: Date.now() - 30 * 3600000,
         featured: false
@@ -59,7 +59,7 @@ const ARTICLES = [
         category: 'tips',
         excerpt: 'BOS là một trong những khái niệm cơ bản nhất trong phân tích SMC. Hãy học cách nhận biết nó chính xác.',
         content: 'Sử dụng hình thức Break of Structure (BOS) một cách chính xác.',
-        image: '💡',
+        image: '🚀',
         author: 'Nguyễn Công',
         publishedAt: Date.now() - 50 * 3600000,
         featured: true
@@ -70,7 +70,7 @@ const ARTICLES = [
         category: 'analysis',
         excerpt: 'Các chuyên gia nhận thấy một hình thành ngũ giác trên biểu đồ đậu tương. Điều này có thể dẫn đến một động thái mạnh.',
         content: 'Biểu đồ ngũ giác đậu tương: Chuẩn bị cho một bước đi lớn?',
-        image: '📈',
+        image: '📊',
         author: 'Trần Minh',
         publishedAt: Date.now() - 80 * 3600000,
         featured: false
@@ -82,7 +82,7 @@ const ARTICLES = [
         category: 'market',
         excerpt: 'Một số khác biệt với thị trường chung khi khô đậu ghi nhận sự giảm giá. Tìm hiểu chi tiết.',
         content: 'Ngoại lệ: Giá khô đậu giảm 1% khi nguồn cung tăng.',
-        image: '📊',
+        image: '📉',
         author: 'Phạm Anh',
         publishedAt: Date.now() - 200 * 3600000,
         featured: false
@@ -93,7 +93,7 @@ const ARTICLES = [
         category: 'tips',
         excerpt: 'Momentum là một công cụ mạnh mẽ nhưng dễ bị lạm dụng. Đây là hướng dẫn đúng cách.',
         content: 'Momentum chỉ báo: Làm cách nào để sử dụng nó đúng cách.',
-        image: '💡',
+        image: '⚡',
         author: 'Lê Hoàng',
         publishedAt: Date.now() - 300 * 3600000,
         featured: false
@@ -104,7 +104,7 @@ const ARTICLES = [
         category: 'market',
         excerpt: 'Báo cáo vụ mùa cho biết sản lượng ngô toàn cầu dự kiến sẽ giảm 2% so với năm trước.',
         content: 'Báo cáo vụ mùa: Sản lượng ngô toàn cầu sẽ giảm 2%.',
-        image: '📊',
+        image: '📈',
         author: 'Nguyễn Công',
         publishedAt: Date.now() - 400 * 3600000,
         featured: true
@@ -116,7 +116,7 @@ const ARTICLES = [
         category: 'tips',
         excerpt: 'Không phải tất cả các trade đều cần có tỷ lệ risk-reward 1:3. Tìm hiểu cách tối ưu hóa.',
         content: 'Thiết lập tỷ lệ risk-reward: Bí quyết sinh lợi bền vững.',
-        image: '💡',
+        image: '💹',
         author: 'Trần Minh',
         publishedAt: Date.now() - 800 * 3600000,
         featured: false
@@ -127,7 +127,7 @@ const ARTICLES = [
         category: 'analysis',
         excerpt: 'Các nhà đầu tư dài hạn cần hiểu rõ chu kỳ kinh tế để đạt kết quả tốt nhất.',
         content: 'Chiến lược giao dịch theo chu kỳ kinh tế dài hạn.',
-        image: '📈',
+        image: '🧮',
         author: 'Phạm Anh',
         publishedAt: Date.now() - 1000 * 3600000,
         featured: false
@@ -138,7 +138,7 @@ const ARTICLES = [
         category: 'market',
         excerpt: 'Nhìn lại quý trước, có nhiều bài học từ những biến động thị trường lớn.',
         content: 'Xu hướng thị trường quý trước: Những bài học quý báu.',
-        image: '📊',
+        image: '💰',
         author: 'Lê Hoàng',
         publishedAt: Date.now() - 1200 * 3600000,
         featured: false
