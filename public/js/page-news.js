@@ -182,7 +182,8 @@ function renderPagination() {
     if (totalPages <= 1) return;
 
     const prevBtn = document.createElement('button');
-    prevBtn.textContent = '← Trước';
+    prevBtn.className = 'pag-btn';
+    prevBtn.textContent = '←';
     prevBtn.disabled = currentPage === 1;
     prevBtn.onclick = () => {
         if (currentPage > 1) {
@@ -194,9 +195,31 @@ function renderPagination() {
     };
     pagination.appendChild(prevBtn);
 
-    // Page numbers
-    for (let i = 1; i <= totalPages; i++) {
+    // Show first page
+    if (currentPage > 3) {
+        const btn1 = document.createElement('button');
+        btn1.className = 'pag-btn';
+        btn1.textContent = '1';
+        btn1.onclick = () => {
+            currentPage = 1;
+            renderNews();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        pagination.appendChild(btn1);
+
+        if (currentPage > 4) {
+            const dots = document.createElement('span');
+            dots.textContent = '...';
+            dots.style.color = 'var(--text-secondary, #848E9C)';
+            pagination.appendChild(dots);
+        }
+    }
+
+    // Page numbers around current
+    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
         const btn = document.createElement('button');
+        btn.className = 'pag-btn';
         btn.textContent = String(i);
         if (i === currentPage) btn.classList.add('active');
         btn.onclick = () => {
@@ -208,8 +231,30 @@ function renderPagination() {
         pagination.appendChild(btn);
     }
 
+    // Show last page
+    if (currentPage < totalPages - 2) {
+        if (currentPage < totalPages - 3) {
+            const dots = document.createElement('span');
+            dots.textContent = '...';
+            dots.style.color = 'var(--text-secondary, #848E9C)';
+            pagination.appendChild(dots);
+        }
+
+        const btnLast = document.createElement('button');
+        btnLast.className = 'pag-btn';
+        btnLast.textContent = String(totalPages);
+        btnLast.onclick = () => {
+            currentPage = totalPages;
+            renderNews();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        pagination.appendChild(btnLast);
+    }
+
     const nextBtn = document.createElement('button');
-    nextBtn.textContent = 'Tiếp →';
+    nextBtn.className = 'pag-btn';
+    nextBtn.textContent = '→';
     nextBtn.disabled = currentPage === totalPages;
     nextBtn.onclick = () => {
         if (currentPage < totalPages) {
