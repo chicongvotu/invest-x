@@ -7,15 +7,16 @@ const CATEGORIES = [
 ];
 
 const ARTICLES = [
+    // TODAY (0-24 hours)
     {
         id: '1',
         title: 'Giá ngô kỳ hạn tăng 2.5% do lo ngại về mưa mùa hè',
         category: 'market',
         excerpt: 'Thị trường ngô ghi nhận sự tăng mạnh hôm nay khi các nhà đầu tư lo lắng về tác động tiềm tàng của điều kiện thời tiết.',
-        content: 'Giá ngô kỳ hạn tăng 2.5% do lo ngại về mưa mùa hè. Thị trường ngô ghi nhận sự tăng mạnh hôm nay khi các nhà đầu tư lo lắng về tác động tiềm tàng của điều kiện thời tiết không thuận lợi. Các chuyên gia dự báo giá có thể tiếp tục tăng trong những ngày tới nếu có tin tức tiêu cực về sản lượng.',
+        content: 'Giá ngô kỳ hạn tăng 2.5% do lo ngại về mưa mùa hè.',
         image: '📊',
         author: 'Nguyễn Công',
-        publishedAt: Date.now() - 2 * 3600000,
+        publishedAt: Date.now() - 1 * 3600000,
         featured: true
     },
     {
@@ -23,10 +24,10 @@ const ARTICLES = [
         title: 'Cách quản lý rủi ro hiệu quả khi giao dịch hàng hóa',
         category: 'tips',
         excerpt: 'Quản lý rủi ro là chìa khóa để thành công trong giao dịch. Hôm nay chúng tôi chia sẻ 5 kỹ thuật được chứng minh.',
-        content: 'Quản lý rủi ro là chìa khóa để thành công trong giao dịch. Hôm nay chúng tôi chia sẻ 5 kỹ thuật được chứng minh:\n\n1. Đặt Stop Loss: Luôn đặt stop loss ở mức 2% tài khoản\n2. Take Profit: Không tham lam, lấy lợi nhuận khi đạt mục tiêu\n3. Phân tích Kỹ thuật: Sử dụng SMC + Market Structure\n4. Vị trí đầu tư: Không đầu tư quá 5% trên 1 trade\n5. Journal: Ghi lại mọi trade để rút kinh nghiệm',
+        content: 'Quản lý rủi ro là chìa khóa để thành công trong giao dịch.',
         image: '💡',
         author: 'Trần Minh',
-        publishedAt: Date.now() - 5 * 3600000,
+        publishedAt: Date.now() - 8 * 3600000,
         featured: false
     },
     {
@@ -34,21 +35,22 @@ const ARTICLES = [
         title: 'Phân tích chu kỳ thị trường lúa mì tuần này',
         category: 'analysis',
         excerpt: 'Phân tích chi tiết mô hình SMC trên biểu đồ hàng tuần của lúa mì kỳ hạn gần.',
-        content: 'Phân tích chu kỳ thị trường lúa mì tuần này: Biểu đồ hàng tuần cho thấy FVG ở vùng 560-562. Dự kiến sẽ có sự test lại vùng này trong 2-3 ngày tới. Nếu break được, target là 570.',
+        content: 'Phân tích chu kỳ thị trường lúa mì tuần này: Biểu đồ hàng tuần cho thấy FVG ở vùng 560-562.',
         image: '📈',
         author: 'Phạm Anh',
-        publishedAt: Date.now() - 8 * 3600000,
+        publishedAt: Date.now() - 15 * 3600000,
         featured: false
     },
+    // PAST WEEK (25-168 hours)
     {
         id: '4',
         title: 'Thúc đẩy từ Fed: Tác động đến thị trường hàng hóa',
         category: 'market',
         excerpt: 'Quyết định lãi suất của Fed vừa rồi đã tạo ra làn sóng đảo chiều trên toàn bộ thị trường hàng hóa.',
-        content: 'Thúc đẩy từ Fed: Tác động đến thị trường hàng hóa. Quyết định lãi suất của Fed vừa rồi đã tạo ra làn sóng đảo chiều trên toàn bộ thị trường hàng hóa. Đặc biệt, đậu tương và dầu đậu ghi nhận mức tăng vượt kỳ vọng.',
+        content: 'Thúc đẩy từ Fed: Tác động đến thị trường hàng hóa.',
         image: '📊',
         author: 'Lê Hoàng',
-        publishedAt: Date.now() - 12 * 3600000,
+        publishedAt: Date.now() - 30 * 3600000,
         featured: false
     },
     {
@@ -56,10 +58,10 @@ const ARTICLES = [
         title: 'Sử dụng hình thức Break of Structure (BOS) một cách chính xác',
         category: 'tips',
         excerpt: 'BOS là một trong những khái niệm cơ bản nhất trong phân tích SMC. Hãy học cách nhận biết nó chính xác.',
-        content: 'Sử dụng hình thức Break of Structure (BOS) một cách chính xác:\n\nBOS xảy ra khi giá vượt qua high/low trước đó với volume lớn. Điểm quan trọng:\n- Xác nhận bằng candle close\n- Tìm support/resistance mới\n- Trade theo hướng BOS\n- Sử dụng chỉ báo volume để xác nhận',
+        content: 'Sử dụng hình thức Break of Structure (BOS) một cách chính xác.',
         image: '💡',
         author: 'Nguyễn Công',
-        publishedAt: Date.now() - 15 * 3600000,
+        publishedAt: Date.now() - 50 * 3600000,
         featured: true
     },
     {
@@ -67,21 +69,22 @@ const ARTICLES = [
         title: 'Biểu đồ ngũ giác đậu tương: Chuẩn bị cho một bước đi lớn?',
         category: 'analysis',
         excerpt: 'Các chuyên gia nhận thấy một hình thành ngũ giác trên biểu đồ đậu tương. Điều này có thể dẫn đến một động thái mạnh.',
-        content: 'Biểu đồ ngũ giác đậu tương: Chuẩn bị cho một bước đi lớn? Các chuyên gia nhận thấy một hình thành ngũ giác trên biểu đồ đậu tương 4h. Điều này có thể dẫn đến một động thái mạnh mẽ trong tuần tới.',
+        content: 'Biểu đồ ngũ giác đậu tương: Chuẩn bị cho một bước đi lớn?',
         image: '📈',
         author: 'Trần Minh',
-        publishedAt: Date.now() - 18 * 3600000,
+        publishedAt: Date.now() - 80 * 3600000,
         featured: false
     },
+    // PAST MONTH (169-720 hours)
     {
         id: '7',
         title: 'Ngoại lệ: Giá khô đậu giảm 1% khi nguồn cung tăng',
         category: 'market',
         excerpt: 'Một số khác biệt với thị trường chung khi khô đậu ghi nhận sự giảm giá. Tìm hiểu chi tiết.',
-        content: 'Ngoại lệ: Giá khô đậu giảm 1% khi nguồn cung tăng. Ngoài ra từ xu hướng chung của thị trường, khô đậu ghi nhận sự giảm giá do tin tức về nguồn cung tăng từ các khu vực sản xuất chính.',
+        content: 'Ngoại lệ: Giá khô đậu giảm 1% khi nguồn cung tăng.',
         image: '📊',
         author: 'Phạm Anh',
-        publishedAt: Date.now() - 20 * 3600000,
+        publishedAt: Date.now() - 200 * 3600000,
         featured: false
     },
     {
@@ -89,10 +92,10 @@ const ARTICLES = [
         title: 'Momentum chỉ báo: Làm cách nào để sử dụng nó đúng cách',
         category: 'tips',
         excerpt: 'Momentum là một công cụ mạnh mẽ nhưng dễ bị lạm dụng. Đây là hướng dẫn đúng cách.',
-        content: 'Momentum chỉ báo: Làm cách nào để sử dụng nó đúng cách\n\nMomentum giúp bạn nhận biết sức mạnh của xu hướng:\n1. Momentum tăng = sức mạnh mua\n2. Momentum giảm = sức mạnh bán\n3. Sử dụng cùng với SMC để xác nhận\n4. Không trade ngược lại momentum mạnh',
+        content: 'Momentum chỉ báo: Làm cách nào để sử dụng nó đúng cách.',
         image: '💡',
         author: 'Lê Hoàng',
-        publishedAt: Date.now() - 24 * 3600000,
+        publishedAt: Date.now() - 300 * 3600000,
         featured: false
     },
     {
@@ -100,21 +103,44 @@ const ARTICLES = [
         title: 'Báo cáo vụ mùa: Sản lượng ngô toàn cầu sẽ giảm 2%',
         category: 'market',
         excerpt: 'Báo cáo vụ mùa cho biết sản lượng ngô toàn cầu dự kiến sẽ giảm 2% so với năm trước.',
-        content: 'Báo cáo vụ mùa: Sản lượng ngô toàn cầu sẽ giảm 2%. Các tổ chức quốc tế đã công bố báo cáo sản lượng cho vụ mùa sắp tới. Sản lượng ngô toàn cầu dự kiến sẽ giảm 2% so với năm trước do điều kiện thời tiết không thuận lợi ở các khu vực sản xuất chính.',
+        content: 'Báo cáo vụ mùa: Sản lượng ngô toàn cầu sẽ giảm 2%.',
         image: '📊',
         author: 'Nguyễn Công',
-        publishedAt: Date.now() - 26 * 3600000,
+        publishedAt: Date.now() - 400 * 3600000,
         featured: true
     },
+    // OLDER (>720 hours)
     {
         id: '10',
         title: 'Thiết lập tỷ lệ risk-reward: Bí quyết sinh lợi bền vững',
         category: 'tips',
         excerpt: 'Không phải tất cả các trade đều cần có tỷ lệ risk-reward 1:3. Tìm hiểu cách tối ưu hóa.',
-        content: 'Thiết lập tỷ lệ risk-reward: Bí quyết sinh lợi bền vững\n\nTỷ lệ risk-reward lý tưởng:\n- Giao dịch ngắn hạn: 1:2\n- Giao dịch trung hạn: 1:3\n- Giao dịch dài hạn: 1:4\n\nHãy tính toán kỹ lưỡng trước khi vào lệnh để đảm bảo tỷ lệ này được tuân thủ.',
+        content: 'Thiết lập tỷ lệ risk-reward: Bí quyết sinh lợi bền vững.',
         image: '💡',
         author: 'Trần Minh',
-        publishedAt: Date.now() - 28 * 3600000,
+        publishedAt: Date.now() - 800 * 3600000,
+        featured: false
+    },
+    {
+        id: '11',
+        title: 'Chiến lược giao dịch theo chu kỳ kinh tế dài hạn',
+        category: 'analysis',
+        excerpt: 'Các nhà đầu tư dài hạn cần hiểu rõ chu kỳ kinh tế để đạt kết quả tốt nhất.',
+        content: 'Chiến lược giao dịch theo chu kỳ kinh tế dài hạn.',
+        image: '📈',
+        author: 'Phạm Anh',
+        publishedAt: Date.now() - 1000 * 3600000,
+        featured: false
+    },
+    {
+        id: '12',
+        title: 'Xu hướng thị trường quý trước: Những bài học quý báu',
+        category: 'market',
+        excerpt: 'Nhìn lại quý trước, có nhiều bài học từ những biến động thị trường lớn.',
+        content: 'Xu hướng thị trường quý trước: Những bài học quý báu.',
+        image: '📊',
+        author: 'Lê Hoàng',
+        publishedAt: Date.now() - 1200 * 3600000,
         featured: false
     }
 ];

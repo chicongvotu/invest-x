@@ -10,27 +10,14 @@ let filteredArticles = [];
 
 async function loadNews() {
     try {
-        const result = await api.get('/api/news/articles', { category: currentCategory, limit: 1000 });
+        const result = await api.get('/api/news/articles?limit=1000');
         allArticles = result.items || [];
         filterAndPaginate();
-        renderFeaturedList();
     } catch (err) {
         showError('Lỗi tải tin tức: ' + err.message);
     }
 }
 
-function renderFeaturedList() {
-    const featured = allArticles.filter(a => a.featured).slice(0, 5);
-    const list = document.getElementById('featuredList');
-    if (!list) return;
-
-    list.innerHTML = featured.map(a => `
-        <div class="featured-item" onclick="openArticle({id:'${a.id}', title:'${escapeHtml(a.title)}', category:'${a.category}', excerpt:'${escapeHtml(a.excerpt)}', content:'${escapeHtml(a.content)}', image:'${a.image}', author:'${a.author}', publishedAt:${a.publishedAt}})">
-            <div class="featured-item-title">${escapeHtml(a.title)}</div>
-            <div class="featured-item-cat">${a.category}</div>
-        </div>
-    `).join('');
-}
 
 async function loadCategories() {
     try {
@@ -84,6 +71,7 @@ function filterAndPaginate() {
     const oneWeek = 7 * oneDay;
     const oneMonth = 30 * oneDay;
 
+    const beforeTimeFilter = results.length;
     if (currentTimeFilter === 'today') {
         results = results.filter(a => now - a.publishedAt <= oneDay);
     } else if (currentTimeFilter === 'week') {
@@ -91,6 +79,7 @@ function filterAndPaginate() {
     } else if (currentTimeFilter === 'month') {
         results = results.filter(a => now - a.publishedAt <= oneMonth);
     }
+    console.log(`[Filter] timeFilter="${currentTimeFilter}" before=${beforeTimeFilter} after=${results.length}`);
 
     // Filter by search
     if (searchQuery.trim()) {
@@ -182,7 +171,8 @@ function renderPagination() {
     if (totalPages <= 1) return;
 
     const prevBtn = document.createElement('button');
-    prevBtn.textContent = '← Trước';
+    prevBtn.innerHTML = '&larr;';
+    prevBtn.title = 'Trang trước';
     prevBtn.disabled = currentPage === 1;
     prevBtn.onclick = () => {
         if (currentPage > 1) {
@@ -194,13 +184,41 @@ function renderPagination() {
     };
     pagination.appendChild(prevBtn);
 
-    // Page numbers
-    for (let i = 1; i <= totalPages; i++) {
+    // Smart page numbers with ellipsis
+    const pagesWindow = 2; // Pages to show around current page
+    const pagesToShow = new Set();
+
+    // Always show first page
+    pagesToShow.add(1);
+
+    // Show pages around current page
+    for (let i = Math.max(1, currentPage - pagesWindow); i <= Math.min(totalPages, currentPage + pagesWindow); i++) {
+        pagesToShow.add(i);
+    }
+
+    // Always show last page if totalPages > 1
+    if (totalPages > 1) pagesToShow.add(totalPages);
+
+    const sortedPages = Array.from(pagesToShow).sort((a, b) => a - b);
+
+    for (let i = 0; i < sortedPages.length; i++) {
+        const page = sortedPages[i];
+        const nextPage = sortedPages[i + 1];
+
+        // Add ellipsis if there's a gap
+        if (nextPage && nextPage - page > 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'ellipsis';
+            ellipsis.textContent = '...';
+            pagination.appendChild(ellipsis);
+        }
+
+        // Add page button
         const btn = document.createElement('button');
-        btn.textContent = String(i);
-        if (i === currentPage) btn.classList.add('active');
+        btn.textContent = String(page);
+        if (page === currentPage) btn.classList.add('active');
         btn.onclick = () => {
-            currentPage = i;
+            currentPage = page;
             renderNews();
             renderPagination();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -209,7 +227,8 @@ function renderPagination() {
     }
 
     const nextBtn = document.createElement('button');
-    nextBtn.textContent = 'Tiếp →';
+    nextBtn.innerHTML = '&rarr;';
+    nextBtn.title = 'Trang tiếp';
     nextBtn.disabled = currentPage === totalPages;
     nextBtn.onclick = () => {
         if (currentPage < totalPages) {
@@ -278,6 +297,8 @@ function escapeHtml(text) {
 
 // Close modal on outside click
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('[NEWS] DOMContentLoaded');
+
     document.getElementById('newsModal').addEventListener('click', (e) => {
         if (e.target.id === 'newsModal') {
             closeModal();
@@ -285,11 +306,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Time filter buttons
-    document.querySelectorAll('.time-filter-btn').forEach(btn => {
+    const timeButtons = document.querySelectorAll('.time-filter-btn');
+    console.log(`[NEWS] Found ${timeButtons.length} time filter buttons`);
+    timeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
+            console.log(`[NEWS] Clicked time filter: ${btn.dataset.filter}`);
             document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentTimeFilter = btn.dataset.filter;
+            console.log(`[NEWS] Set currentTimeFilter to: ${currentTimeFilter}`);
             filterAndPaginate();
         });
     });
