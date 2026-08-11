@@ -3,6 +3,8 @@ import { api } from './api.js';
 const LIMIT = 12;
 let currentPage = 1;
 let currentCategory = null;
+let currentTimeFilter = 'all';
+let searchQuery = '';
 let allArticles = [];
 let filteredArticles = [];
 
@@ -69,11 +71,38 @@ async function loadCategories() {
 }
 
 function filterAndPaginate() {
+    let results = allArticles;
+
+    // Filter by category
     if (currentCategory) {
-        filteredArticles = allArticles.filter(a => a.category === currentCategory);
-    } else {
-        filteredArticles = allArticles;
+        results = results.filter(a => a.category === currentCategory);
     }
+
+    // Filter by time
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+    const oneWeek = 7 * oneDay;
+    const oneMonth = 30 * oneDay;
+
+    if (currentTimeFilter === 'today') {
+        results = results.filter(a => now - a.publishedAt <= oneDay);
+    } else if (currentTimeFilter === 'week') {
+        results = results.filter(a => now - a.publishedAt <= oneWeek);
+    } else if (currentTimeFilter === 'month') {
+        results = results.filter(a => now - a.publishedAt <= oneMonth);
+    }
+
+    // Filter by search
+    if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        results = results.filter(a =>
+            a.title.toLowerCase().includes(q) ||
+            a.excerpt.toLowerCase().includes(q)
+        );
+    }
+
+    filteredArticles = results.sort((a, b) => b.publishedAt - a.publishedAt);
+    currentPage = 1;
     renderNews();
     renderPagination();
 }
@@ -254,6 +283,25 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
+
+    // Time filter buttons
+    document.querySelectorAll('.time-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTimeFilter = btn.dataset.filter;
+            filterAndPaginate();
+        });
+    });
+
+    // Search input
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            filterAndPaginate();
+        });
+    }
 
     loadCategories();
     loadNews();
