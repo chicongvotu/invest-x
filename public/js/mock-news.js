@@ -15,8 +15,12 @@ const ARTICLES = [
         excerpt: 'Thị trường ngô ghi nhận sự tăng mạnh hôm nay khi các nhà đầu tư lo lắng về tác động tiềm tàng của điều kiện thời tiết.',
         content: 'Giá ngô kỳ hạn tăng 2.5% do lo ngại về mưa mùa hè.',
         image: '🌾',
+        imageUrl: null,
+        youtubeUrl: null,
         author: 'Nguyễn Công',
         publishedAt: Date.now() - 1 * 3600000,
+        scheduledAt: null,
+        status: 'published',
         featured: true
     },
     {
@@ -28,6 +32,10 @@ const ARTICLES = [
         image: '🎯',
         author: 'Trần Minh',
         publishedAt: Date.now() - 8 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     },
     {
@@ -39,6 +47,10 @@ const ARTICLES = [
         image: '🔬',
         author: 'Phạm Anh',
         publishedAt: Date.now() - 15 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     },
     // PAST WEEK (25-168 hours)
@@ -51,6 +63,10 @@ const ARTICLES = [
         image: '💱',
         author: 'Lê Hoàng',
         publishedAt: Date.now() - 30 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     },
     {
@@ -62,6 +78,10 @@ const ARTICLES = [
         image: '🚀',
         author: 'Nguyễn Công',
         publishedAt: Date.now() - 50 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: true
     },
     {
@@ -73,6 +93,10 @@ const ARTICLES = [
         image: '📊',
         author: 'Trần Minh',
         publishedAt: Date.now() - 80 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     },
     // PAST MONTH (169-720 hours)
@@ -85,6 +109,10 @@ const ARTICLES = [
         image: '📉',
         author: 'Phạm Anh',
         publishedAt: Date.now() - 200 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     },
     {
@@ -96,6 +124,10 @@ const ARTICLES = [
         image: '⚡',
         author: 'Lê Hoàng',
         publishedAt: Date.now() - 300 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     },
     {
@@ -107,6 +139,10 @@ const ARTICLES = [
         image: '📈',
         author: 'Nguyễn Công',
         publishedAt: Date.now() - 400 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: true
     },
     // OLDER (>720 hours)
@@ -119,6 +155,10 @@ const ARTICLES = [
         image: '💹',
         author: 'Trần Minh',
         publishedAt: Date.now() - 800 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     },
     {
@@ -130,6 +170,10 @@ const ARTICLES = [
         image: '🧮',
         author: 'Phạm Anh',
         publishedAt: Date.now() - 1000 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     },
     {
@@ -141,6 +185,10 @@ const ARTICLES = [
         image: '💰',
         author: 'Lê Hoàng',
         publishedAt: Date.now() - 1200 * 3600000,
+        imageUrl: null,
+        youtubeUrl: null,
+        scheduledAt: null,
+        status: 'published',
         featured: false
     }
 ];
@@ -210,8 +258,12 @@ const newsApi = {
             excerpt: data.excerpt || '',
             content: data.content || '',
             image: data.image || '📰',
+            imageUrl: data.imageUrl || null,
+            youtubeUrl: data.youtubeUrl || null,
             author: data.author || 'Anonymous',
             publishedAt: data.publishedAt || Date.now(),
+            scheduledAt: data.scheduledAt || null,
+            status: data.status || 'published',
             featured: Boolean(data.featured)
         };
         articlesStorage.push(article);
@@ -231,7 +283,11 @@ const newsApi = {
             excerpt: data.excerpt !== undefined ? data.excerpt : article.excerpt,
             content: data.content !== undefined ? data.content : article.content,
             image: data.image !== undefined ? data.image : article.image,
+            imageUrl: data.imageUrl !== undefined ? data.imageUrl : article.imageUrl,
+            youtubeUrl: data.youtubeUrl !== undefined ? data.youtubeUrl : article.youtubeUrl,
             author: data.author !== undefined ? data.author : article.author,
+            scheduledAt: data.scheduledAt !== undefined ? data.scheduledAt : article.scheduledAt,
+            status: data.status !== undefined ? data.status : article.status,
             featured: data.featured !== undefined ? Boolean(data.featured) : article.featured
         };
         return articlesStorage[idx];

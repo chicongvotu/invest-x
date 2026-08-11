@@ -312,6 +312,7 @@ body { background: var(--bg-body, #0B0E11); }
         <div class="tabs" role="tablist">
             <button class="tab" role="tab" aria-selected="true" data-tab="create" onclick="switchTab('create')">📝 Tạo mới</button>
             <button class="tab" role="tab" aria-selected="false" data-tab="list" onclick="switchTab('list')">📋 Danh sách</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="scheduled" onclick="switchTab('scheduled')">⏰ Lên lịch</button>
         </div>
 
         <!-- CREATE TAB -->
@@ -348,15 +349,34 @@ body { background: var(--bg-body, #0B0E11); }
                         <input type="text" id="author" placeholder="Tên tác giả" required>
                     </div>
                     <div class="form-group">
-                        <label for="image">Emoji</label>
+                        <label for="image">Icon/Emoji</label>
                         <input type="text" id="image" placeholder="Chọn emoji (vd: 📊)" maxlength="2" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="featured"> Bài viết nổi bật
-                    </label>
+                    <label for="imageUrl">URL Hình ảnh</label>
+                    <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
+                    <small style="color: var(--text-secondary, #848E9C);">Để trống nếu không có hình</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="youtubeUrl">YouTube URL</label>
+                    <input type="url" id="youtubeUrl" placeholder="https://youtube.com/watch?v=...">
+                    <small style="color: var(--text-secondary, #848E9C);">Link video YouTube (nếu có)</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="scheduledAt">Lên lịch đăng (tuỳ chọn)</label>
+                        <input type="datetime-local" id="scheduledAt">
+                        <small style="color: var(--text-secondary, #848E9C);">Để trống = đăng ngay lập tức</small>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="featured"> Bài viết nổi bật
+                        </label>
+                    </div>
                 </div>
 
                 <div class="form-actions">
@@ -369,6 +389,11 @@ body { background: var(--bg-body, #0B0E11); }
         <!-- LIST TAB -->
         <div class="tab-panel" data-tab="list" data-active="false">
             <div id="articlesList"></div>
+        </div>
+
+        <!-- SCHEDULED TAB -->
+        <div class="tab-panel" data-tab="scheduled" data-active="false">
+            <div id="scheduledList"></div>
         </div>
     </div>
 
@@ -414,15 +439,31 @@ body { background: var(--bg-body, #0B0E11); }
                         <input type="text" id="editAuthor" required>
                     </div>
                     <div class="form-group">
-                        <label for="editImage">Emoji</label>
+                        <label for="editImage">Icon/Emoji</label>
                         <input type="text" id="editImage" maxlength="2" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="editFeatured"> Bài viết nổi bật
-                    </label>
+                    <label for="editImageUrl">URL Hình ảnh</label>
+                    <input type="url" id="editImageUrl">
+                </div>
+
+                <div class="form-group">
+                    <label for="editYoutubeUrl">YouTube URL</label>
+                    <input type="url" id="editYoutubeUrl">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editScheduledAt">Lên lịch đăng</label>
+                        <input type="datetime-local" id="editScheduledAt">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="editFeatured"> Bài viết nổi bật
+                        </label>
+                    </div>
                 </div>
 
                 <div class="form-actions">

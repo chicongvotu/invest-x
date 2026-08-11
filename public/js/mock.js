@@ -487,10 +487,20 @@ const DEFAULT_USER = {
     email: 'demo@signalflow.vn',
     displayName: 'Người dùng thử',
     role: 'PRO',
+    isAdmin: false,
     createdAt: Date.now() - 96 * 864e5,
     lastLoginAt: Date.now() - 3 * 3600e3,
     watchlist: ['ZC1!', 'ZW1!', 'ZS1!', 'ZM1!', 'ZL1!'],
     alertPrefs: { enabled: true, minStrength: 'STRONG' }
+};
+
+const ADMIN_USER = {
+    email: 'admin@invest-x.local',
+    displayName: 'Admin',
+    role: 'ADMIN',
+    isAdmin: true,
+    createdAt: Date.now() - 180 * 864e5,
+    lastLoginAt: Date.now()
 };
 
 function readStore(key, fallback) {
@@ -511,11 +521,22 @@ function writeStore(key, value) {
 export const session = {
     isAuthed: () => readStore(USER_KEY, null) !== null,
 
+    isAdmin: () => {
+        const user = readStore(USER_KEY, null);
+        return user && user.isAdmin === true;
+    },
+
     user() {
         return readStore(USER_KEY, null);
     },
 
     login(fields = {}) {
+        // Check admin credentials
+        if (fields.email === 'admin@invest-x.local' && fields.password === 'Admin123!') {
+            writeStore(USER_KEY, ADMIN_USER);
+            return ADMIN_USER;
+        }
+
         const user = {
             ...DEFAULT_USER,
             ...(fields.email ? { email: fields.email } : {}),

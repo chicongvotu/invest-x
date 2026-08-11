@@ -8,7 +8,13 @@
       "Bash(xargs kill -9)",
       "Bash(npm start *)",
       "Bash(curl -s http://localhost:3019/api/news/articles)",
-      "Bash(curl -s http://localhost:3019/news)"
+      "Bash(curl -s http://localhost:3019/news)",
+      "Bash(curl -s http://localhost:3019/api/news/articles?limit=1000)",
+      "Bash(curl -s \"http://localhost:3019/api/news/articles?limit=1000\")",
+      "Bash(curl -v http://localhost:3019/)",
+      "Bash(pkill -f \"node.*server.js\")",
+      "Bash(curl -s http://localhost:3019/admin-news.html)",
+      "Bash(curl -s http://localhost:3019/admin/news)"
     ]
   }
 }
