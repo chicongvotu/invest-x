@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 
-<title>Tin Tức Thị Trường — Invest X</title>
-<meta name="description" content="Tin tức giao dịch, phân tích chuyên sâu, mẹo chiến lược từ Invest X.">
+<title>Tin Tức Thị Trường — SignalFlow</title>
+<meta name="description" content="Cập nhật tin tức mới nhất về giao dịch hàng hóa, phân tích thị trường, mẹo giao dịch và chiến lược đầu tư.">
 <meta name="robots" content="index, follow">
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -22,39 +22,52 @@
 <style>
 body { background: var(--bg-body, #0B0E11); }
 
-/* Hero */
-.news-hero {
+/* Hero section */
+.news-page .news-hero {
     margin-bottom: 32px;
+    padding: 40px 0;
 }
 
-.news-hero h1 {
+.news-page .news-hero h1 {
     font-size: 32px;
     font-weight: 700;
     color: var(--text-primary, #EAECEF);
-    margin: 0 0 8px 0;
+    margin: 0 0 12px 0;
 }
 
-.news-hero p {
+.news-page .news-hero p {
     font-size: 14px;
     color: var(--text-secondary, #848E9C);
     margin: 0;
+    max-width: 600px;
 }
 
 /* Control Bar */
-.news-controls {
+.news-page .news-controls {
     display: flex;
-    gap: 16px;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 28px;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--bg-elevated, #2B3139);
+    border: 1px solid var(--border, #2B3139);
+    border-radius: 10px;
 }
 
-.time-filters {
+.news-page .controls-left {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
-.time-btn {
-    padding: 10px 16px;
+.news-page .controls-right {
+    flex: 1;
+    max-width: 300px;
+}
+
+.news-page .time-filter-btn {
+    padding: 10px 18px;
     border: 1px solid var(--border, #2B3139);
     background: transparent;
     border-radius: 8px;
@@ -62,249 +75,312 @@ body { background: var(--bg-body, #0B0E11); }
     font-size: 13px;
     font-weight: 500;
     color: var(--text-secondary, #848E9C);
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.time-btn:hover {
+.news-page .time-filter-btn:hover {
     border-color: var(--brand, #FCD535);
     color: var(--text-primary, #EAECEF);
+    background: rgba(252, 213, 53, 0.08);
 }
 
-.time-btn.active {
+.news-page .time-filter-btn.active {
     background: var(--brand, #FCD535);
     color: var(--brand-text, #0B0E11);
     border-color: var(--brand, #FCD535);
     font-weight: 600;
+    box-shadow: 0 4px 12px rgba(252, 213, 53, 0.2);
 }
 
-.search-input {
-    flex: 1;
-    max-width: 280px;
+.news-page .search-input {
+    width: 100%;
     padding: 10px 14px;
     border: 1px solid var(--border, #2B3139);
     background: transparent;
     border-radius: 8px;
     font-size: 13px;
     color: var(--text-primary, #EAECEF);
-}
-
-.search-input::placeholder {
-    color: var(--text-secondary, #848E9C);
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: var(--brand, #FCD535);
-    box-shadow: 0 0 0 2px rgba(252, 213, 53, 0.1);
-}
-
-/* Main Layout: Sidebar + Grid */
-.news-layout {
-    display: flex;
-    gap: 32px;
-}
-
-/* Sidebar */
-.news-sidebar {
-    width: 240px;
-    flex-shrink: 0;
-}
-
-.filter-card {
-    background: var(--bg-elevated, #2B3139);
-    border: 1px solid var(--border, #2B3139);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.filter-card h3 {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-primary, #EAECEF);
-    margin: 0;
-    padding: 12px;
-    border-bottom: 1px solid var(--border, #2B3139);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.filter-list {
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.filter-btn {
-    padding: 10px 12px;
-    border: 1px solid var(--border, #2B3139);
-    background: transparent;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-secondary, #848E9C);
-    text-align: left;
     transition: all 0.2s;
 }
 
-.filter-btn:hover {
-    border-color: var(--brand, #FCD535);
-    color: var(--text-primary, #EAECEF);
+.news-page .search-input::placeholder {
+    color: var(--text-secondary, #848E9C);
 }
 
-.filter-btn.active {
+.news-page .search-input:focus {
+    outline: none;
+    border-color: var(--brand, #FCD535);
+    box-shadow: 0 0 0 2px rgba(252, 213, 53, 0.1);
+    background: rgba(252, 213, 53, 0.03);
+}
+
+/* Grid layout */
+.news-page .news-grid-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr 280px;
+    gap: 24px;
+    align-items: start;
+}
+
+.news-page .news-filters,
+.news-page .news-featured {
+    position: sticky;
+    top: 100px;
+}
+
+@media (max-width: 1200px) {
+    .news-page .news-grid-layout {
+        grid-template-columns: 1fr;
+    }
+    .news-page .news-filters,
+    .news-page .news-featured {
+        position: static;
+    }
+}
+
+.news-page .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border, #2B3139);
+    margin-bottom: 20px;
+}
+
+.news-page .card-head h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary, #EAECEF);
+    margin: 0;
+    letter-spacing: -0.3px;
+}
+
+.news-page .link-more {
+    color: var(--text-secondary, #848E9C);
+    text-decoration: none;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.news-page .link-more:hover {
+    color: var(--brand, #FCD535);
+}
+
+.news-page .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.news-page .featured-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.news-page .featured-item {
+    padding: 14px;
+    border-radius: 8px;
+    background: var(--bg-elevated, #2B3139);
+    border: 1px solid var(--border, #2B3139);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.news-page .featured-item:hover {
+    border-color: var(--brand, #FCD535);
+    background: var(--bg-surface, #181A20);
+    box-shadow: 0 4px 12px rgba(252, 213, 53, 0.1);
+    transform: translateX(4px);
+}
+
+.news-page .featured-item-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary, #EAECEF);
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.news-page .featured-item-cat {
+    font-size: 10px;
+    color: var(--text-secondary, #848E9C);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.news-page .filter-btn {
+    padding: 12px 20px;
+    border: 1px solid var(--border, #2B3139);
+    background: transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-secondary, #848E9C);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.news-page .filter-btn:hover {
+    border-color: var(--brand, #FCD535);
+    color: var(--text-primary, #EAECEF);
+    background: rgba(252, 213, 53, 0.08);
+}
+
+.news-page .filter-btn.active {
     background: var(--brand, #FCD535);
     color: var(--brand-text, #0B0E11);
     border-color: var(--brand, #FCD535);
     font-weight: 600;
+    box-shadow: 0 4px 12px rgba(252, 213, 53, 0.2);
 }
 
-/* Main Content */
-.news-main {
-    flex: 1;
-}
-
-/* 3-Column Grid */
-.news-grid {
+.news-page .news-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px;
-    margin-bottom: 32px;
 }
 
-.news-card {
+.news-page .news-card {
     background: var(--bg-surface, #181A20);
-    border: 1px solid var(--border, #2B3139);
     border-radius: 10px;
     overflow: hidden;
-    transition: all 0.3s;
-    cursor: pointer;
+    border: 1px solid var(--border, #2B3139);
     display: flex;
     flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
 }
 
-.news-card:hover {
+.news-page .news-card:hover {
     border-color: var(--brand, #FCD535);
-    box-shadow: 0 12px 32px rgba(252, 213, 53, 0.15);
+    box-shadow: 0 8px 24px rgba(252, 213, 53, 0.15);
     transform: translateY(-4px);
 }
 
-.card-image {
-    position: relative;
+.news-page .news-image {
     height: 200px;
     background: linear-gradient(135deg, var(--bg-elevated, #2B3139) 0%, var(--bg-surface, #181A20) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 72px;
-    overflow: hidden;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border, #2B3139);
+    position: relative;
+    transition: transform 0.3s ease;
 }
 
-.card-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.5) 100%);
+.news-page .news-card:hover .news-image {
+    transform: scale(1.05);
 }
 
-.card-badge {
+.news-page .news-badge {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    background: var(--bg-elevated, #2B3139);
-    color: var(--brand, #FCD535);
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 9px;
+    top: 12px;
+    right: 12px;
+    background: var(--brand, #FCD535);
+    color: var(--brand-text, #0B0E11);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 10px;
     font-weight: 700;
-    text-transform: uppercase;
-    z-index: 2;
+    letter-spacing: 0.5px;
 }
 
-.card-body {
+.news-page .news-content {
     padding: 16px;
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
-.card-title {
-    font-size: 14px;
+.news-page .news-category {
+    font-size: 10px;
+    color: var(--text-secondary, #848E9C);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.news-page .news-title {
+    font-size: 15px;
     font-weight: 700;
     color: var(--text-primary, #EAECEF);
     margin: 0 0 10px 0;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.card-desc {
-    font-size: 12px;
-    color: var(--text-secondary, #848E9C);
-    margin: 0 0 auto 0;
     line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
-.card-footer {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 10px;
-    margin-top: 10px;
+.news-page .news-excerpt {
+    font-size: 13px;
+    color: var(--text-secondary, #848E9C);
+    margin: 0 0 14px 0;
+    line-height: 1.5;
+    flex: 1;
+}
+
+.news-page .news-footer {
     border-top: 1px solid var(--border, #2B3139);
-    font-size: 10px;
+    padding-top: 12px;
+    margin-top: auto;
+}
+
+.news-page .news-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
     color: var(--text-secondary, #848E9C);
 }
 
-/* Pagination */
-.news-pagination {
+.news-page .pagination {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 6px;
-    padding-top: 24px;
+    margin-top: 32px;
+    padding-top: 20px;
     border-top: 1px solid var(--border, #2B3139);
 }
 
-.pag-btn {
-    width: 36px;
-    height: 36px;
+.news-page .pagination button {
+    min-width: 40px;
+    padding: 10px 12px;
     border: 1px solid var(--border, #2B3139);
     background: transparent;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
     color: var(--text-secondary, #848E9C);
+    font-size: 13px;
+    font-weight: 500;
     transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.pag-btn:hover:not(:disabled) {
-    border-color: var(--brand, #FCD535);
-    color: var(--text-primary, #EAECEF);
-}
-
-.pag-btn.active {
+.news-page .pagination button.active {
     background: var(--brand, #FCD535);
     color: var(--brand-text, #0B0E11);
     border-color: var(--brand, #FCD535);
     font-weight: 600;
 }
 
-.pag-btn:disabled {
-    opacity: 0.5;
+.news-page .pagination button:hover:not(:disabled) {
+    border-color: var(--brand, #FCD535);
+    color: var(--text-primary, #EAECEF);
+    background: rgba(252, 213, 53, 0.08);
+}
+
+.news-page .pagination button:disabled {
+    opacity: 0.4;
     cursor: not-allowed;
 }
 
-/* Modal */
-.news-modal {
+.news-page .modal {
     display: none;
     position: fixed;
     top: 0;
@@ -318,22 +394,22 @@ body { background: var(--bg-body, #0B0E11); }
     padding: 20px;
 }
 
-.news-modal.open {
+.news-page .modal.open {
     display: flex;
 }
 
-.modal-content {
+.news-page .modal-content {
     background: var(--bg-surface, #181A20);
-    border-radius: 12px;
+    border-radius: 8px;
     width: 90%;
-    max-width: 800px;
+    max-width: 700px;
     max-height: 85vh;
     overflow-y: auto;
-    padding: 32px;
+    padding: 24px;
     border: 1px solid var(--border, #2B3139);
 }
 
-.modal-close {
+.news-page .modal-close {
     float: right;
     font-size: 28px;
     cursor: pointer;
@@ -341,61 +417,89 @@ body { background: var(--bg-body, #0B0E11); }
     background: none;
     border: none;
     padding: 0;
-    transition: color 0.2s;
+    line-height: 1;
 }
 
-.modal-close:hover {
+.news-page .modal-close:hover {
     color: var(--brand, #FCD535);
 }
 
-.article-title {
-    font-size: 28px;
+.news-page .article-title {
+    font-size: 24px;
     font-weight: 700;
-    margin: 20px 0 16px 0;
+    margin: 16px 0 12px 0;
     color: var(--text-primary, #EAECEF);
     clear: both;
 }
 
-.article-meta {
+.news-page .article-meta {
     display: flex;
     gap: 16px;
-    font-size: 12px;
     color: var(--text-secondary, #848E9C);
-    margin-bottom: 20px;
+    font-size: 12px;
+    margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border, #2B3139);
 }
 
-.article-content {
+.news-page .article-content {
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.6;
     color: var(--text-primary, #EAECEF);
     white-space: pre-wrap;
 }
 
-/* Responsive */
 @media (max-width: 1200px) {
-    .news-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .news-page .news-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .news-page .news-filters,
+    .news-page .news-featured {
+        position: static;
     }
 }
 
 @media (max-width: 768px) {
-    .news-layout {
-        flex-direction: column;
-        gap: 20px;
+    .news-page .news-hero {
+        padding: 24px 0;
+        margin-bottom: 24px;
     }
-    .news-sidebar {
+    .news-page .news-hero h1 {
+        font-size: 24px;
+    }
+    .news-page .news-hero p {
+        font-size: 13px;
+    }
+    .news-page .news-controls {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .news-page .controls-left {
         width: 100%;
+        justify-content: flex-start;
     }
-    .news-grid {
-        grid-template-columns: 1fr;
-    }
-    .news-controls {
-        flex-direction: column;
-    }
-    .search-input {
+    .news-page .controls-right {
+        width: 100%;
         max-width: 100%;
+    }
+    .news-page .news-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .news-page .news-image {
+        height: 160px;
+        font-size: 56px;
+    }
+    .news-page .news-card {
+        border-radius: 8px;
+    }
+    .news-page .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+    .news-page .article-title {
+        font-size: 18px;
     }
 }
 </style>
@@ -406,43 +510,60 @@ body { background: var(--bg-body, #0B0E11); }
 {{header}}
 
 <main id="main">
-<div class="container">
-    <!-- Hero -->
+<div class="container news-page">
+
+    <!-- Hero Section -->
     <div class="news-hero">
-        <h1>Tin Tức Thị Trường</h1>
-        <p>Cập nhật tin tức giao dịch, phân tích chuyên sâu, mẹo chiến lược từ Invest X</p>
+        <h1>📰 Tin Tức Thị Trường</h1>
+        <p>Cập nhật tin tức giao dịch, phân tích chuyên sâu và mẹo chiến lược từ cộng đồng trader</p>
     </div>
 
-    <!-- Controls: Time filters + Search -->
+    <!-- Control Bar -->
     <div class="news-controls">
-        <div class="time-filters" id="timeFilters"></div>
-        <input type="text" id="searchInput" class="search-input" placeholder="Tìm kiếm tin tức...">
-    </div>
-
-    <!-- Layout: Sidebar + Main -->
-    <div class="news-layout">
-        <!-- Sidebar: Categories -->
-        <aside class="news-sidebar">
-            <div class="filter-card">
-                <h3>Danh mục</h3>
-                <div class="filter-list" id="filters"></div>
-            </div>
-        </aside>
-
-        <!-- Main: Grid + Pagination -->
-        <div class="news-main">
-            <div class="news-grid" id="newsList"></div>
-            <div class="news-pagination" id="pagination"></div>
+        <div class="controls-left">
+            <button class="time-filter-btn active" data-filter="all">Tất cả</button>
+            <button class="time-filter-btn" data-filter="today">Hôm nay</button>
+            <button class="time-filter-btn" data-filter="week">Tuần này</button>
+            <button class="time-filter-btn" data-filter="month">Tháng này</button>
+        </div>
+        <div class="controls-right">
+            <input type="text" id="searchInput" class="search-input" placeholder="Tìm kiếm tin tức...">
         </div>
     </div>
-</div>
 
-<!-- Modal -->
-<div class="news-modal" id="newsModal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeModal()">&times;</span>
-        <div id="modalBody"></div>
+    <div class="news-grid-layout">
+        <!-- Filters (left sidebar) -->
+        <aside class="card news-filters">
+            <div class="card-head">
+                <h2>Danh mục</h2>
+            </div>
+            <div class="filters" id="filters"></div>
+        </aside>
+
+        <!-- Main news grid (center) -->
+        <section>
+            <div id="error" class="error" style="display: none;"></div>
+            <div class="news-grid" id="newsList"></div>
+            <div class="pagination" id="pagination"></div>
+        </section>
+
+        <!-- Featured articles (right sidebar) -->
+        <aside class="card news-featured">
+            <div class="card-head">
+                <h2>Nổi bật</h2>
+            </div>
+            <div class="featured-list" id="featuredList"></div>
+        </aside>
     </div>
+
+    <!-- Article detail modal -->
+    <div class="modal" id="newsModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
 </div>
 </main>
 
