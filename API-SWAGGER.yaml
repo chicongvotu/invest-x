@@ -1,0 +1,189 @@
+openapi: 3.0.0
+info:
+  title: Invest-X News API
+  description: Backend API for managing news articles with Firebase
+  version: 1.0.0
+  contact:
+    email: congnguyen29102002@gmail.com
+
+servers:
+  - url: https://invest-x-pearl.vercel.app/api
+    description: Production (via Vercel)
+  - url: https://asia-southeast1-invest-x-505513.cloudfunctions.net/api
+    description: Direct Cloud Function
+
+paths:
+  /news:
+    get:
+      summary: Get all news articles
+      description: Public endpoint - anyone can access
+      tags:
+        - News (Public)
+      responses:
+        '200':
+          description: Success - returns array of articles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "article-abc123"
+                        title:
+                          type: string
+                          example: "Breaking News"
+                        content:
+                          type: string
+                          example: "Article content here"
+                        imageUrl:
+                          type: string
+                          nullable: true
+                          example: "https://example.com/image.jpg"
+                        youtubeUrl:
+                          type: string
+                          nullable: true
+                          example: "https://youtu.be/dQw4w9WgXcQ"
+                        createdAt:
+                          type: string
+                          format: date-time
+                  count:
+                    type: integer
+                    example: 5
+
+  /admin/news:
+    post:
+      summary: Create new article (Admin only)
+      description: Create a new news article. Requires valid Firebase ID token with admin claim.
+      tags:
+        - News (Admin)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - content
+              properties:
+                title:
+                  type: string
+                  example: "New Article Title"
+                content:
+                  type: string
+                  example: "Full article content..."
+                imageUrl:
+                  type: string
+                  nullable: true
+                  example: "https://example.com/image.jpg"
+                youtubeUrl:
+                  type: string
+                  nullable: true
+                  example: "https://youtu.be/dQw4w9WgXcQ"
+      responses:
+        '201':
+          description: Article created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      content:
+                        type: string
+                      createdAt:
+                        type: string
+        '401':
+          description: Missing or invalid authorization
+        '403':
+          description: User is not admin
+
+  /admin/news/{id}:
+    put:
+      summary: Update article (Admin only)
+      tags:
+        - News (Admin)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "article-abc123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                imageUrl:
+                  type: string
+                youtubeUrl:
+                  type: string
+      responses:
+        '200':
+          description: Article updated successfully
+        '404':
+          description: Article not found
+        '403':
+          description: User is not admin
+
+    delete:
+      summary: Delete article (Admin only)
+      tags:
+        - News (Admin)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "article-abc123"
+      responses:
+        '200':
+          description: Article deleted successfully
+        '404':
+          description: Article not found
+        '403':
+          description: User is not admin
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Firebase ID Token
+
+tags:
+  - name: News (Public)
+    description: Public endpoints - no authentication required
+  - name: News (Admin)
+    description: Admin endpoints - requires valid Firebase ID token with admin=true claim
