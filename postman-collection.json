@@ -1,0 +1,153 @@
+{
+  "info": {
+    "name": "Invest-X News API",
+    "description": "Complete API collection for news management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDX-56B0mIqTKZdWBZx7rI0vkrGRKJNrBg",
+              "protocol": "https",
+              "host": ["identitytoolkit", "googleapis", "com"],
+              "path": ["v1", "accounts:signInWithPassword"],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "AIzaSyDX-56B0mIqTKZdWBZx7rI0vkrGRKJNrBg"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@invest-x.com\",\n  \"password\": \"Invest123!\",\n  \"returnSecureToken\": true\n}"
+            },
+            "description": "Login with admin account and get ID token"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public APIs",
+      "item": [
+        {
+          "name": "Get All Articles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/news",
+              "host": ["{{baseUrl}}"],
+              "path": ["news"]
+            },
+            "description": "Fetch all news articles (public)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin APIs",
+      "item": [
+        {
+          "name": "Create Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{idToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/news",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "news"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Breaking News Title\",\n  \"content\": \"Full article content here...\",\n  \"imageUrl\": \"https://via.placeholder.com/400x300\",\n  \"youtubeUrl\": \"https://youtu.be/dQw4w9WgXcQ\"\n}"
+            },
+            "description": "Create new article (admin only)"
+          }
+        },
+        {
+          "name": "Update Article",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{idToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/news/{{articleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "news", "{{articleId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Title\",\n  \"content\": \"Updated content...\"\n}"
+            },
+            "description": "Update existing article (admin only)"
+          }
+        },
+        {
+          "name": "Delete Article",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{idToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/news/{{articleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "news", "{{articleId}}"]
+            },
+            "description": "Delete article (admin only)"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://invest-x-pearl.vercel.app/api",
+      "type": "string"
+    },
+    {
+      "key": "idToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "articleId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
