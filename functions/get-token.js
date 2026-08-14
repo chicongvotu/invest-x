@@ -70,4 +70,4 @@ Test with curl:
 ═══════════════════════════════════════════════════════════════
 `);
 
-console.log('👉 Choose METHOD 1 (Browser Console) — it\\'s easiest!');
+console.log('👉 Choose METHOD 1 (Browser Console) - its easiest!');
