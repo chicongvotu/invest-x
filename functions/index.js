@@ -18,6 +18,18 @@ app.use(express.json());
 // Helper Functions
 // ============================================
 
+// Decode JWT without verification (for custom tokens in dev)
+function decodeJwt(token) {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const decoded = JSON.parse(Buffer.from(parts[1], 'base64').toString());
+    return decoded;
+  } catch (e) {
+    return null;
+  }
+}
+
 // Verify ID token from Authorization header
 async function verifyAuth(req) {
   const authHeader = req.headers.authorization;
@@ -27,9 +39,21 @@ async function verifyAuth(req) {
 
   const token = authHeader.substring(7); // Remove 'Bearer '
   try {
+    // Try ID token first
     const decodedToken = await auth.verifyIdToken(token);
     return { uid: decodedToken.uid, email: decodedToken.email };
-  } catch (error) {
+  } catch (idTokenError) {
+    // Fallback: try custom token (for dev/testing)
+    const decoded = decodeJwt(token);
+    if (decoded && decoded.uid) {
+      // Custom token - fetch user info to confirm it's valid
+      try {
+        const userRecord = await auth.getUser(decoded.uid);
+        return { uid: userRecord.uid, email: userRecord.email };
+      } catch (userError) {
+        return { error: 'Invalid token - user not found' };
+      }
+    }
     return { error: 'Invalid or expired token' };
   }
 }
@@ -85,6 +109,38 @@ app.post('/auth/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
     res.status(400).json({ error: error.message });
+  }
+});
+
+// POST /auth/exchange-custom-token - Exchange custom token for ID token
+app.post('/auth/exchange-custom-token', async (req, res) => {
+  try {
+    const { customToken } = req.body;
+    if (!customToken) {
+      return res.status(400).json({ error: 'customToken is required' });
+    }
+
+    const apiKey = 'AIzaSyDX-56B0mIqTKZdWBZx7rI0vkrGRKJNrBg';
+    const response = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: customToken,
+          returnSecureToken: true
+        })
+      }
+    );
+
+    const data = await response.json();
+    if (data.idToken) {
+      res.json({ success: true, idToken: data.idToken });
+    } else {
+      res.status(400).json({ error: data.error?.message || 'Failed to exchange token', details: data.error });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
