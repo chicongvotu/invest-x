@@ -1,58 +1,73 @@
 #!/usr/bin/env node
 
 /**
- * Script để lấy ID Token cho admin user
- * Dùng cho testing
+ * Get ID Token cho testing
+ * Hướng dẫn: Login qua browser Firebase SDK
  *
  * Usage:
  *   node get-token.js
  */
 
-const admin = require('firebase-admin');
-const serviceAccount = require('./firebase-key.json');
+console.log(`
+╔════════════════════════════════════════════════════════════╗
+║          Get Admin Token for API Testing                  ║
+╚════════════════════════════════════════════════════════════╝
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+📧 Admin Email:    admin@invest-x.com
+🔐 Admin Password: Invest123!
 
-const auth = admin.auth();
+✅ 3 WAYS TO GET TOKEN:
 
-async function getAdminToken() {
-  try {
-    const uid = 'XzQWfjbfiEhuh5eJUfk6626paM43'; // Admin UID
+METHOD 1: Browser Console (Recommended)
+────────────────────────────────────────
+1. Go to: https://invest-x-pearl.vercel.app/
+2. Open F12 > Console
+3. Paste:
+   firebase.auth().signInWithEmailAndPassword('admin@invest-x.com', 'Invest123!')
+     .then(async u => {
+       const t = await u.user.getIdToken();
+       console.log('Token:', t);
+       console.log('Copy token above and use in curl/postman');
+     });
 
-    // Create custom token
-    console.log('🔑 Creating custom token for admin user...');
-    const customToken = await auth.createCustomToken(uid);
-    console.log('✅ Custom token created (valid for 1 hour):\n');
-    console.log(customToken);
-    console.log('\n');
+4. Copy the token and use below
 
-    // Get user info
-    const userRecord = await auth.getUser(uid);
-    console.log('📧 User:', userRecord.email);
-    console.log('👤 Admin:', userRecord.customClaims?.admin === true ? 'Yes' : 'No');
+METHOD 2: Curl Login (Terminal)
+────────────────────────────────
+Run this command to get token:
 
-    console.log('\n📋 How to use:');
-    console.log('1. Copy the token above');
-    console.log('2. Use in curl:');
-    console.log(`   curl -X POST https://invest-x-pearl.vercel.app/api/admin/news \\`);
-    console.log(`     -H "Authorization: Bearer <TOKEN>" \\`);
-    console.log(`     -H "Content-Type: application/json" \\`);
-    console.log(`     -d '{"title":"...","content":"..."}'`);
-    console.log('\n3. Or in JavaScript:');
-    console.log('   const token = "<TOKEN>";');
-    console.log('   fetch("/api/admin/news", {');
-    console.log('     method: "POST",');
-    console.log('     headers: { "Authorization": "Bearer " + token }');
-    console.log('   })');
+  curl -s -X POST \\
+    'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDKR...' \\
+    -H 'Content-Type: application/json' \\
+    -d '{
+      "email": "admin@invest-x.com",
+      "password": "Invest123!",
+      "returnSecureToken": true
+    }' | jq '.idToken'
 
-    process.exit(0);
-  } catch (error) {
-    console.error('❌ Error:', error.message);
-    console.error('\nFix: Make sure firebase-key.json exists in functions/ folder');
-    process.exit(1);
-  }
-}
+METHOD 3: Firebase Emulator (Local Dev)
+────────────────────────────────────────
+Run:  firebase emulators:start --only auth
 
-getAdminToken();
+═══════════════════════════════════════════════════════════════
+
+📋 AFTER GETTING TOKEN:
+
+Test with curl:
+
+  TOKEN="<PASTE_YOUR_TOKEN_HERE>"
+
+  curl -X POST https://invest-x-pearl.vercel.app/api/admin/news \\
+    -H "Authorization: Bearer \$TOKEN" \\
+    -H "Content-Type: application/json" \\
+    -d '{
+      "title": "Test Article",
+      "content": "Test content",
+      "imageUrl": "https://via.placeholder.com/400",
+      "youtubeUrl": "https://youtu.be/dQw4w9WgXcQ"
+    }'
+
+═══════════════════════════════════════════════════════════════
+`);
+
+console.log('👉 Choose METHOD 1 (Browser Console) — it\\'s easiest!');

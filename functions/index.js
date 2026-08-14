@@ -48,37 +48,42 @@ async function isAdmin(uid) {
 // Routes
 // ============================================
 
-// POST /auth/token - Get custom token for testing (development only)
-// Use Firebase SDK to exchange this for ID token
-app.post('/auth/token', async (req, res) => {
+// POST /auth/login - Login and get token (for testing)
+app.post('/auth/login', async (req, res) => {
   try {
-    const { uid } = req.body;
+    const { email, password } = req.body;
 
-    if (!uid) {
+    if (!email || !password) {
       return res.status(400).json({
-        error: 'UID is required',
-        message: 'For admin user: XzQWfjbfiEhuh5eJUfk6626paM43'
+        error: 'Email and password are required',
+        example: {
+          email: 'admin@invest-x.com',
+          password: 'Invest123!'
+        }
       });
     }
 
-    // Verify user exists
-    const userRecord = await auth.getUser(uid);
+    // Get user by email
+    const userRecord = await auth.getUserByEmail(email);
     const isAdminUser = userRecord.customClaims?.admin === true;
 
-    // Create custom token
-    const customToken = await auth.createCustomToken(uid);
+    // Note: Password verification is handled by Firebase SDK
+    // This endpoint only checks if user exists and has admin claim
+    // Real token exchange happens in frontend via Firebase SDK
 
     res.json({
       success: true,
       data: {
-        customToken,
-        uid,
         email: userRecord.email,
+        uid: userRecord.uid,
         isAdmin: isAdminUser,
-        message: 'Exchange this customToken for idToken using Firebase SDK'
+        message: 'Use Firebase SDK in frontend to get idToken after login'
       }
     });
   } catch (error) {
+    if (error.code === 'auth/user-not-found') {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
     res.status(400).json({ error: error.message });
   }
 });

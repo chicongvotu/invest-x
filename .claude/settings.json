@@ -18,7 +18,14 @@
       "Bash(git -C /Users/admin/Downloads/invest-x log --oneline -5)",
       "Bash(pkill -f \"node.*server\")",
       "Bash(npm --prefix /Users/admin/Downloads/invest-x start)",
-      "Bash(curl -s -w \"HTTP Status: %{http_code}\\\\n\" http://localhost:3019/admin/news)"
+      "Bash(curl -s -w \"HTTP Status: %{http_code}\\\\n\" http://localhost:3019/admin/news)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --tree-filter 'rm -f functions/firebase-key.json functions/invest-x-505513-firebase-adminsdk-fbsvc-340138e08d.json invest-x-505513-firebase-adminsdk-fbsvc-340138e08d.json' HEAD --force)",
+      "Bash(git clean *)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --tree-filter 'rm -f functions/firebase-key.json functions/invest-x-505513-firebase-adminsdk-fbsvc-340138e08d.json' -- --all)",
+      "Bash(curl https://invest-x-pearl.vercel.app/api/news)",
+      "Bash(firebase deploy *)",
+      "Bash(curl -X POST https://invest-x-pearl.vercel.app/api/auth/token -H 'Content-Type: application/json' -d '{ *)",
+      "Bash(node get-token.js)"
     ]
   }
 }
