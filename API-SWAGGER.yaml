@@ -13,6 +13,58 @@ servers:
     description: Direct Cloud Function
 
 paths:
+  /auth/token:
+    post:
+      summary: Get custom token for testing (Development only)
+      description: |
+        Get a custom token to test admin endpoints.
+
+        For admin: use UID `XzQWfjbfiEhuh5eJUfk6626paM43`
+
+        Steps:
+        1. POST to this endpoint with UID
+        2. Get customToken from response
+        3. Exchange customToken for idToken using Firebase SDK
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - uid
+              properties:
+                uid:
+                  type: string
+                  example: "XzQWfjbfiEhuh5eJUfk6626paM43"
+                  description: "Firebase User UID"
+      responses:
+        '200':
+          description: Success - returns custom token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      customToken:
+                        type: string
+                        description: "Firebase custom token"
+                      uid:
+                        type: string
+                      email:
+                        type: string
+                      isAdmin:
+                        type: boolean
+                      message:
+                        type: string
+
   /news:
     get:
       summary: Get all news articles

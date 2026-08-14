@@ -48,6 +48,41 @@ async function isAdmin(uid) {
 // Routes
 // ============================================
 
+// POST /auth/token - Get custom token for testing (development only)
+// Use Firebase SDK to exchange this for ID token
+app.post('/auth/token', async (req, res) => {
+  try {
+    const { uid } = req.body;
+
+    if (!uid) {
+      return res.status(400).json({
+        error: 'UID is required',
+        message: 'For admin user: XzQWfjbfiEhuh5eJUfk6626paM43'
+      });
+    }
+
+    // Verify user exists
+    const userRecord = await auth.getUser(uid);
+    const isAdminUser = userRecord.customClaims?.admin === true;
+
+    // Create custom token
+    const customToken = await auth.createCustomToken(uid);
+
+    res.json({
+      success: true,
+      data: {
+        customToken,
+        uid,
+        email: userRecord.email,
+        isAdmin: isAdminUser,
+        message: 'Exchange this customToken for idToken using Firebase SDK'
+      }
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // GET /news - Public: Get all articles
 app.get('/news', async (req, res) => {
   try {
