@@ -3,6 +3,14 @@
     {
       "source": "/api/:path*",
       "destination": "https://asia-southeast1-invest-x-505513.cloudfunctions.net/api/:path*"
+    },
+    {
+      "source": "/admin-login",
+      "destination": "/admin-login.html"
+    },
+    {
+      "source": "/admin-news",
+      "destination": "/admin-news.html"
     }
   ]
 }
