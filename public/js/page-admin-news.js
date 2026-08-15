@@ -110,7 +110,7 @@ async function checkAdminAccess() {
     const user = window.auth.currentUser;
 
     if (!user) {
-        location.href = '/login?next=/admin-news.html';
+        location.href = '/admin-login';
         return false;
     }
 
@@ -129,7 +129,7 @@ async function checkAdminAccess() {
         }
         return true;
     } catch (error) {
-        location.href = '/login?next=/admin-news.html';
+        location.href = '/admin-login';
         return false;
     }
 }

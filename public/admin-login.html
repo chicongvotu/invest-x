@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem('sf-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+
+<title>Admin Đăng Nhập — SignalFlow</title>
+<meta name="description" content="Admin login - Quản lý tin tức">
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+
+<style>
+body {
+  background: var(--bg-body, #0B0E11);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-surface, #12161B);
+  border: 1px solid var(--border, #2B3139);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.login-logo {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary, #E4E6EB);
+  margin: 0 0 8px 0;
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary, #848E9C);
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary, #E4E6EB);
+  margin-bottom: 8px;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  background: var(--bg-input, #1B1F26);
+  border: 1px solid var(--border, #2B3139);
+  border-radius: 8px;
+  color: var(--text-primary, #E4E6EB);
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: var(--brand, #FCD535);
+  background: var(--bg-input, #1B1F26);
+}
+
+.btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--brand, #FCD535);
+  color: #000;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #ef4444;
+  margin-bottom: 20px;
+  display: none;
+}
+
+.error-message.show {
+  display: block;
+}
+
+.help-text {
+  font-size: 12px;
+  color: var(--text-secondary, #848E9C);
+  text-align: center;
+  margin-top: 20px;
+}
+
+.help-text a {
+  color: var(--brand, #FCD535);
+  text-decoration: none;
+}
+
+.help-text a:hover {
+  text-decoration: underline;
+}
+
+.loading {
+  display: none;
+  text-align: center;
+  color: var(--text-secondary, #848E9C);
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+.loading.show {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-header">
+    <div class="login-logo">🔐</div>
+    <h1 class="login-title">Admin Đăng Nhập</h1>
+    <p class="login-subtitle">Quản lý tin tức & nội dung</p>
+  </div>
+
+  <div id="errorMessage" class="error-message"></div>
+
+  <form id="loginForm">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="admin@invest-x.com"
+        required
+        autocomplete="email"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mật khẩu</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="••••••••"
+        required
+        autocomplete="current-password"
+      >
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="submitBtn">
+      Đăng Nhập
+    </button>
+  </form>
+
+  <div class="loading" id="loading">
+    ⏳ Đang xử lý...
+  </div>
+
+  <div class="help-text">
+    Quên mật khẩu? <a href="/">Liên hệ quản trị viên</a>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+
+<!-- Firebase Init & Login Logic -->
+<script>
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyDX-56B0mIqTKZdWBZx7rI0vkrGRKJNrBg",
+  authDomain: "invest-x-505513.firebaseapp.com",
+  projectId: "invest-x-505513",
+  storageBucket: "invest-x-505513.firebasestorage.app",
+  messagingSenderId: "829926289619",
+  appId: "1:829926289619:web:a1b2c3d4e5f6g7h8i9j0"
+};
+
+firebase.initializeApp(firebaseConfig);
+window.auth = firebase.auth();
+
+// Login form handler
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const submitBtn = document.getElementById('submitBtn');
+  const errorMsg = document.getElementById('errorMessage');
+  const loading = document.getElementById('loading');
+
+  // Show loading
+  submitBtn.disabled = true;
+  loading.classList.add('show');
+  errorMsg.classList.remove('show');
+
+  try {
+    // Sign in
+    const result = await window.auth.signInWithEmailAndPassword(email, password);
+    console.log('✓ Login success:', result.user.email);
+
+    // Wait a moment for token to be ready
+    await result.user.getIdTokenResult();
+
+    // Redirect to admin panel
+    setTimeout(() => {
+      location.href = '/admin-news.html';
+    }, 500);
+
+  } catch (error) {
+    console.error('Login error:', error.code);
+
+    let message = 'Đăng nhập thất bại';
+    if (error.code === 'auth/user-not-found') {
+      message = 'Email không tồn tại';
+    } else if (error.code === 'auth/wrong-password') {
+      message = 'Mật khẩu không đúng';
+    } else if (error.code === 'auth/invalid-email') {
+      message = 'Email không hợp lệ';
+    } else if (error.code === 'auth/user-disabled') {
+      message = 'Tài khoản này đã bị vô hiệu hóa';
+    }
+
+    errorMsg.textContent = message;
+    errorMsg.classList.add('show');
+
+    submitBtn.disabled = false;
+    loading.classList.remove('show');
+  }
+});
+
+// Auto-redirect if already logged in
+window.auth.onAuthStateChanged((user) => {
+  if (user) {
+    // Already logged in, redirect to admin panel
+    location.href = '/admin-news.html';
+  }
+});
+</script>
+
+</body>
+</html>
