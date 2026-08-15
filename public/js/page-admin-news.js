@@ -1,11 +1,114 @@
 import { api } from './api.js';
 import { session } from './mock.js';
+import { auth, storage } from './firebase-config.js';
 
 let allArticles = [];
 
+// Upload Image to Firebase Storage
+async function uploadImageToStorage(file) {
+  if (!file) return null;
+
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      alert('Vui lòng đăng nhập trước');
+      return null;
+    }
+
+    // Validate file
+    if (!file.type.startsWith('image/')) {
+      alert('Chỉ chấp nhận file ảnh (JPG, PNG, WebP...)');
+      return null;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Kích thước ảnh không vượt quá 5MB');
+      return null;
+    }
+
+    // Upload
+    document.getElementById('uploadStatus').textContent = 'Đang tải lên...';
+    const timestamp = Date.now();
+    const fileName = `articles/${timestamp}-${file.name}`;
+    const storageRef = storage.ref(fileName);
+
+    await storageRef.put(file, {
+      metadata: {
+        contentType: file.type,
+        customMetadata: { uploadedBy: user.email }
+      }
+    });
+
+    // Get download URL
+    const imageUrl = await storageRef.getDownloadURL();
+    document.getElementById('uploadStatus').textContent = '✅ Tải lên thành công';
+
+    return imageUrl;
+  } catch (error) {
+    console.error('Upload error:', error);
+    document.getElementById('uploadStatus').textContent = '❌ Lỗi: ' + error.message;
+    alert('Lỗi tải ảnh: ' + error.message);
+    return null;
+  }
+}
+
+// Setup drag-drop
+function setupImageUpload() {
+  const uploadArea = document.getElementById('imageUploadArea');
+  const fileInput = document.getElementById('imageFile');
+  const previewDiv = document.getElementById('imagePreview');
+  const previewImg = document.getElementById('previewImg');
+
+  if (!uploadArea || !fileInput) return;
+
+  // Click to select
+  uploadArea.addEventListener('click', () => fileInput.click());
+
+  // Drag-drop
+  uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.style.borderColor = 'var(--brand, #FCD535)';
+    uploadArea.style.background = 'rgba(252, 213, 53, 0.05)';
+  });
+
+  uploadArea.addEventListener('dragleave', () => {
+    uploadArea.style.borderColor = 'var(--border, #2B3139)';
+    uploadArea.style.background = 'transparent';
+  });
+
+  uploadArea.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    uploadArea.style.borderColor = 'var(--border, #2B3139)';
+    uploadArea.style.background = 'transparent';
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      await handleFileSelect(files[0]);
+    }
+  });
+
+  // File input change
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      handleFileSelect(e.target.files[0]);
+    }
+  });
+
+  // Handle file selection
+  async function handleFileSelect(file) {
+    previewDiv.style.display = 'block';
+    previewImg.src = URL.createObjectURL(file);
+
+    const imageUrl = await uploadImageToStorage(file);
+    if (imageUrl) {
+      document.getElementById('imageUrl').value = imageUrl;
+    }
+  }
+}
+
 // Auth guard - check if admin using Firebase
 function checkAdminAccess() {
-    const user = firebase.auth().currentUser;
+    const user = auth.currentUser;
 
     if (!user) {
         location.href = '/login?next=/admin-news.html';
@@ -327,5 +430,6 @@ window.deleteArticle = deleteArticle;
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     if (!checkAdminAccess()) return;
+    setupImageUpload();
     loadArticlesList();
 });

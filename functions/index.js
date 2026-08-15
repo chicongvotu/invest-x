@@ -2,7 +2,6 @@ const { onRequest } = require('firebase-functions/v2/https');
 const express = require('express');
 const cors = require('cors');
 const admin = require('firebase-admin');
-const busboy = require('busboy');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -17,92 +16,76 @@ const app = express();
 // Middleware
 app.use(cors({ origin: '*' }));
 
-// POST /admin/news/upload-image - Upload image using busboy
+// POST /admin/news/upload-image - Upload image (FormData - drag & drop)
 app.post('/admin/news/upload-image', async (req, res) => {
   try {
-    console.log('[UPLOAD] Start');
-    console.log('[UPLOAD] Content-Type:', req.headers['content-type']);
-
-    // Step 1: Verify auth
+    // Verify auth
     const authResult = await verifyAuth(req);
     if (authResult.error) {
       return res.status(401).json({ error: authResult.error });
     }
-    console.log('[UPLOAD] Auth OK:', authResult.email);
 
-    // Step 2: Check if admin
+    // Check if admin
     const isAdminUser = await isAdmin(authResult.uid);
     if (!isAdminUser) {
       return res.status(403).json({ error: 'User is not admin' });
     }
-    console.log('[UPLOAD] Admin OK');
 
-    // Step 3: Parse multipart with busboy
-    const bb = busboy({ headers: req.headers });
-    console.log('[UPLOAD] Busboy created');
+    // Parse multipart manually
+    const contentType = req.headers['content-type'];
+    if (!contentType || !contentType.includes('multipart/form-data')) {
+      return res.status(400).json({ error: 'Content-Type must be multipart/form-data' });
+    }
 
-    let fileBuffer = null;
-    let originalName = null;
-    let mimeType = null;
-    let responsesSent = false;
+    // Extract boundary from content-type
+    const boundaryMatch = contentType.match(/boundary=([^\s;]+)/);
+    if (!boundaryMatch) {
+      return res.status(400).json({ error: 'Invalid multipart boundary' });
+    }
 
-    bb.on('field', (fieldname, value) => {
-      console.log('[UPLOAD] Field:', fieldname);
+    const boundary = boundaryMatch[1];
+    const chunks = [];
+
+    req.on('data', (chunk) => {
+      chunks.push(chunk);
     });
 
-    bb.on('file', (fieldname, file, info) => {
-      console.log('[UPLOAD] File event:', fieldname, info);
-      if (fieldname !== 'image') {
-        console.log('[UPLOAD] Skip file:', fieldname);
-        file.resume();
-        return;
-      }
-
-      mimeType = info.mimeType;
-      console.log('[UPLOAD] MIME:', mimeType);
-
-      if (!mimeType.startsWith('image/')) {
-        file.resume();
-        return;
-      }
-
-      const chunks = [];
-      file.on('data', (chunk) => {
-        console.log('[UPLOAD] Chunk:', chunk.length);
-        chunks.push(chunk);
-      });
-      file.on('end', () => {
-        fileBuffer = Buffer.concat(chunks);
-        originalName = info.filename;
-        console.log('[UPLOAD] File end, size:', fileBuffer.length);
-      });
-      file.on('error', (err) => {
-        console.error('[UPLOAD] File error:', err.message);
-      });
-    });
-
-    bb.on('close', async () => {
-      console.log('[UPLOAD] Busboy close');
-
-      if (responsesSent) return;
-
-      if (!fileBuffer) {
-        responsesSent = true;
-        return res.status(400).json({ error: 'No image file provided' });
-      }
-
-      if (!mimeType || !mimeType.startsWith('image/')) {
-        responsesSent = true;
-        return res.status(400).json({ error: 'Only image files allowed' });
-      }
-
+    req.on('end', async () => {
       try {
-        console.log('[UPLOAD] Uploading to Storage:', originalName);
-        const timestamp = Date.now();
-        const filename = `articles/${timestamp}-${originalName}`;
-        const file = bucket.file(filename);
+        const buffer = Buffer.concat(chunks);
+        const body = buffer.toString();
 
-        await file.save(fileBuffer, {
+        // Extract filename and MIME type from multipart body
+        const filenameMatch = body.match(/filename="([^"]+)"/);
+        const mimeMatch = body.match(/Content-Type: ([^\r\n]+)/);
+
+        if (!filenameMatch) {
+          return res.status(400).json({ error: 'No filename provided' });
+        }
+
+        const filename = filenameMatch[1];
+        const mimeType = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+
+        if (!mimeType.startsWith('image/')) {
+          return res.status(400).json({ error: 'Only image files allowed' });
+        }
+
+        // Extract file binary data
+        const boundaryBuffer = `--${boundary}`.split('').map(c => c.charCodeAt(0));
+        const startIndex = body.indexOf('\r\n\r\n') + 4;
+        const endIndex = body.lastIndexOf(`--${boundary}`);
+        const fileData = buffer.slice(startIndex, endIndex - 2);
+
+        if (fileData.length > 5 * 1024 * 1024) {
+          return res.status(400).json({ error: 'File size exceeds 5MB limit' });
+        }
+
+        // Upload to Storage
+        const timestamp = Date.now();
+        const storagePath = `articles/${timestamp}-${filename}`;
+        const file = bucket.file(storagePath);
+
+        await file.save(fileData, {
           metadata: {
             contentType: mimeType,
             metadata: {
@@ -112,37 +95,25 @@ app.post('/admin/news/upload-image', async (req, res) => {
           }
         });
 
-        console.log('[UPLOAD] Upload success');
-        const publicUrl = `https://storage.googleapis.com/invest-x-505513.firebasestorage.app/${filename}`;
+        const publicUrl = `https://storage.googleapis.com/invest-x-505513.firebasestorage.app/${storagePath}`;
 
-        responsesSent = true;
         res.json({
           success: true,
           data: {
             imageUrl: publicUrl,
-            filename: originalName,
-            size: fileBuffer.length
+            filename: filename,
+            size: fileData.length
           }
         });
-      } catch (uploadError) {
-        console.error('[UPLOAD] Upload error:', uploadError.message);
-        responsesSent = true;
-        res.status(500).json({ error: uploadError.message });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
       }
     });
 
-    bb.on('error', (err) => {
-      console.error('[UPLOAD] Busboy error:', err.message);
-      if (!responsesSent) {
-        responsesSent = true;
-        res.status(400).json({ error: err.message });
-      }
+    req.on('error', (error) => {
+      res.status(400).json({ error: error.message });
     });
-
-    console.log('[UPLOAD] Piping request to busboy');
-    req.pipe(bb);
   } catch (error) {
-    console.error('[UPLOAD] Try-catch error:', error.message);
     res.status(500).json({ error: error.message });
   }
 });

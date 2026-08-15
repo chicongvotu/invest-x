@@ -495,126 +495,13 @@ body { background: var(--bg-body, #0B0E11); }
 
 {{footer}}
 
+<!-- Firebase SDK CDN -->
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"></script>
+
 <script type="module" src="/js/layout.js"></script>
-
-<script>
-// Firebase Config
-const firebaseConfig = {
-  apiKey: "AIzaSyDX-56B0mIqTKZdWBZx7rI0vkrGRKJNrBg",
-  authDomain: "invest-x-505513.firebaseapp.com",
-  projectId: "invest-x-505513",
-  storageBucket: "invest-x-505513.firebasestorage.app",
-  messagingSenderId: "829926289619",
-  appId: "1:829926289619:web:a1b2c3d4e5f6g7h8i9j0"
-};
-
-firebase.initializeApp(firebaseConfig);
-window.storage = firebase.storage();
-window.auth = firebase.auth();
-
-// Upload Image to Firebase Storage
-async function uploadImageToStorage(file) {
-  if (!file) return null;
-
-  try {
-    const user = auth.currentUser;
-    if (!user) {
-      alert('Vui lòng đăng nhập trước');
-      return null;
-    }
-
-    // Validate file
-    if (!file.type.startsWith('image/')) {
-      alert('Chỉ chấp nhận file ảnh (JPG, PNG, WebP...)');
-      return null;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Kích thước ảnh không vượt quá 5MB');
-      return null;
-    }
-
-    // Upload
-    document.getElementById('uploadStatus').textContent = 'Đang tải lên...';
-    const timestamp = Date.now();
-    const fileName = `articles/${timestamp}-${file.name}`;
-    const storageRef = storage.ref(fileName);
-
-    await storageRef.put(file, {
-      metadata: {
-        contentType: file.type,
-        customMetadata: { uploadedBy: user.email }
-      }
-    });
-
-    // Get download URL
-    const imageUrl = await storageRef.getDownloadURL();
-    document.getElementById('uploadStatus').textContent = '✅ Tải lên thành công';
-
-    return imageUrl;
-  } catch (error) {
-    console.error('Upload error:', error);
-    document.getElementById('uploadStatus').textContent = '❌ Lỗi: ' + error.message;
-    alert('Lỗi tải ảnh: ' + error.message);
-    return null;
-  }
-}
-
-// Setup drag-drop
-document.addEventListener('DOMContentLoaded', () => {
-  const uploadArea = document.getElementById('imageUploadArea');
-  const fileInput = document.getElementById('imageFile');
-  const previewDiv = document.getElementById('imagePreview');
-  const previewImg = document.getElementById('previewImg');
-
-  if (!uploadArea || !fileInput) return;
-
-  // Click to select
-  uploadArea.addEventListener('click', () => fileInput.click());
-
-  // Drag-drop
-  uploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadArea.style.borderColor = 'var(--brand, #FCD535)';
-    uploadArea.style.background = 'rgba(252, 213, 53, 0.05)';
-  });
-
-  uploadArea.addEventListener('dragleave', () => {
-    uploadArea.style.borderColor = 'var(--border, #2B3139)';
-    uploadArea.style.background = 'transparent';
-  });
-
-  uploadArea.addEventListener('drop', async (e) => {
-    e.preventDefault();
-    uploadArea.style.borderColor = 'var(--border, #2B3139)';
-    uploadArea.style.background = 'transparent';
-
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      await handleFileSelect(files[0]);
-    }
-  });
-
-  // File input change
-  fileInput.addEventListener('change', (e) => {
-    if (e.target.files.length > 0) {
-      handleFileSelect(e.target.files[0]);
-    }
-  });
-
-  // Handle file selection
-  async function handleFileSelect(file) {
-    previewDiv.style.display = 'block';
-    previewImg.src = URL.createObjectURL(file);
-
-    const imageUrl = await uploadImageToStorage(file);
-    if (imageUrl) {
-      document.getElementById('imageUrl').value = imageUrl;
-    }
-  }
-});
-</script>
-
+<script type="module" src="/js/firebase-config.js"></script>
 <script type="module" src="/js/page-admin-news.js"></script>
 </body>
 </html>
