@@ -509,8 +509,8 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
-const auth = firebase.auth();
+window.storage = firebase.storage();
+window.auth = firebase.auth();
 
 // Upload Image to Firebase Storage
 async function uploadImageToStorage(file) {
