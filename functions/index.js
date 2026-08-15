@@ -2,17 +2,226 @@ const { onRequest } = require('firebase-functions/v2/https');
 const express = require('express');
 const cors = require('cors');
 const admin = require('firebase-admin');
+const busboy = require('busboy');
 
 // Initialize Firebase Admin SDK
-admin.initializeApp();
+admin.initializeApp({
+  storageBucket: 'invest-x-505513.firebasestorage.app'
+});
 const db = admin.firestore();
 const auth = admin.auth();
+const bucket = admin.storage().bucket();
 
 const app = express();
 
 // Middleware
 app.use(cors({ origin: '*' }));
+
+// POST /admin/news/upload-image - Upload image using busboy
+app.post('/admin/news/upload-image', async (req, res) => {
+  try {
+    console.log('[UPLOAD] Start');
+    console.log('[UPLOAD] Content-Type:', req.headers['content-type']);
+
+    // Step 1: Verify auth
+    const authResult = await verifyAuth(req);
+    if (authResult.error) {
+      return res.status(401).json({ error: authResult.error });
+    }
+    console.log('[UPLOAD] Auth OK:', authResult.email);
+
+    // Step 2: Check if admin
+    const isAdminUser = await isAdmin(authResult.uid);
+    if (!isAdminUser) {
+      return res.status(403).json({ error: 'User is not admin' });
+    }
+    console.log('[UPLOAD] Admin OK');
+
+    // Step 3: Parse multipart with busboy
+    const bb = busboy({ headers: req.headers });
+    console.log('[UPLOAD] Busboy created');
+
+    let fileBuffer = null;
+    let originalName = null;
+    let mimeType = null;
+    let responsesSent = false;
+
+    bb.on('field', (fieldname, value) => {
+      console.log('[UPLOAD] Field:', fieldname);
+    });
+
+    bb.on('file', (fieldname, file, info) => {
+      console.log('[UPLOAD] File event:', fieldname, info);
+      if (fieldname !== 'image') {
+        console.log('[UPLOAD] Skip file:', fieldname);
+        file.resume();
+        return;
+      }
+
+      mimeType = info.mimeType;
+      console.log('[UPLOAD] MIME:', mimeType);
+
+      if (!mimeType.startsWith('image/')) {
+        file.resume();
+        return;
+      }
+
+      const chunks = [];
+      file.on('data', (chunk) => {
+        console.log('[UPLOAD] Chunk:', chunk.length);
+        chunks.push(chunk);
+      });
+      file.on('end', () => {
+        fileBuffer = Buffer.concat(chunks);
+        originalName = info.filename;
+        console.log('[UPLOAD] File end, size:', fileBuffer.length);
+      });
+      file.on('error', (err) => {
+        console.error('[UPLOAD] File error:', err.message);
+      });
+    });
+
+    bb.on('close', async () => {
+      console.log('[UPLOAD] Busboy close');
+
+      if (responsesSent) return;
+
+      if (!fileBuffer) {
+        responsesSent = true;
+        return res.status(400).json({ error: 'No image file provided' });
+      }
+
+      if (!mimeType || !mimeType.startsWith('image/')) {
+        responsesSent = true;
+        return res.status(400).json({ error: 'Only image files allowed' });
+      }
+
+      try {
+        console.log('[UPLOAD] Uploading to Storage:', originalName);
+        const timestamp = Date.now();
+        const filename = `articles/${timestamp}-${originalName}`;
+        const file = bucket.file(filename);
+
+        await file.save(fileBuffer, {
+          metadata: {
+            contentType: mimeType,
+            metadata: {
+              uploadedBy: authResult.email,
+              uploadedAt: new Date().toISOString()
+            }
+          }
+        });
+
+        console.log('[UPLOAD] Upload success');
+        const publicUrl = `https://storage.googleapis.com/invest-x-505513.firebasestorage.app/${filename}`;
+
+        responsesSent = true;
+        res.json({
+          success: true,
+          data: {
+            imageUrl: publicUrl,
+            filename: originalName,
+            size: fileBuffer.length
+          }
+        });
+      } catch (uploadError) {
+        console.error('[UPLOAD] Upload error:', uploadError.message);
+        responsesSent = true;
+        res.status(500).json({ error: uploadError.message });
+      }
+    });
+
+    bb.on('error', (err) => {
+      console.error('[UPLOAD] Busboy error:', err.message);
+      if (!responsesSent) {
+        responsesSent = true;
+        res.status(400).json({ error: err.message });
+      }
+    });
+
+    console.log('[UPLOAD] Piping request to busboy');
+    req.pipe(bb);
+  } catch (error) {
+    console.error('[UPLOAD] Try-catch error:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /admin/news/upload-image-base64 - Upload image as base64 (alternative)
+app.post('/admin/news/upload-image-base64', async (req, res) => {
+  try {
+    console.log('[BASE64] Start');
+
+    // Step 1: Verify auth
+    const authResult = await verifyAuth(req);
+    if (authResult.error) {
+      return res.status(401).json({ error: authResult.error });
+    }
+
+    // Step 2: Check if admin
+    const isAdminUser = await isAdmin(authResult.uid);
+    if (!isAdminUser) {
+      return res.status(403).json({ error: 'User is not admin' });
+    }
+
+    // Step 3: Get base64 from body
+    const { imageBase64, filename, mimeType } = req.body;
+
+    if (!imageBase64 || !filename) {
+      return res.status(400).json({ error: 'imageBase64 and filename required' });
+    }
+
+    if (!mimeType || !mimeType.startsWith('image/')) {
+      return res.status(400).json({ error: 'Invalid image MIME type' });
+    }
+
+    // Step 4: Convert base64 to buffer
+    const buffer = Buffer.from(imageBase64, 'base64');
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (buffer.length > maxSize) {
+      return res.status(400).json({ error: 'File size exceeds 5MB limit' });
+    }
+
+    console.log('[BASE64] Buffer size:', buffer.length);
+
+    // Step 5: Upload to Firebase Storage
+    const timestamp = Date.now();
+    const storagePath = `articles/${timestamp}-${filename}`;
+    const file = bucket.file(storagePath);
+
+    await file.save(buffer, {
+      metadata: {
+        contentType: mimeType,
+        metadata: {
+          uploadedBy: authResult.email,
+          uploadedAt: new Date().toISOString()
+        }
+      }
+    });
+
+    console.log('[BASE64] Upload success');
+
+    // Step 6: Generate public URL
+    const publicUrl = `https://storage.googleapis.com/invest-x-505513.firebasestorage.app/${storagePath}`;
+
+    res.json({
+      success: true,
+      data: {
+        imageUrl: publicUrl,
+        filename: filename,
+        size: buffer.length
+      }
+    });
+  } catch (error) {
+    console.error('[BASE64] Error:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Now apply body parsers for other routes
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ============================================
 // Helper Functions
@@ -304,6 +513,20 @@ app.delete('/admin/news/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+// Error handling middleware for multer
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'File size exceeds 5MB limit' });
+    }
+    return res.status(400).json({ error: err.message });
+  }
+  if (err) {
+    return res.status(400).json({ error: err.message });
+  }
+  next();
 });
 
 // Export Cloud Function (gen2)
