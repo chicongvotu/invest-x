@@ -520,8 +520,24 @@ function initFirebase() {
   window.auth = firebase.auth();
   window.storage = firebase.storage();
   console.log('✓ Firebase initialized');
+
+  // ✅ App init NGAY ĐÂY (không dùng DOMContentLoaded)
+  startAdminApp();
 }
 initFirebase();
+
+// App init function
+function startAdminApp() {
+  if (!checkAdminAccess) {
+    console.warn('checkAdminAccess not ready yet');
+    setTimeout(startAdminApp, 50);
+    return;
+  }
+  console.log('✓ Starting admin app');
+  checkAdminAccess();
+  setupImageUpload();
+  loadArticlesList();
+}
 </script>
 
 <!-- Admin page logic (runs after Firebase init) -->

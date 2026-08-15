@@ -420,26 +420,11 @@ function escapeHtml(text) {
     return text.replace(/[&<>"']/g, m => map[m]);
 }
 
-// Expose functions globally
+// Expose functions globally (called from init script in HTML)
 window.switchTab = switchTab;
 window.editArticle = editArticle;
 window.closeEditModal = closeEditModal;
 window.deleteArticle = deleteArticle;
-
-// Initialize on page load (wait for Firebase if needed)
-document.addEventListener('DOMContentLoaded', () => {
-    function startApp() {
-        if (typeof window.auth === 'undefined') {
-            // Firebase not initialized yet, retry in 50ms
-            console.log('Waiting for Firebase...');
-            setTimeout(startApp, 50);
-            return;
-        }
-
-        console.log('✓ Firebase ready, starting app');
-        if (!checkAdminAccess()) return;
-        setupImageUpload();
-        loadArticlesList();
-    }
-    startApp();
-});
+window.checkAdminAccess = checkAdminAccess;
+window.setupImageUpload = setupImageUpload;
+window.loadArticlesList = loadArticlesList;
