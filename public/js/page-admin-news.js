@@ -426,9 +426,20 @@ window.editArticle = editArticle;
 window.closeEditModal = closeEditModal;
 window.deleteArticle = deleteArticle;
 
-// Initialize on page load
+// Initialize on page load (wait for Firebase if needed)
 document.addEventListener('DOMContentLoaded', () => {
-    if (!checkAdminAccess()) return;
-    setupImageUpload();
-    loadArticlesList();
+    function startApp() {
+        if (typeof window.auth === 'undefined') {
+            // Firebase not initialized yet, retry in 50ms
+            console.log('Waiting for Firebase...');
+            setTimeout(startApp, 50);
+            return;
+        }
+
+        console.log('✓ Firebase ready, starting app');
+        if (!checkAdminAccess()) return;
+        setupImageUpload();
+        loadArticlesList();
+    }
+    startApp();
 });
