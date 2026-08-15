@@ -527,14 +527,18 @@ function initFirebase() {
 initFirebase();
 
 // App init function
-function startAdminApp() {
-  if (!checkAdminAccess) {
+async function startAdminApp() {
+  if (!window.checkAdminAccess) {
     console.warn('checkAdminAccess not ready yet');
     setTimeout(startAdminApp, 50);
     return;
   }
   console.log('✓ Starting admin app');
-  checkAdminAccess();
+  const hasAccess = await checkAdminAccess();
+  if (!hasAccess) {
+    console.log('No admin access, aborting');
+    return;
+  }
   setupImageUpload();
   loadArticlesList();
 }

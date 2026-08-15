@@ -106,7 +106,7 @@ function setupImageUpload() {
 }
 
 // Auth guard - check if admin using Firebase
-function checkAdminAccess() {
+async function checkAdminAccess() {
     const user = window.auth.currentUser;
 
     if (!user) {
@@ -115,7 +115,8 @@ function checkAdminAccess() {
     }
 
     // Check if user has admin claim
-    user.getIdTokenResult().then((idTokenResult) => {
+    try {
+        const idTokenResult = await user.getIdTokenResult();
         if (idTokenResult.claims.admin !== true) {
             document.body.innerHTML = `
                 <div style="padding: 40px; text-align: center; color: #ef4444;">
@@ -124,12 +125,13 @@ function checkAdminAccess() {
                     <a href="/" style="color: var(--brand, #FCD535);">← Quay lại trang chủ</a>
                 </div>
             `;
+            return false;
         }
-    }).catch(() => {
+        return true;
+    } catch (error) {
         location.href = '/login?next=/admin-news.html';
-    });
-
-    return true;
+        return false;
+    }
 }
 
 // Switch between tabs
