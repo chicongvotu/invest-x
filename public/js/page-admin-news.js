@@ -1,6 +1,5 @@
-import { api } from './api.js';
-import { session } from './mock.js';
-import { auth, storage } from './firebase-config.js';
+// Firebase and auth are initialized in HTML inline script
+// Access via: window.auth, window.storage
 
 let allArticles = [];
 
@@ -30,7 +29,7 @@ async function uploadImageToStorage(file) {
     document.getElementById('uploadStatus').textContent = 'Đang tải lên...';
     const timestamp = Date.now();
     const fileName = `articles/${timestamp}-${file.name}`;
-    const storageRef = storage.ref(fileName);
+    const storageRef = window.storage.ref(fileName);
 
     await storageRef.put(file, {
       metadata: {
@@ -108,7 +107,7 @@ function setupImageUpload() {
 
 // Auth guard - check if admin using Firebase
 function checkAdminAccess() {
-    const user = auth.currentUser;
+    const user = window.auth.currentUser;
 
     if (!user) {
         location.href = '/login?next=/admin-news.html';
