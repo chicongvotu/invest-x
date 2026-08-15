@@ -214,26 +214,12 @@ input[type="password"]:focus {
   </div>
 </div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
-
-<!-- Firebase Init & Login Logic -->
+<!-- ✅ FIXED: Use Cloud Functions backend instead of Firebase SDK CDN -->
+<!-- Removed Firebase SDK CDN dependency - use backend auth instead -->
 <script>
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyDX-56B0mIqTKZdWBZx7rI0vkrGRKJNrBg",
-  authDomain: "invest-x-505513.firebaseapp.com",
-  projectId: "invest-x-505513",
-  storageBucket: "invest-x-505513.firebasestorage.app",
-  messagingSenderId: "829926289619",
-  appId: "1:829926289619:web:a1b2c3d4e5f6g7h8i9j0"
-};
+// Use Cloud Functions backend for auth
+// No Firebase SDK dependency = more reliable, no CDN issues
 
-firebase.initializeApp(firebaseConfig);
-window.auth = firebase.auth();
-
-// Login form handler
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -243,18 +229,45 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   const errorMsg = document.getElementById('errorMessage');
   const loading = document.getElementById('loading');
 
-  // Show loading
+  // Show loading state
   submitBtn.disabled = true;
   loading.classList.add('show');
   errorMsg.classList.remove('show');
 
   try {
-    // Sign in
-    const result = await window.auth.signInWithEmailAndPassword(email, password);
-    console.log('✓ Login success:', result.user.email);
+    // Call Cloud Functions backend
+    const response = await fetch('/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password })
+    });
 
-    // Wait a moment for token to be ready
-    await result.user.getIdTokenResult();
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('✓ Login response:', data);
+
+    if (!data.success) {
+      throw new Error(data.error || 'Login failed');
+    }
+
+    if (!data.data?.isAdmin) {
+      throw new Error('Only admin accounts can access this panel');
+    }
+
+    // Store token for future requests
+    if (data.data.idToken || data.data.customToken) {
+      const token = data.data.idToken || data.data.customToken;
+      localStorage.setItem('adminToken', token);
+      localStorage.setItem('adminEmail', email);
+      console.log('✓ Token stored');
+    }
+
+    console.log('✓ Login success, redirecting...');
 
     // Redirect to admin panel
     setTimeout(() => {
@@ -262,17 +275,19 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     }, 500);
 
   } catch (error) {
-    console.error('Login error:', error.code);
+    console.error('Login error:', error.message);
 
     let message = 'Đăng nhập thất bại';
-    if (error.code === 'auth/user-not-found') {
-      message = 'Email không tồn tại';
-    } else if (error.code === 'auth/wrong-password') {
-      message = 'Mật khẩu không đúng';
-    } else if (error.code === 'auth/invalid-email') {
-      message = 'Email không hợp lệ';
-    } else if (error.code === 'auth/user-disabled') {
-      message = 'Tài khoản này đã bị vô hiệu hóa';
+    if (error.message.includes('HTTP 401')) {
+      message = 'Email hoặc mật khẩu không đúng';
+    } else if (error.message.includes('HTTP 403')) {
+      message = 'Tài khoản này không có quyền admin';
+    } else if (error.message.includes('not admin')) {
+      message = 'Chỉ admin mới có thể đăng nhập';
+    } else if (error.message.includes('Failed to fetch')) {
+      message = 'Không kết nối được máy chủ';
+    } else {
+      message = error.message || 'Đăng nhập thất bại';
     }
 
     errorMsg.textContent = message;
@@ -283,10 +298,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   }
 });
 
-// Auto-redirect if already logged in
-window.auth.onAuthStateChanged((user) => {
-  if (user) {
-    // Already logged in, redirect to admin panel
+// Check if already logged in and redirect
+window.addEventListener('load', () => {
+  const token = localStorage.getItem('adminToken');
+  if (token) {
+    console.log('Already logged in, redirecting to admin panel...');
     location.href = '/admin-news.html';
   }
 });

@@ -5,7 +5,7 @@ const admin = require('firebase-admin');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
-  storageBucket: 'invest-x-505513.firebasestorage.app'
+  storageBucket: 'invest-x-505513.appspot.com'
 });
 const db = admin.firestore();
 const auth = admin.auth();
@@ -95,7 +95,7 @@ app.post('/admin/news/upload-image', async (req, res) => {
           }
         });
 
-        const publicUrl = `https://storage.googleapis.com/invest-x-505513.firebasestorage.app/${storagePath}`;
+        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/invest-x-505513.appspot.com/o/${encodeURIComponent(storagePath)}?alt=media`;
 
         res.json({
           success: true,
@@ -174,7 +174,7 @@ app.post('/admin/news/upload-image-base64', async (req, res) => {
     console.log('[BASE64] Upload success');
 
     // Step 6: Generate public URL
-    const publicUrl = `https://storage.googleapis.com/invest-x-505513.firebasestorage.app/${storagePath}`;
+    const publicUrl = `https://firebasestorage.googleapis.com/v0/b/invest-x-505513.appspot.com/o/${encodeURIComponent(storagePath)}?alt=media`;
 
     res.json({
       success: true,
