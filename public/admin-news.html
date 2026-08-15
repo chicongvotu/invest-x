@@ -19,11 +19,6 @@
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
 
-<!-- Firebase SDK (async, will load in background) -->
-<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"></script>
-
 <style>
 body { background: var(--bg-body, #0B0E11); }
 
@@ -498,7 +493,12 @@ body { background: var(--bg-body, #0B0E11); }
 <!-- Regular scripts (no modules) -->
 <script type="module" src="/js/layout.js"></script>
 
-<!-- Initialize Firebase AFTER SDK loads -->
+<!-- Firebase SDK (load synchronously in body) -->
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"></script>
+
+<!-- Initialize Firebase (runs immediately after SDK loads) -->
 <script>
 function initFirebase() {
   if (typeof firebase === 'undefined') {
