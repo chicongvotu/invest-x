@@ -235,8 +235,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   errorMsg.classList.remove('show');
 
   try {
-    // Call Cloud Functions backend
-    const response = await fetch('/auth/login', {
+    // Call Cloud Functions backend (Asia-Southeast1)
+    const cloudFunctionUrl = 'https://asia-southeast1-invest-x-505513.cloudfunctions.net/api/auth/login';
+    const response = await fetch(cloudFunctionUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
