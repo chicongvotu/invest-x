@@ -3,22 +3,30 @@ import { session } from './mock.js';
 
 let allArticles = [];
 
-// Auth guard - check if admin
+// Auth guard - check if admin using Firebase
 function checkAdminAccess() {
-    if (!session.isAuthed()) {
+    const user = firebase.auth().currentUser;
+
+    if (!user) {
         location.href = '/login?next=/admin-news.html';
         return false;
     }
-    if (!session.isAdmin()) {
-        document.body.innerHTML = `
-            <div style="padding: 40px; text-align: center; color: #ef4444;">
-                <h1>❌ Truy cập bị từ chối</h1>
-                <p>Bạn không có quyền truy cập trang admin này.</p>
-                <a href="/" style="color: var(--brand, #FCD535);">← Quay lại trang chủ</a>
-            </div>
-        `;
-        return false;
-    }
+
+    // Check if user has admin claim
+    user.getIdTokenResult().then((idTokenResult) => {
+        if (idTokenResult.claims.admin !== true) {
+            document.body.innerHTML = `
+                <div style="padding: 40px; text-align: center; color: #ef4444;">
+                    <h1>❌ Truy cập bị từ chối</h1>
+                    <p>Bạn không có quyền truy cập trang admin này.</p>
+                    <a href="/" style="color: var(--brand, #FCD535);">← Quay lại trang chủ</a>
+                </div>
+            `;
+        }
+    }).catch(() => {
+        location.href = '/login?next=/admin-news.html';
+    });
+
     return true;
 }
 
