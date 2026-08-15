@@ -53,33 +53,50 @@ function showMessage(text, type = 'success') {
 document.getElementById('createForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const scheduledAtInput = document.getElementById('scheduledAt').value;
-    const scheduledAt = scheduledAtInput ? new Date(scheduledAtInput).getTime() : null;
-
     const data = {
         title: document.getElementById('title').value,
-        category: document.getElementById('category').value,
-        excerpt: document.getElementById('excerpt').value,
         content: document.getElementById('content').value,
-        author: document.getElementById('author').value,
-        image: document.getElementById('image').value || '📰',
         imageUrl: document.getElementById('imageUrl').value || null,
-        youtubeUrl: document.getElementById('youtubeUrl').value || null,
-        featured: document.getElementById('featured').checked,
-        publishedAt: Date.now(),
-        scheduledAt: scheduledAt,
-        status: scheduledAt ? 'scheduled' : 'published'
+        youtubeUrl: document.getElementById('youtubeUrl').value || null
     };
 
+    // Validate required fields
+    if (!data.title || !data.content) {
+        showMessage('❌ Vui lòng điền đầy đủ: Tiêu đề và Nội dung', 'error');
+        return;
+    }
+
     try {
-        await api.post('/api/news/articles', data);
-        showMessage(
-            scheduledAt
-                ? `✅ Bài viết đã được lên lịch đăng lúc ${new Date(scheduledAt).toLocaleString('vi-VN')}!`
-                : '✅ Bài viết đã được đăng thành công!',
-            'success'
-        );
+        // Get auth token
+        const user = auth.currentUser;
+        if (!user) {
+            showMessage('❌ Vui lòng đăng nhập lại', 'error');
+            location.href = '/login?next=/admin-news.html';
+            return;
+        }
+
+        const idToken = await user.getIdToken();
+
+        // Call backend API
+        const response = await fetch('/api/admin/news', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${idToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Lỗi server');
+        }
+
+        showMessage('✅ Bài viết đã được đăng thành công!', 'success');
         document.getElementById('createForm').reset();
+        document.getElementById('imageUrl').value = '';
+        document.getElementById('imagePreview').style.display = 'none';
         loadArticlesList();
     } catch (err) {
         showMessage('❌ Lỗi: ' + err.message, 'error');
