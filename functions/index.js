@@ -252,6 +252,28 @@ async function isAdmin(uid) {
 // Routes
 // ============================================
 
+// POST /setup-admin - Set admin claim (run once, then delete)
+app.post('/setup-admin', async (req, res) => {
+  try {
+    const { email, secret } = req.body;
+
+    // Security check
+    if (secret !== 'invest-x-setup-secret-2026') {
+      return res.status(401).json({ error: 'Invalid secret' });
+    }
+
+    const userRecord = await auth.getUserByEmail(email);
+    await auth.setCustomUserClaims(userRecord.uid, { admin: true });
+
+    res.json({
+      success: true,
+      message: `User ${email} is now admin. ⚠️ They must logout and login again to get new token.`
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // POST /auth/login - Login and get token (for testing)
 app.post('/auth/login', async (req, res) => {
   try {
